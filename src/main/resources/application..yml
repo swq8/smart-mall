@@ -1,0 +1,61 @@
+logging:
+  file:
+    name: run.log
+  logback:
+    rollingpolicy:
+      clean-history-on-start: true
+
+server:
+  address: 0.0.0.0
+  compression:
+    enabled: false
+  port: 8080
+  tomcat:
+    accesslog:
+      enabled: true
+      max-days: 30
+      pattern: '%a | "%{x-forwarded-for}i" | %t |  "%r" | %D | %s | %B | "%{referer}i" | "%{user-agent}i" | "%{content-type}i"'
+    basedir: ./
+    max-swallow-size: -1
+    remoteip:
+      protocol-header: X-Forwarded-Proto
+
+spring:
+  data:
+    redis:
+      repositories:
+        enabled: false
+  datasource:
+    url: jdbc:mariadb://192.168.10.8/alex
+    username: root
+    password:
+    hikari:
+      connectionInitSql: SET NAMES utf8mb4
+      maximum-pool-size: 4
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    open-in-view: true
+  mvc:
+    servlet:
+      load-on-startup: 1
+  profiles:
+    active: production
+  redis:
+    database: 0
+    host: 192.168.10.8
+    port: 6379
+    password:
+
+  session:
+    store-type: redis
+    timeout: 6h
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  thymeleaf:
+    # product environment must set true
+    cache: false

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header" />
+
+<div class="alert alert-primary" role="alert">
+    [[${title}]]&nbsp;<a href="edit">新建商品分类</a>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>分类名称</th>
+        <th>排序</th>
+        <th>首页显示</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${list}">
+        <td th:text="${item.name}"></td>
+        <td th:text="${item.sort}"></td>
+        <td th:text="${item.i == 1 ? '是' : '否'}"></td>
+        <td>
+            <a th:href="'edit?parentId=' + ${item.id}"><i class="fa fa-plus"></i></a>&nbsp;&nbsp;
+            <a th:href="'edit?id=' + ${item.id}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
+            <a th:href="'javascript:deleteRequest(%22delete?id=' + ${item.id} + '%22)'">
+                <i class="fa fa-remove"></i>
+            </a></td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:replace="admin/components::footer" />
+</body>
+</html>

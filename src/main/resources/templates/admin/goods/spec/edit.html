@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{::style}, ~{})">
+    <style>
+        #specTable a.remove{margin: 0 1rem}
+        #specTable img.icon {
+            border: #d6d8db 1px solid;
+            height: 40px;
+            width: 40px;
+            margin-right: 1rem;
+        }
+    </style>
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header"/>
+<script>
+    const specJson = [(${item.list})];
+</script>
+
+<div class="alert alert-primary" role="alert" th:text="${title}"></div>
+<form autocomplete="off" method="post">
+    <input type='hidden' name='id' th:value="${item.id}">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="name">规格名称</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="分类名称"
+                   th:value="${item.name}" required>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="name">备注</label>
+            <input type="text" class="form-control" id="note" name="note" placeholder="备注"
+                   th:value="${item.note}">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="sort">排序</label>
+            <input type="text" class="form-control" id="sort" name="sort" placeholder="排序"
+                   th:value="${item.sort}">
+        </div>
+        <div class="form-group col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <td>规格值</td>
+                    <td>提示信息</td>
+                    <td>缩略图(40px * 40px)</td>
+                    <td>操作</td>
+                </tr>
+
+                </thead>
+                <tbody id="specTable">
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" name="specVal">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="specHint">
+                    </td>
+                    <td>
+                        <input type="hidden" name="specImg" value="">
+                        <input type="file">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-success" id="new">添加规格</button>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">确定</button>
+    </div>
+</form>
+<br>
+<div th:replace="admin/components::footer"/>
+<script src="/admin/goodsSpec.js"></script>
+</body>
+</html>

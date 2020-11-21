@@ -1,0 +1,30 @@
+logs/
+*.log*
+*.jar
+src/main/resources/application.yml
+target/
+img/
+work/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### Mac OS ###
+.DS_Store
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### Windows ###
+Thumbs.db
+
+### VS Code ###
+.vscode/

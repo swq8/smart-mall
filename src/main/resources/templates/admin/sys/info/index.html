@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header"/>
+<div>
+    <div class="alert alert-primary" role="alert" th:text="${title}"></div>
+    <table class="table table-bordered">
+
+        <tr>
+            <td colspan="4">Database</td>
+        </tr>
+        <tr>
+            <td>version:</td>
+            <td th:text="${dbVersion}"></td>
+            <td>tx-isolation:</td>
+            <td th:text="${dbTxIsolation}"></td>
+        </tr>
+        <tr>
+            <td colspan="4">Redis</td>
+        </tr>
+        <tr>
+            <td>version:</td>
+            <td th:text="${redisVersion}"></td>
+            <td>used memory:</td>
+            <td th:text="${redisMemory}"></td>
+        </tr>
+        <tr>
+            <td colspan="4">Java</td>
+        </tr>
+        <tr>
+            <td>os name:</td>
+            <td th:text="${javaOsName}"></td>
+            <td>os version:</td>
+            <td th:text="${javaOsVersion}"></td>
+        </tr>
+        <tr>
+            <td>name:</td>
+            <td th:text="${javaName}"></td>
+            <td>version:</td>
+            <td th:text="${javaVersion}"></td>
+        </tr>
+        <tr>
+
+            <td>vendor:</td>
+            <td th:text="${javaVendor}"></td>
+            <td>vm info:</td>
+            <td th:text="${vmInfo}"></td>
+        </tr>
+        <tr>
+            <td>cpu cores:</td>
+            <td th:text="${cpuCores}"></td>
+            <td>max memory:</td>
+            <td th:text="${maxMemory}"></td>
+        </tr>
+        <tr>
+
+            <td>total memory:</td>
+            <td th:text="${totalMemory}"></td>
+            <td>free memory:</td>
+            <td th:text="${freeMemory}"></td>
+        </tr>
+        <tr>
+            <td>spring boot:</td>
+            <td th:text="${springBootVersion}"></td>
+            <td>application dir:</td>
+            <td th:text="${applicationDir}"></td>
+        </tr>
+        <tr>
+            <td>start time:</td>
+            <td th:text="${startTime}"></td>
+            <td>up time:</td>
+            <td th:text="${upTime}"></td>
+        </tr>
+        <tr>
+            <td>gc:</td>
+            <td th:text="${javaGc}" colspan="3"></td>
+        </tr>
+    </table>
+</div>
+
+<div th:replace="admin/components::footer"/>
+</body>
+</html>

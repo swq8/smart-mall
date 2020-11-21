@@ -1,0 +1,13 @@
+[Unit]
+Description=Alex Server
+After=network.target
+[Service]
+Type=simple
+User=user
+Group=user
+WorkingDirectory=/home/www/alex
+ExecStart=/usr/bin/java -Xlog:gc:gc.log:time:filesize=2M,filecount=5 -Xms500M -Xmx500M -jar alex.jar
+Restart=always
+RestartSec=10s
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header" />
+
+<div class="card text-center" style="margin: 3% 0">
+    <div class="bg-light card-body">
+        <h5 class="card-title text-success" th:text="${msg}"></h5>
+        <a th:href="${backUrl}" class="text-secondary" th:if="${backUrl != null}">点击返回</a>
+    </div>
+</div>
+<div th:replace="admin/components::footer" />
+</body>
+</html>

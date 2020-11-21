@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header"/>
+<div>
+    <div class="alert alert-primary" role="alert" th:text="${title}"></div>
+    <form class="form-inline" id="uploadForm">
+        <div class="form-group col-12">
+            <input type="file" class="form-control" name="file" id="file">&nbsp;&nbsp;
+            <input type="checkbox"  class="form-check-input" id="keep" name="keep" value="true">
+            <label>使用原文件名</label>
+            <button type="submit" class="btn btn-primary text">确定</button>&nbsp;
+            <div class="spinner-border text-primary invisible" id="spinner">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </form><br>
+    <div id="div1" class="invisible">
+        <a id="hint" target="_blank"></a>&nbsp;&nbsp;
+        <input type="text" id="urlInput" readonly  data-container="body" data-toggle="popover"
+               data-placement="bottom" data-content="已复制到粘贴板">&nbsp;
+        <button id="btn1" type="button" class="btn btn-info">复制到粘贴板</button>
+    </div>
+
+
+</div>
+<script>
+
+</script>
+
+<div th:replace="admin/components::footer"/>
+<script>
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+
+    const aHint = document.getElementById('hint');
+    const urlInput = document.getElementById('urlInput');
+    document.getElementById("uploadForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        const file = document.getElementById('file').files[0];
+        if (typeof file === "undefined") {
+            alert("请选择文件");
+            return;
+        }
+        if (file.size > 0x3200000) {
+            alert("文件尺寸请勿超过50MB");
+            return;
+        }
+        aHint.innerHTML = "";
+        let data = new FormData();
+        data.append('file', file);
+        if (document.getElementById("keep").checked) {
+            data.append('keep', 'true');
+        }
+        document.getElementById('spinner').classList.remove("invisible");
+        fetch('upload', {
+            method: 'POST',
+            body: data,
+            credentials: 'same-origin'
+        }).then(response => {
+            if (response.status !== 200) {
+                alert("未知错误，请联系统管理员, status:" + response.status);
+                document.getElementById('spinner').classList.add("invisible");
+                document.getElementById("keep").checked = false;
+                return;
+            }
+            response.json().then(json => {
+                aHint.innerText = json.url;
+                aHint.setAttribute("href", json.url);
+                urlInput.value = json.url;
+                document.getElementById('div1').classList.remove("invisible");
+                document.getElementById('spinner').classList.add("invisible");
+                document.getElementById("keep").checked = false;
+            });
+        }).catch(error => {
+            document.getElementById('spinner').classList.add("invisible");
+            document.getElementById("keep").checked = false;
+            alert("网络错误");
+        });
+        document.getElementById('file').value = "";
+    });
+    document.getElementById("file").addEventListener("change", function () {
+        $('[data-toggle="popover"]').popover('hide');
+        aHint.innerText = "";
+        aHint.setAttribute("href", "");
+        urlInput.value = "";
+        document.getElementById('div1').classList.add("invisible");
+    });
+    document.getElementById("btn1").addEventListener("click", function () {
+        urlInput.select();
+        document.execCommand('copy');
+        $('[data-toggle="popover"]').popover('show');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!-- head -->
+<head th:fragment="head(links,styles)">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <title th:text="${title} + '-' + ${siteName}"/>
+    <link rel="shortcut icon" th:href="${#helpers.retouch('/favicon.ico')}">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="${#helpers.retouch('/apple-touch-icon.png')}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="${#helpers.retouch('/favicon-32x32.png')}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="${#helpers.retouch('/favicon-16x16.png')}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/admin/g.css')}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/font-awesome/css/font-awesome.min.css')}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/bootstrap/css/bootstrap.min.css')}">
+    <script th:src="${#helpers.retouch('/js/jquery-3.5.1.slim.min.js')}"></script>
+    <script>
+        const diffTime = Date.now() - [[${now.getTime()}]] - 60;
+    </script>
+
+    <th:block th:replace="${links}"/>
+    <th:block th:replace="${styles}"/>
+</head>
+
+<!-- header -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="header">
+    <a class="navbar-brand" href="#">Menu</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/admin">首页</a>
+            </li>
+            <li class="nav-item dropdown" th:each="menu : ${adminMenu}">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false" th:text="${menu.key}">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" th:each="menu1 : ${menu.value}" th:href="${menu1.uri}"
+                       th:text="${menu1.name}"></a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="${siteUrl}" target="_blank">商城</a>
+            </li>
+        </ul>
+        <div class="form-inline my-2 my-lg-0 text-secondary">
+            <span th:text="${userToken.name}"></span>
+            &nbsp;<a class="text-secondary" href="/user/login?logout">退出系统</a>
+        </div>
+    </div>
+</nav>
+
+
+<!--  footer -->
+<footer class="bg-light" th:fragment="footer">
+    <div class="text-center">
+        Copyright © [[${#dates.format(now, 'yyyy')}]]. All rights reserved.
+    </div>
+    <script th:src="${#helpers.retouch('/bootstrap/js/bootstrap.bundle.min.js')}"></script>
+    <script th:src="${#helpers.retouch('/admin/g.js')}"></script>
+</footer>

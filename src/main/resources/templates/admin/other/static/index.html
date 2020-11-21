@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header"/>
+<div class="alert alert-primary" role="alert" th:text="${title}"></div>
+<form autocomplete="off" method="post">
+
+    <div class="card">
+        <div class="card-header">
+            静态文件
+        </div>
+        <div class="card-body row">
+            <div class="form-group col-md-6">
+                <label>版本号(修改该版本号可刷新静态文件缓存)</label>
+                <input type="text" class="form-control" name="jsVersion" placeholder="电脑端模板"
+                       th:value="${jsVersion}" required>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="text-center">
+        <button class="btn btn-primary">确定</button>
+    </div>
+</form>
+<br>
+<div th:replace="admin/components::footer"/>
+</body>
+</html>

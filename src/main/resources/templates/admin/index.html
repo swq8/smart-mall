@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header" />
+
+<div class="alert alert-primary" role="alert" th:text="${title}">系统信息</div>
+
+<div th:replace="admin/components::footer" />
+</body>
+</html>

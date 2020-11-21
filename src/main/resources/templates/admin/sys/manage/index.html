@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header"/>
+<div class="alert alert-primary" role="alert" th:text="${title}"></div>
+<form autocomplete="off" method="post">
+    <div class="card">
+        <div class="card-header">
+            系统
+        </div>
+        <div class="card-body row">
+            <div class="form-group col-md-3">
+                <label>网站名称</label>
+                <input type="text" class="form-control" name="siteName" placeholder="网站名称" th:value="${siteName}"
+                       required>
+            </div>
+            <div class="form-group col-md-3">
+                <label>静态文件路径(为空使用本地资源)</label>
+                <input type="text" class="form-control" name="jsPath" placeholder="静态文件路径" th:value="${jsPath}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>网址</label>
+                <input type="text" class="form-control" name="siteUrl" placeholder="网址" th:value="${siteUrl}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>推荐搜索关键字(多个关键字请用逗号 , 分割)</label>
+                <input type="text" class="form-control" name="keywords" placeholder="推荐关键字" th:value="${keywords}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>商品限购</label>
+                <input type="number" class="form-control" min="0" step="1" name="maxBuyNum" th:value="${maxBuyNum}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>备案号</label>
+                <input type="text" class="form-control" name="beian" placeholder="" th:value="${beian}">
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header">
+            模板
+        </div>
+        <div class="card-body row">
+            <div class="form-group col-md-3">
+                <label>电脑端模板</label>
+                <input type="text" class="form-control" name="themePc" placeholder="电脑端模板" th:value="${themePc}" required>
+            </div>
+            <div class="form-group col-md-3">
+                <label>移动端模板</label>
+                <input type="text" class="form-control" name="themeMobile" placeholder="移动端模板" th:value="${themeMobile}"
+                       required>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header">
+            存储
+        </div>
+        <div class="card-body row">
+            <div class="form-group col-md-3">
+                <label>存储类型</label>
+                <select class="form-control" name="storageType">
+                    <option value="local" th:selected="${storageType == 'local'}">本机</option>
+                    <option value="oss" th:selected="${storageType == 'oss'}">阿里云OSS</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label>oss-ak</label>
+                <input type="text" class="form-control" name="ossAk" th:value="${ossAk}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>oss-aks</label>
+                <input type="text" class="form-control" name="ossAks" th:value="${ossAks}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>oss-bucket</label>
+                <input type="text" class="form-control" name="ossBucket" th:value="${ossBucket}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>oss-bucket-url</label>
+                <input type="text" class="form-control" name="ossBucketUrl" th:value="${ossBucketUrl}">
+            </div>
+            <div class="form-group col-md-3">
+                <label>oss-endpoint</label>
+                <input type="text" class="form-control" name="ossEndpoint" th:value="${ossEndpoint}">
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="text-center">
+        <button class="btn btn-primary">确定</button>
+    </div>
+</form>
+<br>
+<div th:replace="admin/components::footer"/>
+</body>
+</html>

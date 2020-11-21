@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header" />
+
+<div class="alert alert-primary" role="alert" th:text="${title}"></div>
+<form autocomplete="off" method="post">
+    <input type='hidden' name='id' th:value="${id}">
+    <div class="form-group">
+        <label for="name">角色名称</label>
+        <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp" placeholder="角色名称"
+        th:value="${name}">
+    </div>
+<div class="row" th:each="item : ${rules}">
+    <div class="col-12 h5" th:text="${item.key}"></div>
+    <div class="col-2" th:each="rule : ${item.value}">
+        [('&nbsp;')]<input type="checkbox" th:id="${item.key} + '-' + ${rule}" name="authority" th:value="${item.key} + '-' + ${rule}">
+        <label th:text="${rule}" th:for="${item.key} + '-' + ${rule}"></label>
+    </div>
+</div>
+<div class="text-center"><button class="btn btn-primary">确定</button></div>
+</form>
+<script>
+    const str = "[[${authorityStr}]]";
+    const arr = str.split(",");
+    arr.forEach(function(item){
+        if (item.length > 2) {
+            const ele = document.querySelector("#" + item);
+            if (ele !== null) {
+                ele.setAttribute("checked", "");
+            }
+
+        }
+    });
+</script>
+<br>
+<div th:replace="admin/components::footer" />
+</body>
+</html>

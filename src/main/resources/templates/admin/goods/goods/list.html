@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{::style})">
+    <style>
+        .goodsIcon {
+            width: 100px;
+            height: 100px;
+        }
+
+        .goodsName {
+            max-width: 300px;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header"/>
+
+<div class="alert alert-primary" role="alert">
+    [[${title}]]&nbsp;<a href="edit">新建商品</a>
+</div>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>图片</th>
+        <th>商品名称/发布日期/推荐权重</th>
+        <th>分类/价格</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${pagination.rows}">
+        <td th:text="${item.id}"></td>
+        <td>
+            <img class="goodsIcon" th:src="${#helpers.imgZoom(item.img, 100, 100)}">
+        </td>
+        <td class="goodsName"><a th:href="${siteUrl} + '/goods/' + ${item.id} + '.html'" th:text="${item.name}"
+                                 target="_blank"></a>
+            <br>发布日期:[[${item.released}]]&nbsp;&nbsp;推荐权重:[[${item.recommend}]]
+        </td>
+        <td>[[${item.cateName}]]<br>[[${#helpers.priceFormat(item.price)}]]</td>
+        <td>
+            <a th:href="'edit?id=' + ${item.id}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
+            <a th:href="'javascript:deleteRequest(%22delete?id=' + ${item.id} + '%22)'">
+                <i class="fa fa-remove"></i>
+            </a></td>
+    </tr>
+    </tbody>
+</table>
+<nav th:utext="${pagination.generateBootstrapPagination()}"/>
+
+<div th:replace="admin/components::footer"/>
+</body>
+</html>

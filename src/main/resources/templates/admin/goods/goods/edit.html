@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{::style})">
+    <style>
+        img.spec {
+            max-height: 40px;
+            max-width: 40px;
+        }
+
+        #imgs {
+
+        }
+
+        #imgs div {
+            float: left;
+            margin-right: 1rem
+        }
+
+        #imgs img {
+            border: #d6d8db 1px solid;
+            height: 120px;
+            width: 120px;
+        }
+
+        #imgs p a.remove {
+            margin: auto 1.5rem
+        }
+    </style>
+</head>
+<script th:src="${#helpers.retouch('/js/tinymce/tinymce.min.js')}"></script>
+<script>
+    const goodsSpec = [(${specJson})];
+</script>
+<body class="container-fluid">
+<div th:replace="admin/components::header"/>
+
+<div class="alert alert-primary" role="alert" th:text="${title}"></div>
+<form autocomplete="off" method="post" th:object="${goods}">
+    <input type='hidden' name='id' th:value="*{id}">
+    <input type="hidden" name="spec" th:value="*{spec}">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="name">商品名称</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="商品名称"
+                   th:value="*{name}" required>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="cateId">类别</label>
+            <select class="form-control" id="cateId" name="cateId" required>
+                <option value="0">请选择商品类别</option>
+                <option th:each="cate : ${cateList}" th:text="${cate.name}" th:value="${cate.id}"
+                        th:selected="${cate.id == goods.cateId}"></option>
+            </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="brandId">品牌</label>
+            <select class="form-control" id="brandId" name="brandId" required>
+                <option value="0">请选择商品品牌</option>
+                <option th:each="brand : ${brandRows}" th:text="${brand.name}" th:value="${brand.id}"
+                        th:selected="${brand.id == goods.brandId}"></option>
+            </select>
+        </div>
+        <div class="form-group col-md-6"></div>
+        <div class="form-group col-md-3">
+            <label for="cateId">快递费用</label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="shipping" id="shipping1" value="1"
+                       th:checked="${shipping} == 1">
+                <label class="form-check-label" for="shipping1">有</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="shipping" id="shipping2" value="2"
+                       th:checked="${shipping} == 2">
+                <label class="form-check-label" for="shipping2">无</label>
+            </div>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="cateId">商品状态</label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="onSell" id="onSell1" value="1"
+                       th:checked="${onSell} == 1">
+                <label class="form-check-label" for="onSell1">在售</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="onSell" id="onSell2" value="2"
+                       th:checked="${onSell} == 2">
+                <label class="form-check-label" for="onSell2">下架</label>
+            </div>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="cateId">推荐权重</label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-control" type="number" name="recommend" th:value="${goods.recommend}"
+                min="1" step="1">
+            </div>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="cateId">发布日期</label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-control" type="date" name="released" th:value="${goods.released}" required>
+            </div>
+        </div>
+        <div class="form-group col-md-12">
+            <label>商品属性</label><br>
+            <table class="table table-bordered" id="specTable">
+                <thead>
+                <th>价格</th>
+                <th>库存</th>
+                <th>重量(克)</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="cateId">规格</label>
+            <select class="form-control" id="specName">
+                <option value="0">请选择</option>
+            </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="cateId">规格值</label>
+            <select class="form-control" id="specValue">
+                <option value="0">请选择</option>
+            </select>
+        </div>
+        <div class="form-group col-md-12">
+            <label>商品详情</label><br>
+            <textarea name="des" id="des" th:text="${goods.des}"></textarea>
+        </div>
+        <div class="form-group col-md-12">
+            <label>商品相册,图片文件请勿超过1MB,建议分辨率800*800</label>&nbsp;&nbsp;
+            <input type="file" id="img">
+            <div class="spinner-border text-primary invisible" id="spinner">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div id="imgs">
+                <br>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-primary">确定</button>
+    </div>
+</form>
+<br>
+<div th:replace="admin/components::footer"/>
+<script>
+    const imgsStr = "[[${goods.imgs}]]";
+</script>
+<script th:src="${#helpers.retouch('/admin/goodsEdit.js')}"></script>
+<script th:inline="javascript">
+    if (getInputValue("id") > 0) {
+        specObj.price = [[${#helpers.priceFormat(goods.price)}]];
+        specObj.oldStock = [[${goods.stock}]];
+        specObj.stock = [[${goods.stock}]];
+        specObj.weight = [[${goods.weight}]];
+        specObj.spec = [(${goods.spec})];
+        let goodsSpecList = [[${goodsSpecList}]];
+        if (goodsSpecList.length === 0) {
+            specObj.spec = [];
+        }
+        specObj.generateItems();
+        for (i = 0; i < specObj.items.length; i++) {
+            specObj.items[i].specId = goodsSpecList[i].id;
+            specObj.items[i].price = priceFormat(goodsSpecList[i].price);
+            specObj.items[i].oldStock = goodsSpecList[i].stock;
+            specObj.items[i].stock = goodsSpecList[i].stock;
+            specObj.items[i].weight = goodsSpecList[i].weight;
+        }
+    }
+    specObj.render();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+
+    <div th:replace="admin/components::header" />
+        <div>
+            <div class="alert alert-primary" role="alert">
+                <form class="form-inline" autocomplete="off" method="GET">
+                    [[${title}]]&nbsp;&nbsp;账号:<input class="form-control" type="text" name="name" th:value="${name}">
+                    <button class="btn btn-primary" type="submit">确定</button>
+                </form></div>
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>账号</th>
+                    <th>会员等级</th>
+                    <th>余额</th>
+                    <th>电话</th>
+                    <th>Email</th>
+                    <th>注册日期</th>
+                    <th>最近登录</th>
+                    <th>编辑</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${pagination.rows}">
+                    <td th:text="${item.name}"></td>
+                    <td></td>
+                    <td th:text="${item.surplus}"></td>
+                    <td th:text="${item.phone}"></td>
+                    <td th:text="${item.email}"></td>
+                    <td th:text="${#dates.format(item.registerTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${#dates.format(item.lastLoginTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td>
+                        <a class="icon" href="javascript:void(0)">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <nav th:utext="${pagination.generateBootstrapPagination()}" />
+        </div>
+    <div th:replace="admin/components::footer" />
+</body>
+</html>

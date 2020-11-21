@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>更新浏览器</title>
+    <style type="text/css">
+        .container {
+            color: #666;
+            font-family: Arial, Verdana, "Helvetica", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+            font-size: 18px;
+            line-height: 1.7;
+            margin: 0 auto;
+            width: 600px;
+        }
+        a, a:visited {
+            color: #347dcc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    您的浏览器版本过低，请更新浏览器。<br>
+    <div id="x32">
+        <a href="http://download.pchome.net/internet/browser/browser/detail-141810.html" target="_blank">Google Chrome (32位) PC Home下载链接</a>
+    </div>
+    <div id="x64">
+        <a href="http://download.pchome.net/internet/browser/browser/detail-27887.html" target="_blank">Google Chrome (64位) PC Home下载链接</a>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    if (typeof(fetch) == 'function') {
+        window.open('/', '_self')
+    }
+
+    var agent = navigator.userAgent.toLocaleLowerCase();
+    var eleId = agent.indexOf(" win64") >= 0 || agent.indexOf(" wow64") >= 0 ? "x32" : "x64";
+    document.getElementById(eleId).remove();
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header" />
+
+<div class="alert alert-primary" role="alert" th:text="${title}"></div>
+<form autocomplete="off" method="post">
+    <input type='hidden' name='id' th:value="${id}">
+    <div class="form-group">
+        <label>账号</label>
+        <input type="text" class="form-control"  placeholder="账号" name="name"
+               th:value="${user.name}" th:disabled="${id > 0}">
+    </div>
+    <div class="form-group">
+        <label for="role">角色</label>
+        <select class="form-control" id="role" name="role">
+            <option th:each="role : ${roles}" th:text="${role.name}"
+                    th:value="${role.id}" th:selected="${role.id == user.roleId}"></option>
+        </select>
+    </div>
+    <div class="text-center"><button class="btn btn-primary">确定</button></div>
+</form>
+<br>
+<div th:replace="admin/components::footer" />
+</body>
+</html>

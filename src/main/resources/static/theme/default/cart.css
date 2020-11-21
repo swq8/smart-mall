@@ -1,0 +1,122 @@
+#cartList {
+    border: 1px solid #ddd;
+}
+
+#cartList tr {
+    border: 1px solid #ddd;
+}
+
+#cartList img {
+    border: 1px solid #ddd;
+    height: 61px;
+    width: 61px;
+}
+
+#cartList th.img {
+    padding-left: 0.8rem;
+    width: 65px;
+}
+
+#cartList th.name {
+    width: 550px;
+}
+
+#cartList th.num {
+    width: 150px;
+}
+
+#cartList th.sum {
+    min-width: 5rem;
+}
+
+#cartList div.num .btn {
+    background-color: #e6e6e6;
+    cursor: pointer;
+}
+
+#cartList div.num .btn:hover {
+    background-color: #d01111;
+    color: white;
+}
+
+#cartList div.num input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+#cartList div.num input[type="number"] {
+    -moz-appearance: textfield;
+    display: block;
+    float: left;
+    height: 1.7rem;
+    width: 3.5rem;
+    border: none;
+    border-bottom: 1px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6;
+    text-align: center;
+}
+
+#cartList div.num input::-ms-clear {
+    display: none;
+}
+
+#cartList div.num a {
+    border: 1px solid #e6e6e6;
+    display: block;
+    float: left;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    width: 1.8rem;
+    height: 1.7rem;
+    text-align: center;
+}
+
+#cartList div.num a.sub::before {
+    content: "─";
+}
+
+#cartList div.num a.add::before {
+    content: "+";
+}
+
+#cartList .specDes {
+    color: #777;
+    display: block;
+    font-size: 0.9rem;
+}
+
+#cartList .footer td {
+    padding: 1rem 0.9rem;
+}
+.cartFooter a {
+    display: block;
+
+}
+.cartFooter {
+    display: none;
+}
+.cartFooter .clearCart {
+    float: left;
+    font-size: 1.1rem;
+    text-decoration: underline;
+}
+
+.toBuy {
+    float: right;
+    font-size: 1.3rem;
+    line-height: 2rem;
+    padding: 0.6rem 1.2rem;
+}
+select.addr {
+    font-size: 1.1rem;
+}
+a.addAddr {
+
+    float: right;
+    font-size: 1.1rem;
+    margin-left: 9px;
+}
+.tit {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 2px;
+}

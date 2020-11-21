@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="__${theme}__/components::head(~{::title},~{::link},~{})">
+    <title th:text="'用户注册-' + ${siteName}"/>
+    <link rel="stylesheet" th:href="${#helpers.retouch('/theme/' + theme + '/user.css')}">
+</head>
+<body>
+<header th:replace="__${theme}__/components::header"/>
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">首页</a></li>
+            <li class="breadcrumb-item active" aria-current="page">用户注册</li>
+        </ol>
+    </nav>
+</div>
+<div class="container loginBg">
+    <div class="left">
+        <h5>注册成为新用户</h5>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        现在免费注册用户后，便能立刻享受便宜又
+        放心的购物乐趣。
+        简单快捷1分钟完成注册,
+        可方便的购买商品,
+        可方便的管理查询自己的订单。
+    </div>
+    <form class="loginForm" autocomplete=off method="post">
+        <ul>
+            <li class="title">
+                用户注册
+                <span class="right">已有账号&nbsp;<a class="underline" href="/user/login">点击此处登录</a></span>
+
+            </li>
+            <li id="formError"></li>
+            <li>
+                <label>用户名:</label>
+                <input type="text" name="name" placeholder="用户名" required>
+            </li>
+            <li>
+                <label>密码:</label>
+                <input type="password" name="password" placeholder="密码" required>
+            </li>
+            <li>
+                <label>重复密码:</label>
+                <input type="password" name="password1" placeholder="重复密码" required>
+            </li>
+            <li>
+                <label>验证码:</label><br>
+                <input type="text" name="captcha" placeholder="验证码" required>
+                <img id="captcha">
+            </li>
+
+            <li>
+                <br>
+                <button class="btnLogin" type="submit">注册</button>
+            </li>
+        </ul>
+    </form>
+</div>
+<br>
+
+<footer th:replace="__${theme}__/components::footer"/>
+</body>
+</html>

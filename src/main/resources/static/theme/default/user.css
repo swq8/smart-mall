@@ -1,0 +1,59 @@
+form li {
+    padding: 0;
+    margin-top: 0.5rem;
+    width: 300px;
+}
+
+.left {
+    color: #666;
+    float: left;
+    display: inline-block;
+    font-size: 1.1rem;
+    line-height: 1.6em;
+    width: 500px;
+    margin-top: 5rem;
+    padding: 0 3rem;
+}
+.loginBg {
+    border: 1px solid #ddd;
+
+
+}
+.loginForm{
+    display: inline-block;
+    float: right;
+    margin-top: 3rem;
+    padding: 1rem 0.5rem;
+    width: 390px;
+}
+
+.loginForm .title{
+    border-bottom: 1px solid #eee;
+    font-size: 1.2rem;
+    padding-bottom: 0.4rem;
+}
+.loginForm .right {
+    color: #555;
+    float: right;
+    font-size: 1rem;
+    padding: 0.4rem 0 0.8rem 0;
+    
+}
+
+.loginForm .btnLogin {
+    width: 300px;
+    font-size: 1.1rem;
+}
+
+.loginForm #captcha {
+    float: right;
+    height: 3rem;
+}
+
+.loginForm input[name=captcha] {
+    width: 60%;
+}
+
+.loginForm label {
+    width: 6rem;
+}

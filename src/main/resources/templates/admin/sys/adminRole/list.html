@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header" />
+
+<div class="alert alert-primary" role="alert">
+    [[${title}]]&nbsp;<a href="edit">新建角色</a>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>角色名称</th>
+        <th>权限</th>
+        <th>编辑</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${pagination.rows}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.name}"></td>
+        <td th:text="${item.authority}"></td>
+        <td>
+            <a th:href="'edit?id=' + ${item.id}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+            <a th:href="'javascript:deleteRequest(%22delete?id=' + ${item.id} + '%22, %22确定要删除这条记录么%22)'">
+                <i class="fa fa-remove"></i>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<nav th:utext="${pagination.generateBootstrapPagination()}" />
+
+<div th:replace="admin/components::footer" />
+</body>
+</html>

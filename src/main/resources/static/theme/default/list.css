@@ -1,0 +1,52 @@
+.sort {
+    background-color: #f1f1f1;
+    border: 1px solid #e7e3e7;
+    display: block;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.5rem;
+}
+.sort a + a {
+    margin-left: 0.8rem;
+}
+
+.goodsItemBg {
+    float: left;
+    position: relative;
+    width: 20%;
+    border: 1px solid #fff;
+    min-height: 320px;
+    padding: 16px 0 16px 0;
+}
+
+.goodsItem {
+    margin: auto;
+    width: 220px;
+}
+
+.goodsItemBg:hover {
+    box-shadow: 0 0 6px 0 #dedede;
+    border: 1px solid #dedede;
+}
+
+.goodsItem img {
+    height: 220px;
+    width: 220px;
+}
+
+.goodsItem .price {
+    display: block;
+    font-size: 1.2rem;
+}
+
+.goodsItem .price::before {
+    padding-right: 1px;
+}
+
+.goodsItem .title {
+    display: block;
+    width: 100%;
+    line-height: 1.5em;
+    height: 4.5em;
+    word-break: break-all;
+    overflow: hidden;
+}

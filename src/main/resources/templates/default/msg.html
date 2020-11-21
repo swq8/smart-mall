@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="__${theme}__/components::head(~{::title},~{::link}, ~{})">
+    <title th:text="'信息-' + ${siteName}"/>
+    <link rel="stylesheet" th:href="${#helpers.retouch('/theme/' + theme + '/cart.css')}">
+</head>
+<body>
+<header th:replace="__${theme}__/components::header"/>
+
+<div class="container">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">首页</a></li>
+            <li class="breadcrumb-item active" aria-current="page">信息</li>
+        </ol>
+    </nav>
+
+
+
+</div>
+<br><br>
+
+<footer th:replace="__${theme}__/components::footer"/>
+</body>
+</html>

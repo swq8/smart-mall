@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="__${theme}__/components::head(~{::title},~{::link}, ~{})">
+    <title th:text="'用户登陆-' + ${siteName}"/>
+    <link rel="stylesheet" th:href="${#helpers.retouch('/theme/' + theme + '/user.css')}">
+</head>
+<body>
+<header th:replace="__${theme}__/components::header"/>
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">首页</a></li>
+            <li class="breadcrumb-item active" aria-current="page">用户登录</li>
+        </ol>
+    </nav>
+</div>
+<div class="container loginBg">
+    <div class="left">
+        <h5>注册成为新用户</h5>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        现在免费注册用户后，便能立刻享受便宜又
+        放心的购物乐趣。
+        简单快捷1分钟完成注册,
+        可方便的购买商品,
+        可方便的管理查询自己的订单。
+        <br><br>
+        <p class="text-center">
+            <a class="button" href="register">注册新会员</a>
+        </p>
+    </div>
+    <form class="loginForm" autocomplete=off method="post">
+        <input type="hidden" name="back" th:value="${back}"/>
+        <ul>
+            <li class="title">
+                用户登录
+            </li>
+            <li id="formError"></li>
+            <li>
+                <label>用户名:</label>
+                <input type="text" name="name" placeholder="用户名" required>
+            </li>
+            <li>
+                <label>密码:</label>
+                <input type="password" name="password" placeholder="密码" required>
+            </li>
+            <li>
+                <span class="right"><a class="underline" href="/user/getpassword">忘记密码</a></span>
+            </li>
+
+
+            <li>
+                <br>
+                <button class="btnLogin" type="submit">登录</button>
+            </li>
+        </ul>
+    </form>
+</div>
+<br>
+<footer th:replace="__${theme}__/components::footer"/>
+</body>
+</html>

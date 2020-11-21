@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="__${theme}__/components::head(~{::title},~{}, ~{::link})">
+    <title th:text="${siteName}"/>
+    <link rel="stylesheet" th:href="${#helpers.retouch('/theme/' + theme + '/list.css')}">
+</head>
+<body>
+<header th:replace="__${theme}__/components::header"/>
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">首页</a></li>
+            <li class="breadcrumb-item" th:each="categoryEntity, status : ${categoryPath}"
+                th:if="${categoryPath != null}">
+                <a th:href="@{/list(cid=${categoryEntity.id})}" th:text="${categoryEntity.name}"
+                   th:if="${status.index < categoryPath.size()-1}"></a>
+                <a class="active" th:text="${categoryEntity.name}"
+                   th:if="${status.index == categoryPath.size()-1}"></a>
+            </li>
+            <li class="breadcrumb-item" th:if="${cid == 0 && q.length() == 0}">
+                全部商品
+            </li>
+            <li class="breadcrumb-item" th:if="${q.length() > 0}">
+                搜索&nbsp;&quot;[[${q}]]&quot;
+            </li>
+        </ol>
+    </nav>
+    <div class="sort">
+        <a th:class="${sort == '' ? 'active' : ''}" th:href="@{/list(cid=${cid},q=${q})}">推荐</a>
+        <a th:class="${sort == 'n' ? 'active' : ''}" th:href="@{/list(cid=${cid},q=${q},sort=n)}">新品</a>
+        <a th:href="@{/list(cid=${cid},q=${q},sort=p1)}" th:if="${sort != 'p1' && sort != 'p2'}">价格</a>
+        <a class="active" th:href="@{/list(cid=${cid},q=${q},sort=p2)}" th:if="${sort =='p1'}">价格▲</a>
+        <a class="active" th:href="@{/list(cid=${cid},q=${q},sort=p1)}" th:if="${sort =='p2'}">价格▼</a>
+    </div>
+    <div class="goodsItemBg" th:each="goods : ${pagination.rows}">
+        <div class="goodsItem">
+            <a class="img" th:href="@{/goods/{id}.html(id=${goods.id})}">
+                <img th:src="${#helpers.imgZoom(goods.img, 220, 220)}">
+            </a>
+            <div class="price" th:text="${#helpers.priceFormat(goods.price)}"></div>
+            <div>
+                <a class="title" th:text="${goods.name}" th:href="@{/goods/{id}.html(id=${goods.id})}"
+                   th:title="${goods.name}"></a></div>
+        </div>
+    </div>
+
+
+</div>
+<div class="container">
+    <nav th:utext="${pagination.generateWebPagination()}"/>
+</div>
+<footer th:replace="__${theme}__/components::footer"/>
+</body>
+</html>
