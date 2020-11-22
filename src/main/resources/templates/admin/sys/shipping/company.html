@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header"/>
+
+<div class="alert alert-primary" role="alert" th:text="${title}"></div>
+<form autocomplete="off" method="post">
+    <input type='hidden' name='id' th:value="${entity.id}">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="name">名称</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="名称"
+                   th:value="${entity.name}" required>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="url">网站</label>
+            <input type="text" class="form-control" id="url" name="url" placeholder="网站"
+                   th:value="${entity.url}">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="recommend">推荐</label>
+            <input type="number" min="0" step="1" class="form-control" id="recommend" name="recommend"
+                   placeholder="推荐" th:value="${entity.recommend}">
+        </div>
+
+
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-primary">确定</button>
+    </div>
+</form>
+<br>
+<div th:replace="admin/components::footer"/>
+</body>
+</html>

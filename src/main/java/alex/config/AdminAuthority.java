@@ -15,16 +15,16 @@ public class AdminAuthority {
      */
     public AdminAuthority(long roleId) {
         rules.put("商品-商品列表", new String[]{"get@/admin/goods/goods/list"});
-        rules.put("商品-编辑/新建/删除商品", new String[]{"post@/admin/goods/goods/delete",
+        rules.put("商品-管理商品", new String[]{"post@/admin/goods/goods/delete",
                 "get@/admin/goods/goods/edit", "post@/admin/goods/goods/edit"});
         rules.put("商品-商品分类列表", new String[]{"get@/admin/goods/category/list"});
-        rules.put("商品-新建/编辑/删除商品分类", new String[]{"post@/admin/goods/category/delete",
+        rules.put("商品-管理商品分类", new String[]{"post@/admin/goods/category/delete",
                 "get@/admin/goods/category/edit", "post@/admin/goods/category/edit"});
         rules.put("商品-商品品牌列表", new String[]{"get@/admin/goods/brand/list"});
-        rules.put("商品-新建/编辑/删除商品品牌", new String[]{"post@/admin/goods/brand/delete",
+        rules.put("商品-管理商品品牌", new String[]{"post@/admin/goods/brand/delete",
                 "get@/admin/goods/brand/edit", "post@/admin/goods/brand/edit"});
         rules.put("商品-商品规格列表", new String[]{"get@/admin/goods/spec/list"});
-        rules.put("商品-新建/编辑/删除商品规格", new String[]{"post@/admin/goods/spec/delete",
+        rules.put("商品-管理商品规格", new String[]{"post@/admin/goods/spec/delete",
                 "get@/admin/goods/spec/edit", "post@/admin/goods/spec/edit"});
         rules.put("订单-订单列表", new String[]{"get@/admin/order/order/list"});
         rules.put("会员-会员列表", new String[]{"get@/admin/user/user/list"});
@@ -33,13 +33,17 @@ public class AdminAuthority {
         rules.put("系统-系统管理", new String[]{"get@/admin/sys/manage", "post@/admin/sys/manage"});
 
         rules.put("系统-管理员列表", new String[]{"get@/admin/sys/adminUser/list"});
-        rules.put("系统-新建/编辑/删除管理员", new String[]{
+        rules.put("系统-管理管理员", new String[]{
                 "get@/admin/sys/adminUser/edit", "post@/admin/sys/adminUser/edit", "post@/admin/sys/adminUser/delete"});
         rules.put("系统-角色列表", new String[]{"get@/admin/sys/adminRole/list"});
-        rules.put("系统-新建/编辑/删除角色", new String[]{
+        rules.put("系统-管理角色", new String[]{
                 "get@/admin/sys/adminRole/edit", "post@/admin/sys/adminRole/edit", "post@/admin/sys/adminRole/delete"});
         rules.put("系统-支付管理", new String[]{"get@/admin/sys/payment/list"});
-        rules.put("系统-运费管理", new String[]{"get@/admin/sys/shipping/list"});
+        rules.put("系统-查看运费配置", new String[]{"get@/admin/sys/shipping/companies", "get@/admin/sys/shipping/priceRule",
+                "get@/admin/sys/shipping/freeRule"});
+        rules.put("系统-管理运费配置", new String[]{"get@/admin/sys/shipping/companies", "get@/admin/sys/shipping/priceRule",
+                "get@/admin/sys/shipping/freeRule", "get@/admin/sys/shipping/company", "post@/admin/sys/shipping/company",
+                "post@/admin/sys/shipping/delete", "post@/admin/sys/shipping/priceRule", "post@/admin/sys/shipping/freeRule"});
         rules.put("系统-系统信息", new String[]{"get@/admin/sys/info"});
         rules.put("其它-静态文件", new String[]{"get@/admin/other/static", "post@/admin/other/static"});
         rules.put("其它-文章分类", new String[]{"get@/admin/other/article/category", "post@/admin/sys/manage"});

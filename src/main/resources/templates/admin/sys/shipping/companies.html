@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header" />
+
+<div class="alert alert-primary" role="alert">
+    [[${title}]]&nbsp;<a href="company">添加快递公司</a>
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>名称</th>
+        <th>网站</th>
+        <th>推荐</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${companies}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.name}"></td>
+        <td th:text="${item.url}"></td>
+        <td th:text="${item.recommend}"></td>
+        <td>
+            <a th:href="'company?id=' + ${item.id}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
+            <a th:href="'javascript:deleteRequest(%22delete?id=' + ${item.id} + '%22)'">
+                <i class="fa fa-remove"></i>
+            </a></td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:replace="admin/components::footer" />
+</body>
+</html>

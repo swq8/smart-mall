@@ -21,7 +21,9 @@ public class AdminMenu {
         items.put("系统-管理员", "/admin/sys/adminUser/list");
         items.put("系统-角色", "/admin/sys/adminRole/list");
         items.put("系统-支付管理", "/admin/sys/payment/list");
-        items.put("系统-运费管理", "/admin/sys/shipping/list");
+        items.put("系统-快递公司", "/admin/sys/shipping/companies");
+        items.put("系统-包邮规则", "/admin/sys/shipping/freeRule");
+        items.put("系统-运费规则", "/admin/sys/shipping/priceRule");
         items.put("系统-系统信息", "/admin/sys/info");
 
         items.put("其它-静态文件", "/admin/other/static");
