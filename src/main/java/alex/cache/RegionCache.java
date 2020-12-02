@@ -118,6 +118,10 @@ public class RegionCache {
         return area;
     }
 
+    public static List<Region> getProvinces() {
+        return provinces;
+    }
+
     public static String getRegionJson() {
         return regionJson;
     }

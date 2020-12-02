@@ -24,6 +24,15 @@ import java.util.*;
  * helper class
  */
 public class Helper {
+
+    public static BigDecimal bigDecimalValue(String str) {
+        try {
+            return new BigDecimal(str);
+        } catch (Exception e) {
+            return new BigDecimal(0);
+        }
+    }
+
     public static String bytesToHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         for (Byte b : bytes) {
@@ -199,6 +208,7 @@ public class Helper {
     public static String priceFormat(BigDecimal bigDecimal) {
         return priceFormat(bigDecimal.multiply(new BigDecimal(100)).longValue());
     }
+
     public static String priceFormat(long l) {
         String prefix = l < 0 ? "-" : "";
         l = Math.abs(l);
@@ -231,6 +241,7 @@ public class Helper {
 
     /**
      * remove specify strings
+     *
      * @param str
      * @param args
      * @return
@@ -244,10 +255,11 @@ public class Helper {
         }
         return str;
     }
+
     public static String stringValue(Object obj) {
-       if (obj == null) {
-           return null;
-       }
+        if (obj == null) {
+            return null;
+        }
         return obj.toString();
     }
 

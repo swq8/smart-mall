@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head th:replace="admin/components::head(~{}, ~{})">
+</head>
+<body class="container-fluid">
+<div th:replace="admin/components::header"/>
+
+<div class="alert alert-primary" role="alert" th:text="${title}"></div>
+<form autocomplete="off" method="post">
+    <div class="row">
+        <div class="form-group col-md-3">
+            <label>首重重量(g)</label>
+            <input type="number" class="form-control" name="firstWeight" placeholder="首重重量" required>
+        </div>
+        <div class="form-group col-md-3">
+            <label>首重价格(元)</label>
+            <input type="number" min="0.01" step="0.01" class="form-control"  name="firstPrice" placeholder="首重价格" required>
+        </div>
+        <div class="form-group col-md-3">
+            <label>续重重量(g)</label>
+            <input type="number" class="form-control"  name="additionalWeight" placeholder="续重重量" required>
+        </div>
+        <div class="form-group col-md-3">
+            <label>续重价格(元)</label>
+            <input type="number" min="0.01" step="0.01" class="form-control" name="additionalPrice" placeholder="续重价格" required>
+        </div>
+        <div class="form-group col-md-6">
+            <input type="checkbox" id="otherDefault" name="otherDefault" value="1">
+            <label for="otherDefault">其他地区默认运费</label>
+            <p>注意：如果不开启此项，那么未设置的地区将无法送达！</p>
+        </div>
+    </div>
+    <div class="row" id="rules"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <button type="button" class="btn btn-success" id="addBtn"><i class="fa fa-plus"></i>添加规则</button>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">确定</button>
+    </div>
+</form>
+<br>
+<div th:replace="admin/components::footer"/>
+<script>
+    var ruleHtml = `
+<div class="col-md-12 rule">
+    <input type="hidden" name="provinces">
+    地区:<select>[(${provincesHtml})]</select>
+    首重价格:<input name="price1" type="number" min="0.01" step="0.01" required>
+    续重价格:<input name="price2" type="number" min="0.01" step="0.01" required>
+    <button type="button" class="btn btn-secondary" onclick="addArea(this.parentElement);">添加地区</button>
+    <button type="button" class="btn btn-danger" onclick="this.parentElement.remove();">删除</button><br>
+    <textarea cols="110" disabled></textarea>
+</div>
+    `;
+    var priceRule = [(${priceRule})];
+</script>
+<script th:src="${#helpers.retouch('/admin/priceRule.js')}"></script>
+</body>
+</html>

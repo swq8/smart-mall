@@ -1,3 +1,11 @@
+var $ = function (selectors) {
+    return document.querySelector(selectors);
+}
+// createElementFromHTML
+function ele(htmlString) {
+    let html = new DOMParser().parseFromString(htmlString, 'text/html');
+    return html.body.firstChild;
+}
 //upgrade browser for old browser
 if (typeof fetch !== 'function') {
     window.open('/browser.html', '_self');
@@ -14,14 +22,17 @@ function htmlDecode(value) {
 }
 
 function priceFormat(num) {
-    num = num.toString();
-    len = num.length;
-    if (len == 1) {
+    if (num < 10) {
         return "0.0" + num;
-    } else if (len == 2) {
+    } else if (num < 100) {
         return "0." + num;
+    }
+    let rem = num % 100;
+    let i = Math.floor(num / 100);
+    if (rem < 10) {
+        return i + ".0" + rem;
     } else {
-        return num.substr(0, len - 2) + "." + num.substr(len - 2, 2);
+        return i + "." + rem;
     }
 }
 
