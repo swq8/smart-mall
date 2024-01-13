@@ -44,6 +44,7 @@
 | 移动端 | 浏览器     | 支持 |
 | 移动端 | 微信小程序   | 开发中 |
 
-#### 项目地址
+#### 源代码
 
-<https://github.com/swq8/smart-mall>
+项目地址: <https://github.com/swq8/smart-mall><br>
+管理界面: <https://github.com/swq8/vue-manage>
