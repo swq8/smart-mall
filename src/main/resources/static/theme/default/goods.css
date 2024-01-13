@@ -1,0 +1,218 @@
+/* 商品详情页 */
+.goodsDes {
+    border: 1px solid #ddd;
+    display: inline-block;
+    min-height: 200px;
+    width: 900px;
+    float: right;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.goodsDes .title {
+    background-color: #f7f7f7;
+    line-height: 2.8rem;
+    font-size: 1.2rem;
+    padding-left: 0.9rem;
+    margin: 0;
+    text-align: left;
+}
+.goodsDes .content {
+    padding: 0 10px;
+    width: 100%;
+}
+
+.goodsRecommend {
+    border: 1px solid #ddd;
+    font-size: 0.96rem;
+    float: left;
+    margin-bottom: 1rem;
+    min-height: 90px;
+    width: 345px;
+    vertical-align: top;
+}
+
+.goodsRecommend .item {
+    border-top: 1px solid #ddd;
+    display: table;
+    padding: 6px 0 2px 6px;
+    width: 100%;
+}
+
+.goodsRecommend .name {
+    float: right;
+    padding-right: 4px;
+    width: 19.2rem;
+}
+
+.goodsRecommend .name a {
+    display: inline-block;
+    max-height: 2.7rem;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    width: 100%;
+}
+
+.goodsRecommend .title {
+    background-color: #f7f7f7;
+    line-height: 2.8rem;
+    font-size: 1.2rem;
+    margin: 0;
+    text-align: center;
+}
+
+.goodsImg {
+    border: 1px solid #ddd;
+    float: left;
+    margin-bottom: 1rem;
+    padding-top: 2px;
+    width: 404px;
+    text-align: center;
+}
+
+.goodsImg #mainImg {
+    border-bottom: 1px solid #ddd;
+    height: 401px;
+    width: 400px;
+}
+
+.goodsImg .small {
+}
+
+.goodsImg .small img {
+    border: #fff solid 2px;
+    cursor: pointer;
+    margin-left: 15px;
+    width: 64px;
+    height: 64px;
+}
+
+.goodsImg .small img:nth-child(1) {
+    margin-left: 8px;
+    border-color: #e53e41;
+}
+
+.goodsInfo {
+    float: right;
+    width: 840px;
+    word-break: break-all;
+}
+
+#addToCart {
+    margin-left: 8rem;
+}
+
+.goodsInfo div {
+    min-height: 3.5rem;
+}
+
+.goodsInfo .name {
+    border-bottom: 1px dashed #ddd;
+    font: bold 1.2rem Arial, "microsoft yahei";
+    color: #666;
+    padding-bottom: 20px;
+}
+
+.goodsInfo .tag {
+    color: #999;
+    display: inline-block;
+    float: left;
+    letter-spacing: 0.15rem;
+    padding-right: 0.5rem;
+    width: 8rem;
+    text-align: right;
+}
+
+.goodsInfo .tagPrice {
+    margin-top: 6px;
+}
+
+.goodsInfo .tagSpec {
+    margin-top: 12px;
+}
+
+.goodsInfo .tagNum {
+    margin-top: 5px;
+}
+
+#num {
+    font-size: 1.1rem;
+    height: 2rem;
+}
+
+#price {
+    font-size: 1.4rem;
+}
+
+#mark {
+    margin-left: 1px;
+    position: absolute;
+    display: block;
+    width: 400px;
+    height: 400px;
+    background-color: #fff;
+    opacity: 0;
+    z-index: 10;
+}
+
+#floatBox {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    background: #ffffcc;
+    border: 1px solid #ccc;
+    filter: alpha(opacity=30);
+    opacity: 0.3;
+    visibility: hidden;
+}
+
+#bigBox {
+    background-color: #fff;
+    background-clip: content-box;
+    background-repeat: no-repeat;
+    background-size: 800px 800px;
+    position: absolute;
+    width: 402px;
+    height: 402px;
+    border: 1px solid #ddd;
+    padding: 1px;
+    visibility: hidden;
+    z-index: 10;
+}
+
+
+#specs {
+    display: none;
+}
+
+#specs a {
+    border: #ddd 1px solid;
+    color: #666;
+    cursor: pointer;
+    display: inline-block;
+    height: 41px;
+    padding: 1px;
+    margin-right: 8px;
+}
+
+#specs a:hover {
+    border-color: #d01111;
+}
+
+#specs a.chk {
+    border-color: #d01111;
+}
+
+#specs a img {
+    display: block;
+    float: left;
+    width: 38px;
+    height: 38px;
+}
+
+#specs a i {
+    display: block;
+    float: left;
+    font-style: normal;
+    margin: 10px 8px 0 8px;
+}

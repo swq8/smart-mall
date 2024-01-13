@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(link= ~{::link},style=~{::style},script=~{::head/script})}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/splide/css/themes/splide-default.min.css')}">
+    <style>
+        #image-slider {
+            width: 10rem;
+            height: 5.56rem;
+            margin: 2px 0 18px 0;
+        }
+
+        #image-slider div {
+            display: block;
+        }
+
+        /* 不显示前一个 后一个按钮 */
+        #image-slider button.splide__arrow {
+            display: none;
+        }
+
+        #image-slider img {
+            object-fit: fill;
+            width: 10rem;
+            height: 5.56rem;
+        }
+    </style>
+    <script th:src="${#helpers.retouch('/splide/js/splide.min.js')}"></script>
+</head>
+<body>
+<header th:replace="~{__${theme}__/components::header(title=${siteName})}">
+</header>
+<div class="container">
+<div id="image-slider" class="splide">
+    <div class="splide__track">
+        <ul class="splide__list">
+            <li class="splide__slide" th:each="item : ${carousel.items}">
+                <a th:href="${item.link}"><img th:src="${item.img}"></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <!--/* 每个一级分类里显示两个推荐商品 */-->
+    <!--/*/ <th:block th:each="cat : ${recommend}"> /*/-->
+    <a th:href="@{/goods/{id}.html(id=${goods.id})}" class="goods-item" th:each="goods, itor : ${cat.goodsList}"
+       th:if="${itor.index < 2}">
+        <img class="img-45" th:src="${#helpers.imgZoom(goods.img, 360)}">
+        <div class="goods-name" th:text="${goods.name}"></div>
+        <div class="price goods-price" th:text="${#helpers.priceFormat(goods.price)}"></div>
+    </a>
+    <!--/*/ </th:block> /*/-->
+</div>
+</div>
+<div class="beian">
+    <p> [[${'Copyright © 2021 - ' + #helpers.dateFormat(now, 'yyyy') + '&nbsp;'}]]
+        <a href="https://beian.miit.gov.cn" target="_blank" th:text="${beian}"></a>
+    </p>
+</div>
+
+<script>
+    new Splide('#image-slider', {
+        autoplay: true,
+        pauseOnFocus: false,
+        pauseOnHover: false,
+        rewind: true,
+        speed: 800,
+        interval: 4000
+    }).mount();
+</script>
+
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+</body>
+</html>

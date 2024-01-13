@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(style=~{::style})}">
+    <style>
+        .pay {
+            display: block;
+            font-size: 1.2rem;
+            min-height: 450px;
+            line-height: 1.8rem;
+            padding: 0.2rem 0 2rem 0;
+        }
+        .pay img {
+            height: 300px;
+            width: 300px;
+        }
+        #counter {
+            display: inline-block;
+            font-size: 1.2rem;
+            width: 4rem;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{__${theme}__/components::header}"></header>
+
+<div class="container">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">首页</a></li>
+            <li class="breadcrumb-item"><a href="/user/central">用户中心</a></li>
+            <li class="breadcrumb-item"><a href="/user/order">我的订单</a></li>
+            <li class="breadcrumb-item active" aria-current="page">付款</li>
+        </ol>
+    </nav>
+
+    <div class="bg-light text-center pay">
+        <input type="hidden" id="orderNo" th:value="${order.no}">
+        <p class="h4 text-success" th:text="${'请使用' + payment.nameCn} + '扫码支付'"></p>
+        <img id="qr" th:src="@{/user/order/payQr(orderNo=${order.no})}" alt="qr"><br>
+        <p>[[${'金额:' + #helpers.priceFormat(order.amount) + '&nbsp;&nbsp;订单:' + order.no}]]</p>
+        <span id="counter">60</span><button id="flush">点击刷新二维码</button>
+    </div>
+</div>
+<br><br>
+<script th:src="${#helpers.retouch('/theme/' + theme + '/pay.js')}"></script>
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+</body>
+</html>

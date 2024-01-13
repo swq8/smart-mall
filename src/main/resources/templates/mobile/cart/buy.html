@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(style=~{::style})}">
+    <title th:text="${siteName}"/>
+</head>
+<body>
+<header th:replace="~{__${theme}__/components::header(title='提交订单')}">
+</header>
+<script th:src="${#helpers.retouch('/theme/' + theme + '/g.js')}"></script>
+</body>
+</html>

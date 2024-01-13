@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(style=~{::style})}">
+    <style>
+        .container1 {
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 1rem;
+            padding: 0 0.8rem;
+        }
+
+        .container1 .cate1 {
+            font-weight: bold;
+            display: flex;
+            height: 1.2rem;
+            margin-top: 1.5rem;
+            width: 100vw;
+        }
+
+        .container1 .cate2 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 93vw;
+
+        }
+        .container1 .cate2 a {
+            background: #ffffff;
+            border: 1px solid #ededed;
+            display: inline-flex;
+            justify-content: center;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem 0.8rem;
+            width: 22vw;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{__${theme}__/components::header(title='分类浏览')}">
+</header>
+<div class="container container1">
+    <th:block th:each="node : ${categoryNodes}">
+        <div class="cate1">
+            <a th:text="${node.name}" th:href="@{/list(cid=${node.id})}"></a>
+        </div>
+        <div class="cate2">
+            <a th:text="${node1.name}" th:href="@{/list(cid=${node1.id})}"  th:each="node1 : ${node.childNodes}"></a>
+        </div>
+
+    </th:block>
+</div>
+
+<br><br><br>
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+</body>
+</html>

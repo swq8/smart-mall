@@ -1,0 +1,55 @@
+<!-- head -->
+<head th:fragment="head" xmlns:v-on="http://www.w3.org/1999/xhtml">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title th:text="${title}"></title>
+    <link rel="shortcut icon" th:href="${#helpers.retouch('/favicon.ico')}">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="${#helpers.retouch('/apple-touch-icon.png')}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="${#helpers.retouch('/favicon-32x32.png')}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="${#helpers.retouch('/favicon-16x16.png')}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/theme/' + theme + '/g.css')}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/font-awesome/css/font-awesome.min.css')}">
+    <script th:src="${#helpers.retouch('/js/vue.global.prod.js')}"></script>
+    <script>
+        const diffTime = Date.now() - [[${now.getTime()}]] - 60;
+        const jsPath = '[[${jsPath}]]';
+        const themeName = '[[${theme}]]';
+    </script>
+    <th:block th:if="${link != null}">
+        <link th:replace="${link}"/>
+    </th:block>
+    <th:block th:if="${style != null}">
+        <style th:replace="${style}"></style>
+    </th:block>
+    <th:block th:if="${script != null}">
+        <script th:replace="${script}"></script>
+    </th:block>
+</head>
+
+<!-- header -->
+<header th:fragment="header">
+    <div th:text="${title}"></div>
+    <div id="menu">
+        <i class="fa fa-bars" @click="show"></i>
+        <div :class="bgCls" @click="hidden"></div>
+        <div class="menu-hidden" :class="menuCls">
+            <div class="item" v-for="item in items">
+                <a :href="item.href">
+                    <i :class="item.cls"></i>&ensp;
+                    <span v-text="item.name"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!--  footer -->
+<footer th:fragment="footer">
+    <div id="footer">
+        <a :class="item.cls" :href="item.href" v-for="item in items">
+            <div style="width: 100%"><img :src="item.img"></div>
+            {{item.text}}
+        </a>
+    </div>
+    <script th:src="${#helpers.retouch('/theme/' + theme + '/g.js')}"></script>
+</footer>

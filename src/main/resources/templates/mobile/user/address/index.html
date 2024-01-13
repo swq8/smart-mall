@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(style=~{::head/style})}">
+    <style>
+        .row {
+            display: flex;
+        }
+        .row .item{
+            display: flex;
+            justify-content: center;
+            width: 33%;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{__${theme}__/components::header}">
+</header>
+<div class="container">
+    <div class="row">
+        <div class="item">
+            <i class="fa fa-bars"></i><br>
+            我的订单</div>
+        <div class="item">收货地址</div>
+        <div class="item">修改密码</div>
+    </div>
+    <br>
+    <button class="submit" onclick="javascript:window.open('/user/login?logout', '_self')">退出登录</button>
+</div>
+
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+</body>
+</html>

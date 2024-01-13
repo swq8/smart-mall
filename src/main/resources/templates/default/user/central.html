@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(link=~{::link})}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/theme/' + theme + '/user.css')}">
+</head>
+<body>
+<div th:replace="~{__${theme}__/components::header}"></div>
+<div class="container">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item active" aria-current="page">用户中心</li>
+            </ol>
+        </nav>
+    </div>
+    <div th:replace="~{__${theme}__/user/components::menu}"></div>
+    <div class="col-8 padding-0">
+        <div class="col-4">
+            <img><br>
+            修改头像
+        </div>
+        <div class="col-8">
+            <div class="col-6" th:text="${userToken.name}"></div>
+            <div class="col-6" th:text="'最近登录时间: '+ ${#helpers.dateFormat(userEntity.lastLoginTime)}"></div>
+            <div class="col-6" >
+                账户余额:<a class="red" href="/user/balance" th:text="${#helpers.priceFormat(userEntity.balance)}"></a>
+            </div>
+            <div class="col-6" th:text="'会员级别:' + ${userEntity.level}"></div>
+        </div>
+    </div>
+
+</div>
+<footer th:replace="~{__${theme}__/components::footer}" />
+</body>
+</html>

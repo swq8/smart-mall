@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(style=~{::style})}">
+    <style>
+        .msg {
+            border: 1px solid #ddd;
+            display: block;
+            font-size: 1.2rem;
+            line-height: 2rem;
+            margin: 2% 0;
+            padding: 3rem 0;
+        }
+        .msg a {
+            color:#666;
+            font-size: 1.1rem;
+            text-decoration: underline;
+        }
+        .msg a:hover {
+            color:#C81623;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{__${theme}__/components::header}"></header>
+
+<div class="container">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">首页</a></li>
+            <li class="breadcrumb-item active" aria-current="page">信息</li>
+        </ol>
+    </nav>
+
+    <div class="bg-light text-center msg">
+        <p class="text-success" th:text="${msg}"></p>
+        <a th:href="${backUrl}" th:if="${backUrl != null  && backUrl.length() > 0}">确定</a>
+    </div>
+
+
+</div>
+<br><br>
+
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+</body>
+</html>

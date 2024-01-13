@@ -1,0 +1,29 @@
+/logs
+/src/main/resources/application*.yaml
+!/src/main/resources/application-sample.yaml
+target/
+/img
+/work
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### Mac OS ###
+.DS_Store
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### Windows ###
+Thumbs.db
+
+### VS Code ###
+.vscode/

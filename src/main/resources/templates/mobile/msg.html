@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(style=~{::style})}">
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+        }
+        .msg {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            font-size: 1.2em;
+            margin-top: 20vh;
+            padding: 0.5rem 0 1rem 0;
+            width: 98%;
+
+        }
+        .msg p{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .msg a {
+            color:#666666;
+            font-size: 1.1em;
+            margin-top: 1em;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{__${theme}__/components::header}">
+</header>
+
+<div class="container">
+        <div class="msg">
+        <p class="text-success" th:text="${msg}"></p>
+        <a th:href="${backUrl}" th:if="${backUrl != null  && backUrl.length() > 0}">确定</a>
+    </div>
+</div>
+
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+</body>
+</html>

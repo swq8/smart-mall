@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head}">
+    <title th:text="${siteName}"></title>
+</head>
+<body>
+<header th:replace="~{__${theme}__/components::header}">
+</header>
+
+<div class="row">
+
+    <a th:href="@{/goods/{id}.html(id=${goods.id})}" class="goods-item" th:each="goods : ${pagination.rows}">
+        <img class="img-45" th:src="${#helpers.imgZoom(goods.img, 200, 200)}">
+        <div class="goods-name" th:text="${goods.name}"></div>
+        <div class="price" th:text="${#helpers.priceFormat(goods.price)}"></div>
+    </a>
+
+</div>
+
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+</body>
+</html>

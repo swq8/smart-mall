@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(style=~{::style})}">
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 1.1em;
+        }
+
+        .container .item {
+            min-height: 1.2em;
+            padding: 1em 0.6em;
+            width: 100%;
+        }
+
+        .container .item:nth-child(2n) {
+            background: #fafafa;
+        }
+
+        .container .time {
+            color: #999;
+        }
+
+    </style>
+</head>
+<body>
+<header th:replace="~{__${theme}__/components::header}">
+</header>
+
+<div class="container">
+
+    <div class="item" th:each="article:${articles}" th:if="${article.visible}">
+        <span class="time" th:text="${#helpers.dateFormat(article.releaseTime, 'yyyy-MM-dd')}"
+              th:if="${article.cateId == 1}"></span>
+        <a th:href="${'/article/detail/' + article.id}" th:text="${article.title}"> </a>
+    </div>
+</div>
+
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+</body>
+</html>

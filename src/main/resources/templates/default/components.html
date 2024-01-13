@@ -1,0 +1,121 @@
+<!-- head -->
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1260">
+    <title th:text="${title}"></title>
+    <link rel="shortcut icon" th:href="${#helpers.retouch('/favicon.ico')}">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="${#helpers.retouch('/apple-touch-icon.png')}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="${#helpers.retouch('/favicon-32x32.png')}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="${#helpers.retouch('/favicon-16x16.png')}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/theme/' + theme + '/g.css')}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/font-awesome/css/font-awesome.min.css')}">
+    <script th:src="${#helpers.retouch('/js/vue.global.prod.js')}"></script>
+    <script>
+        const diffTime = Date.now() - [[${now.getTime()}]] - 60;
+    </script>
+    <th:block th:if="${link != null}">
+        <link th:replace="${link}"/>
+    </th:block>
+    <th:block th:if="${style != null}">
+        <style th:replace="${style}"></style>
+    </th:block>
+    <th:block th:if="${script != null}">
+        <script th:replace="${script}"></script>
+    </th:block>
+</head>
+
+<header class="container-fluid" th:fragment="header">
+    <div class="container-fluid topBar">
+        <div class="container">
+            <div class="col-4">
+                <a href="/" th:text="${siteName}"/>
+            </div>
+            <div class="col-8 text-right" th:switch="${userToken}">
+                <span th:case="null">
+                    <a href="/user/login">登录</a>&nbsp;/&nbsp;
+                    <a href="/user/register">注册</a>
+                </span>
+                <span th:case="*">
+                <span th:text="${userToken.name}"></span>
+                &nbsp;<a href="/user/central">用户中心</a>
+                &nbsp;&nbsp;<a href="/user/login?logout">退出登录</a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="container topNav">
+        <div class="col-3"></div>
+        <div class="col-6 d2">
+            <form method="get" action="/list">
+                <input class="textSearch" type="text" name="q" th:value="${q}">
+                <button class="btnSearch" type="submit"><i class="fa fa-search"></i></button>
+                <p id="tagsList">
+                    <a th:each="keyword : ${keywords}" th:href="@{/list(q=${keyword})}" th:text="${keyword}"></a>
+                </p>
+            </form>
+        </div>
+        <div id="headerCart">
+            <a id="headerCartBtn" href="/cart"><i class="fa fa-shopping-cart"></i>&nbsp;购物车<span
+                    id="headerCartNum">&nbsp;&nbsp;</span></a>
+            <div id="headerCartList">
+                <div id="headerCartItems">
+                </div>
+                <div id="headerCartFooter">
+                    <a class="button" href="/cart">结算</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="container headerNav">
+        <div id="headerMenu">
+
+            <div class="title">
+                <a href="/list">全部商品</a>
+            </div>
+
+
+            <div id="headerMenuItems">
+                <div class="item" th:each="node : ${categoryNodes}">
+                    <a class="name" th:text="${node.name}" th:href="@{/list(cid=${node.id})}"></a><br>
+                    <span class="name1" th:each="node1 : ${node.childNodes}">
+                        <a th:text="${node1.name}" th:href="@{/list(cid=${node1.id})}"></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <a class="link" th:href="@{/list(cid=${node.id})}" th:text="${node.name}" th:each="node : ${categoryNodes}"></a>
+    </div>
+</header>
+
+
+<!--  footer -->
+<footer th:fragment="footer">
+    <div class="container">
+
+        <div class="d1">
+            <div><i class="fa fa-star-o"></i><span>品类齐全</span></div>
+            <div><i class="fa fa-gift"></i><span>天天低价</span></div>
+            <div><i class="fa fa-globe"></i><span>快速配送</span></div>
+            <div><i class="fa fa-inbox"></i><span>正品行货</span></div>
+            <div><i class="fa fa-map-marker"></i><span>全国联保</span></div>
+        </div>
+
+        <div class="d2">
+            <div th:each="item : ${articleList}" th:if="${item.footerShow}">
+                <a class="cate" th:href="@{/article/list(cid=${item.id})}" th:text="${item.name}"></a>
+                <div th:each="article:${item.articles}" th:if="${article.visible}">
+                    <a th:href="${'/article/detail/' + article.id}"
+                       th:text="${article.title}"></a></div>
+            </div>
+        </div>
+        <br><br>
+    </div>
+    <div class="footer-bottom text-center">
+        <div class="container">
+            [[${'Copyright © 2021 - ' + #helpers.dateFormat(now, 'yyyy') + ' All rights reserved.'}]]
+            &nbsp;&nbsp;<a href="https://beian.miit.gov.cn" target="_blank" th:text="${beian}"></a>
+        </div>
+    </div>
+    <script th:src="${#helpers.retouch('/theme/' + theme + '/g.js')}"></script>
+</footer>

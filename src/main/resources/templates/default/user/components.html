@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<!-- menu  -->
+<div class="col-2 padding-0" th:fragment="menu">
+    <div class="sub-menu">
+        <h4>交易管理</h4>
+        <ul class="">
+            <li><a href="/user/order">我的订单<span class="l-triangle"></span></a></li>
+        </ul>
+        <h4>账户管理</h4>
+        <ul class="">
+            <li><a href="/user/info">个人信息<span class="l-triangle"></span></a></li>
+            <li><a href="/user/password">修改密码<span class="l-triangle"></span></a></li>
+            <li><a href="/user/union">账号绑定<span class="l-triangle"></span></a></li>
+            <li><a href="/user/address">收货地址<span class="l-triangle"></span></a></li>
+        </ul>
+    </div>
+</div>
+</html>

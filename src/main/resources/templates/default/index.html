@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(link= ~{::head/link},script=~{::head/script})}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/splide/css/themes/splide-default.min.css')}">
+
+    <script th:src="${#helpers.retouch('/splide/js/splide.min.js')}"></script>
+</head>
+<body class="index">
+<header th:replace="~{__${theme}__/components::header}"></header>
+<div class="container">
+    <div id="image-slider" class="splide">
+        <div class="splide__track">
+            <ul class="splide__list">
+                <li class="splide__slide" th:each="item : ${carousel.items}">
+                    <a th:href="${item.link}"><img th:src="${item.img}"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        new Splide('#image-slider', {
+            autoplay: true,
+            pauseOnFocus: false,
+            pauseOnHover: false,
+            rewind: true,
+            speed: 800,
+            interval: 4000
+        }).mount();
+    </script>
+    <div class="right-div">
+        <div class="div1" th:switch="${userToken}">
+            <p th:case="null">
+                你好,&nbsp;请&nbsp;<a class="underline" href="/user/login">登录</a>&nbsp;/&nbsp;
+                <a class="underline" href="/user/register">注册</a>
+            </p>
+            <th:block th:case="*">
+                <p th:text="${userToken.name}"></p>
+                <p>
+                    [<a href="/user/central">用户中心</a>]&nbsp;&nbsp;[<a href="/cart">购物车</a>]
+                </p>
+                <p>
+                    [<a href="/user/order">我的订单</a>]&nbsp;&nbsp;[<a href="/user/login?logout">退出登录</a>]
+                </p>
+            </th:block>
+
+        </div>
+        <div class="div2">
+            <p class="top">
+                <b th:text="${newsArticle.name}"></b>
+                <a class="gray-9 more" href="/article/list?cid=1">更多&nbsp;>&nbsp;</a></p>
+            <a class="gray-6" th:href="${'/article/detail/' + item.id}" th:each="item,itor: ${newsArticle.articles}"
+               th:text="${#helpers.dateFormat(item.releaseTime, 'yy-MM-dd  ') + item.title}" th:if="${itor.index < 5}"></a>
+        </div>
+
+    </div>
+
+</div>
+<div class="page-main">
+    <div class="container">
+        <div class="row" th:each="item : ${recommend}">
+            <p class="category-title">
+                <a th:href="@{/list(cid=${item.cateId})}" th:text="${item.name}"></a></p>
+            <a th:href="@{/goods/{id}.html(id=${goods.id})}" class="goods-item text-center"
+               th:style="${iter.index % 5 == 0} ? 'margin-left:0;' : ''"
+               th:each="goods,iter: ${item.goodsList}" th:if="${iter.index < 5}">
+                <img class="img-180" th:src="${#helpers.imgZoom(goods.img, 180)}">
+                <span class="title" th:text="${goods.name}" th:title="${goods.name}"></span>
+                <div class="price" th:text="${#helpers.priceFormat(goods.price)}"></div>
+            </a>
+        </div>
+    </div>
+    <br><br>
+</div>
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+</body>
+</html>

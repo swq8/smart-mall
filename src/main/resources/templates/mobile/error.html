@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title th:text="${msg}"></title>
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            color: #333;
+            font-weight: 100;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+
+        .title {
+            font-size: 1.1em;
+            margin-bottom: 30vh;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="title" th:text="${msg}"></div>
+</div>
+</body>
+</html>

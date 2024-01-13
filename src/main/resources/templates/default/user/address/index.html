@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(link=~{::link})}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/theme/' + theme + '/user.css')}">
+</head>
+<body>
+<div th:replace="~{__${theme}__/components::header}"></div>
+<div class="container">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item"><a href="/user/central">用户中心</a></li>
+                <li class="breadcrumb-item active" aria-current="page">收货地址</li>
+            </ol>
+        </nav>
+    </div>
+    <div th:replace="~{__${theme}__/user/components::menu}"></div>
+    <div class="col-10">
+        <button id="createAddress" href="#">添加收货地址</button>
+        <br><br>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>收件人<br>电话</th>
+                <th>省 市 区/县<br>详细地址</th>
+            </tr>
+            </thead>
+            <tr th:each="addr, status : ${addresses}">
+                <td>
+                    [[${addr.consignee}]]<br>[[${addr.phone}]]<br>&nbsp;
+                </td>
+                <td>
+                    [[${#helpers.getRegion(addr.region)}]]
+                    <br>[[${addr.address}]]<br>
+                    <span th:attr="addr-id=${addr.id}" style="float:right">
+                         <a class="delete" href="javascript:;">删除</a>
+                        <a th:text="${addr.dft > 0 ? '' : '设为默认'}"
+                           th:class="${addr.dft > 0 ? '' : 'setDft'}"
+                           th:href="${addr.dft > 0 ? '' : 'javascript:;'}"></a>
+                        <a class="edit" href="javascript:;">编辑</a>
+                    </span>
+                </td>
+            </tr>
+
+
+        </table>
+    </div>
+</div>
+
+<div class="model" id="model1">
+    <div class="body">
+        <form method="post">
+            <input type="hidden" name="id" value="0">
+            <div class="row">
+                <div class="col-6">
+                    <label>收货人:</label>
+                    <input type="text" name="consignee">
+                </div>
+                <div class="col-6">
+                    <label>电话:</label>
+                    <input type="text" name="phone">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <label>省:</label>
+                    <select id="province"></select>
+                </div>
+                <div class="col-4">
+                    <label>市:</label>
+                    <select id="city"></select>
+                </div>
+                <div class="col-4">
+                    <label>区/县:</label>
+                    <select id="area" name="code"></select>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    <label>详细地址:</label>
+                    <input type="text" name="address">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    <input type="checkbox" id="dft" name="dft" value="1" checked>
+                    <label for="dft">设置为默认收货地址</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-right">
+                    <button id="cancel" type="reset">取消</button>&nbsp;&nbsp;
+                    <button type="submit">确定</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+<script th:inline="javascript">
+    const model1 = $("#model1");
+    $("#createAddress").addEventListener("click", evt => {
+        model1.style.display = "block";
+    });
+    $("button#cancel").addEventListener("click", evt => {
+        $("input[name=id]").value = 0;
+        model1.style.display = "none";
+    });
+    let region = new Region($("#province"), $("#city"), $("#area"));
+    document.querySelectorAll("a.edit").forEach(el => {
+        let addrId = el.parentElement.getAttribute("addr-id");
+        el.addEventListener("click", evt => {
+            fetch("/user/address/json?id=" + addrId, {
+                method: "get",
+                credentials: "same-origin"
+            }).then(response => {
+                if (response.status !== 200) {
+                    alert("服务器返回异常,请重试!\r\nresponse status code:" + response.status);
+                    return null;
+                }
+                return response.json()
+            }).then(json => {
+                if (typeof json.err !== 'undefined') {
+                    alert(json.err);
+                    return;
+                }
+                $("input[name=id]").value = json.id;
+                $("input[name=consignee]").value = json.consignee;
+                $("input[name=phone]").value = json.phone;
+                $("input[name=address]").value = json.address;
+                $("input[name=dft]").checked = json.dft > 0;
+                new Region($("#province"), $("#city"), $("#area"), json.region);
+                model1.style.display = "block";
+            });
+        });
+    });
+    document.querySelectorAll("a.delete").forEach(el => {
+        let addrId = el.parentElement.getAttribute("addr-id");
+        el.addEventListener("click", evt => {
+            if (!confirm("确定要删除该地址么？")) {
+                return;
+            }
+            fetch("/user/address/delete?id=" + addrId, {
+                method: "get",
+                credentials: "same-origin"
+            }).then(response => {
+                if (response.status !== 200) {
+                    alert("服务器返回异常,请重试!\r\nresponse status code:" + response.status);
+                    return null;
+                }
+                location.href = "/user/address";
+            });
+        });
+    });
+
+    document.querySelectorAll("a.setDft").forEach(el => {
+        let addrId = el.parentElement.getAttribute("addr-id");
+        el.addEventListener("click", evt => {
+            fetch("/user/address/setDft?id=" + addrId, {
+                method: "get",
+                credentials: "same-origin"
+            }).then(response => {
+                if (response.status !== 200) {
+                    alert("服务器返回异常,请重试!\r\nresponse status code:" + response.status);
+                    return null;
+                }
+                location.href = "/user/address";
+            });
+        });
+    });
+</script>
+</body>
+</html>

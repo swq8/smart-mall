@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(link= ~{::link})}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/theme/' + theme + '/cart.css')}">
+</head>
+<body>
+<style>
+    #headerCart {
+        display: none;
+    }
+</style>
+<header th:replace="~{__${theme}__/components::header}"></header>
+
+<div class="container">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">首页</a></li>
+            <li class="breadcrumb-item"><a href="/cart">购物车</a></li>
+            <li class="breadcrumb-item active" aria-current="page">结算</li>
+        </ol>
+    </nav>
+    <form action="/cart/buy" method="post">
+        <input type="hidden" name="sumPrice" th:value="${#helpers.priceFormat(cart.sumPrice())}">
+        <input type="hidden" name="shippingFee" th:value="${#helpers.priceFormat(shippingFee)}">
+        <p class="tit">收货地址
+            <a class="addAddr" href="javascript:;" id="addAddr">新增收货地址</a>
+            <a class="addAddr" href="/user/address">管理收货地址</a>
+        </p>
+        <div class="row">
+            <select class="addrId" name="addrId">
+                <option th:each="addr :${addresses}" th:value="${addr.id}" th:selected="${addr.id == addrId}">
+                    [[${addr.consignee}]]&nbsp;&nbsp;[[${addr.phone}]]&nbsp;&nbsp;[[${#helpers.getRegion(addr.region)}]]
+                    &nbsp;[[${addr.address}]]
+                </option>
+            </select>
+        </div>
+
+        <p class="tit">支付方式</p>
+        <div class="row payments">
+            <th:block th:each="payment,status : ${payments}">
+                <th:block th:switch="${payment.name}">
+                    <th:block th:case="'balance'"></th:block>
+                    <th:block th:case="*">
+                      <span>
+                <input type="radio" name="payName" th:value="${payment.name}" th:checked="${status.first}">
+                          <label th:text="${payment.nameCn}"></label>&nbsp;&nbsp;
+            </span>
+                    </th:block>
+                </th:block>
+
+            </th:block>
+        </div>
+        <p class="tit">商品清单</p>
+        <table class="table" id="cartList">
+            <thead>
+            <tr>
+                <th class="img">图片</th>
+                <th class="name">商品名称</th>
+                <th>单件重量</th>
+                <th>单价</th>
+                <th class="num">数量</th>
+                <th class="sum">合计</th>
+            </tr>
+            </thead>
+            <tr th:each="item : ${cart.items}" class="item" th:if="${item.selected}">
+                <td><img th:src="${item.goodsImg}"></td>
+                <td>
+                    <a th:href="@{/goods/{id}.html(id=${item.goodsId})}" th:text="${item.goodsName}"></a>
+                    <span th:text="${item.specDes}" class="specDes"></span>
+                </td>
+                <td th:text="${item.goodsWeight} + 'g'"></td>
+                <td th:text="${#helpers.priceFormat(item.goodsPrice)}"></td>
+                <td th:text="${item.num}"></td>
+                <td th:text="${#helpers.priceFormat(item.goodsPrice * item.num)}" class="price"></td>
+            </tr>
+            <tr class="footer item text-right">
+                <td colspan="6">
+                    重量:&nbsp;&nbsp;[[${cart.sumWeight()}]]g
+                </td>
+            </tr>
+        </table>
+
+        <th:block th:each="payment,status : ${payments}">
+            <th:block th:switch="${payment.name}">
+                <th:block th:case="'balance'">
+                    <p class="tit">使用余额(可用余额<span class="red" th:text="${#helpers.priceFormat(balance)}"></span>)</p>
+                    <div class="row payments">
+                        <input type="number" placeholder="0.00" step="0.01" min="0" name="payBalance"
+                        style="width:6em">
+                    </div>
+                </th:block>
+            </th:block>
+        </th:block>
+
+        <p class="tit">结算信息</p>
+        <div class="row text-right">
+
+            商品金额:&nbsp;&nbsp;<span class="price" th:text="${#helpers.priceFormat(cart.sumPrice())}"></span>
+            <b>&nbsp;+&nbsp;</b>
+            运费:&nbsp;<span class="price" th:text="${#helpers.priceFormat(shippingFee)}"></span>
+            <b>&nbsp;&nbsp;合计：<span class="price"
+                                      th:text="${#helpers.priceFormat(cart.sumPrice() + shippingFee)}"></span></b><br>
+            收货地址:&nbsp;<span th:if="${address != null}" th:object="${address}">
+          [[*{consignee}]]&nbsp;&nbsp;[[*{phone}]]&nbsp;&nbsp;[[*{#helpers.getRegion(region)}]]
+                &nbsp;[[*{address}]]
+    </span>
+
+        </div>
+        <br>
+        <div class="row">
+            <button type="submit" class="button toBuy" href="/cart/buy"><i class="fa fa-credit-card"></i>提交订单
+            </button>
+        </div>
+    </form>
+</div>
+
+<br><br>
+
+<div class="model" id="model1">
+    <div class="body">
+        <form method="post" action="/user/address?back=/cart/buy&addrId">
+            <input type="hidden" name="id" value="0">
+            <div class="row">
+                <div class="col-6">
+                    <label>收货人:</label>
+                    <input type="text" name="consignee">
+                </div>
+                <div class="col-6">
+                    <label>电话:</label>
+                    <input type="text" name="phone">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <label>省:</label>
+                    <select id="province"></select>
+                </div>
+                <div class="col-4">
+                    <label>市:</label>
+                    <select id="city"></select>
+                </div>
+                <div class="col-4">
+                    <label>区/县:</label>
+                    <select id="area" name="code"></select>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    <label>详细地址:</label>
+                    <input type="text" name="address">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    <input type="checkbox" id="dft" name="dft" value="1" checked>
+                    <label for="dft">设置为默认收货地址</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-right">
+                    <button id="cancel" type="reset">取消</button>&nbsp;&nbsp;
+                    <button type="submit">确定</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+<script th:src="${#helpers.retouch('/theme/' + theme + '/buy.js')}"></script>
+</body>
+</html>

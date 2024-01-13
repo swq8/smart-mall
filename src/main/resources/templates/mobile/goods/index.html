@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(link=~{::link},style=~{::style},script=~{::head/script})}">
+    <title th:text="${siteName}"></title>
+    <link rel="stylesheet" th:href="${#helpers.retouch('/splide/css/themes/splide-default.min.css')}">
+    <style>
+        footer {
+            border: none;
+        }
+
+        #addToCart {
+            align-items: center;
+            background: #d22222;
+            color: #eeeeee;
+            flex: 2;
+            font-size: 1.2em;
+        }
+
+        #image-slider {
+            width: 10rem;
+            height: 10rem;
+        }
+
+        /* 不显示前一个 后一个按钮 */
+        #image-slider button.splide__arrow {
+            display: none;
+        }
+
+        #image-slider div {
+            display: block;
+        }
+
+        #image-slider img {
+            object-fit: fill;
+            width: 10rem;
+            height: 10rem;
+        }
+
+        .goods-des {
+            padding: 0;
+            margin-top: 0.5rem;
+            max-width: 10rem;
+        }
+
+        .goods-des p {
+            margin: 0;
+        }
+
+        .goods-des img, video {
+            max-width: 10rem;
+        }
+
+        .goods-property .spec {
+            display: flex;
+            flex-flow: wrap;
+        }
+
+        .goods-property .spec .item {
+            border: #ddd .15em solid;
+            display: flex;
+            justify-content: center;
+            margin: 0.4em 0.5em 0.4em 0;
+            min-width: 4.5em;
+            padding: 0 0.6em;
+        }
+
+        .goods-property .spec .item img {
+            width: 1.1em;
+            height: auto;
+        }
+
+        .goods-property .spec .selected {
+            border-color: #d01111;
+        }
+
+        .goods-property .row {
+            display: flex;
+            flex-flow: row;
+        }
+
+        .goods-property .row .tag {
+            min-width: 3em;
+
+        }
+    </style>
+    <script th:src="${#helpers.retouch('/splide/js/splide.min.js')}"></script>
+</head>
+<body>
+<header th:replace="~{__${theme}__/components::header(title=${siteName})}">
+</header>
+<div class="container">
+    <div id="image-slider" class="splide">
+        <div class="splide__track">
+            <ul class="splide__list">
+                <li class="splide__slide" th:each="img,itor : ${goodsImgs}" th:if="${itor.index < 5}">
+                    <img th:src="${#helpers.imgZoom(img, 720)}">
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="goods-property" id="goods-property">
+        <p class="goods-name" th:text="${goodsEntity.name}"></p>
+        <div class="row">
+            <span class="tag tagPrice">价格:</span>
+            <span class="price" v-text="priceStr"></span>
+        </div>
+        <div class="row" v-for="(item,index) in spec">
+
+            <div class="tag" v-text="item.name + ':'"></div>
+            <div class="spec">
+                <a class="item" :class="selectedSpec[index] == obj.val ? 'selected' : ''" v-for="obj in item.list"
+                   @click="specClick(index, obj.val)">
+                    <img :src="obj.img" v-if="obj.img"/>
+                    <i v-text="obj.val"></i>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <span class="tag">库存:</span>
+            <span v-text="stock"></span></div>
+        <div id="specs" class="row"></div>
+        <div class="row">
+            <span class="tag tagNum">购买数量:</span>
+            <label>
+                <input type="number" id="num" min="1" max="99" step="1" v-model="buyNum">
+            </label>
+        </div>
+
+    </div>
+</div>
+
+<div class="goods-des" th:utext="${goodsEntity.des}"></div>
+<footer>
+    <div data-v-app="">
+        <a href="/">
+            <div style="width: 100%;">
+                <img src="/theme/mobile/footer/home.svg"></div>
+            主 页</a>
+        <a class="" href="/cart">
+            <div style="width: 100%;"><img src="/theme/mobile/footer/cart.svg"></div>
+            购物车</a>
+        <a id="addToCart">加入购物车</a>
+    </div>
+</footer>
+<script th:src="${#helpers.retouch('/theme/' + theme + '/g.js')}"></script>
+<script>
+    new Splide('#image-slider', {
+        autoplay: false,
+        rewind: true,
+        speed: 800,
+        interval: 4000
+    }).mount();
+</script>
+<script th:src="${#helpers.retouch('/theme/' + theme + '/goods.js')}"></script>
+<script>
+    const app = Vue.createApp(GoodsProperty,
+        {
+            goodsId: [[${goodsEntity.id}]],
+            price: [[${goodsEntity.price}]],
+            stock: [[${goodsEntity.stock}]],
+            spec: [(${goodsEntity.getSpec().length() < 10 ? "[]" : goodsEntity.spec})],
+            specItems: [(${specItems})]
+        }).mount("#goods-property")
+    $('#addToCart').addEventListener("click", () => {
+        app.submit()
+    })
+</script>
+
+</body>
+</html>

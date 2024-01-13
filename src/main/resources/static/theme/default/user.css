@@ -1,0 +1,219 @@
+form li {
+    padding: 0;
+    margin-top: 0.5rem;
+    width: 300px;
+}
+
+.left {
+    color: #666;
+    float: left;
+    display: inline-block;
+    font-size: 1.1rem;
+    line-height: 1.6em;
+    width: 500px;
+    margin-top: 5rem;
+    padding: 0 3rem;
+}
+.loginBg {
+    border: 1px solid #ddd;
+
+
+}
+.loginForm{
+    display: inline-block;
+    float: right;
+    margin-top: 3rem;
+    padding: 1rem 0.5rem;
+    width: 390px;
+}
+
+.loginForm .title{
+    border-bottom: 1px solid #eee;
+    font-size: 1.2rem;
+    padding-bottom: 0.4rem;
+}
+.loginForm .right {
+    color: #555;
+    float: right;
+    font-size: 1rem;
+    padding: 0.4rem 0 0.8rem 0;
+    
+}
+
+.loginForm .btnLogin {
+    width: 300px;
+    font-size: 1.1rem;
+}
+
+.loginForm #captcha {
+    float: right;
+    height: 2.8rem;
+}
+
+.loginForm input[name=captcha] {
+    width: 60%;
+}
+
+.loginForm label {
+    width: 6rem;
+}
+
+/* 订单详情 */
+.order-detail {
+    display: flex;
+    flex-direction: column;
+    margin: 0.2rem 0 1rem 0;
+}
+/* goods spec */
+.order-detail .spec{
+    color: #808080;
+    font-size: 0.9rem;
+}
+.order-detail table {
+    flex-grow: 1;
+    width: 100%;
+}
+/* td 默认 填充 */
+.order-detail table td {
+    padding: 0.4rem 0.3rem 0 0.5rem;
+}
+/* 左右边框 */
+.order-detail table td.border2 {
+    border-left: 1px solid #ececec;
+    border-right: 1px solid #ececec;
+}
+
+/* 无边框(白边框) */
+.order-detail table td.border-top-none {
+    border-top: 1px solid #fff;
+}
+/* 每一行默认边框 */
+.order-detail table tr {
+    border: 1px solid #ececec;
+}
+/* 订单第一行标题行背景灰色 */
+.order-detail table tr:first-child{
+    background-color: #ececec;
+}
+
+/* 商品图片td宽度*/
+.order-detail table tr td:first-child{
+    padding-right: 0;
+    width: 100px;
+}
+
+/* 商品名称td宽度*/
+.order-detail table tr td:nth-child(2){
+    width: 450px;
+    overflow: hidden;
+
+}
+.order-detail table tr td:nth-child(2) a {
+    display: block;
+}
+/* 商品状态td宽度*/
+.order-detail table tr td:nth-child(3){
+    width: 90px;
+}
+
+/* 商品价格td宽度*/
+.order-detail table tr td:nth-child(4){
+    width: 90px;
+}
+/* 商品数量td宽度*/
+.order-detail table tr td:nth-child(5){
+    width: 60px;
+}
+/* 订单价格td宽度*/
+.order-detail table tr td:nth-child(6){
+    width: 110px;
+}
+/* 订单列表页面,订单状态选择 */
+.order-status-select {
+    display: flex;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.order-status-select .item{
+    border-bottom: #e8e8e8 2px solid;
+    display: inline-block;
+    width: 20%;
+}
+.order-status-select .last-item{
+    border-bottom: #e8e8e8 1px solid;
+    display: inline-block;
+    text-align: right;
+    width: 80%;
+}
+
+/* 订单列表中的单个订单 */
+.order-item {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+/* goods spec */
+.order-item .spec{
+    color: #808080;
+    font-size: 0.9rem;
+}
+.order-item table {
+    flex-grow: 1;
+    width: 100%;
+}
+/* td 默认 填充 */
+.order-item table td {
+    padding: 0.4rem 0.3rem 0 0.5rem;
+}
+/* 左右边框 */
+.order-item table td.border2 {
+    border-left: 1px solid #ececec;
+    border-right: 1px solid #ececec;
+}
+
+/* 无边框(白边框) */
+.order-item table td.border-top-none {
+    border-top: 1px solid #fff;
+}
+/* 每一行默认边框 */
+.order-item table tr {
+    border: 1px solid #ececec;
+}
+/* 订单第一行标题行背景灰色 */
+.order-item table tr:first-child{
+    background-color: #ececec;
+}
+.order-item table tr:first-child td{
+    padding: 0.5rem 0;
+}
+
+
+/* 商品图片td宽度*/
+.order-item table tr td:first-child{
+    padding-right: 0;
+    width: 100px;
+}
+
+/* 商品名称td宽度*/
+.order-item table tr td:nth-child(2){
+    width: 500px;
+    overflow: hidden;
+
+}
+.order-item table tr a.goods-name {
+    display: block;
+}
+
+/* 商品价格td宽度*/
+.order-item table tr td:nth-child(3){
+    width: 90px;
+}
+/* 商品数量td宽度*/
+.order-item table tr td:nth-child(4){
+    width: 60px;
+}
+/* 订单价格td宽度*/
+.order-item table tr td:nth-child(5){
+    width: 110px;
+}
+

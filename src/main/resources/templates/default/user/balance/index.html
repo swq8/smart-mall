@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(link=~{::link})}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/theme/' + theme + '/user.css')}">
+</head>
+<body>
+<div th:replace="~{__${theme}__/components::header}"></div>
+
+<div class="container">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item"><a href="/user/central">用户中心</a></li>
+                <li aria-current="page" class="breadcrumb-item active">用户余额</li>
+            </ol>
+        </nav>
+    </div>
+    <div th:replace="~{__${theme}__/user/components::menu}"></div>
+
+    <div class="col-10 padding-0">
+
+        <p style="font-size: 1.5em">可用余额:<span class="red" th:text="${#helpers.priceFormat(balance)}"></span></p>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>时间</th>
+                <th>变动</th>
+                <th class="text-center">备注</th>
+            </tr>
+            </thead>
+            <tr th:each="item,iter : ${pagination.rows}">
+                <td th:text="${#helpers.dateFormat(item.time)}"></td>
+                <td th:text="${item.amountStr}"></td>
+                <td th:text="${item.note}"></td>
+            </tr>
+        </table>
+    </div>
+
+
+    <nav th:utext="${pagination.generateWebPagination()}"></nav>
+</div>
+
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+</body>
+</html>

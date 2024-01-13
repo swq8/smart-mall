@@ -1,0 +1,300 @@
+:root {
+    --red: #d62222;
+}
+
+html {
+    font-size: 72px;
+}
+
+@media (max-width: 720px) {
+    html {
+        font-size: 10vw;
+    }
+}
+
+a, a:hover {
+    color: #333;
+    text-decoration: none;
+}
+
+
+body {
+    background: #ffffff;
+    box-sizing: border-box;
+    color: #333;
+    font-family: Helvetica, Arial, Verdana, 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+    font-size: .33rem;
+    line-height: 135%;
+    margin: 1rem 0 0 0;
+    padding-bottom: 1.6rem;
+}
+
+@media (min-width: 500px) {
+    body {
+        font-size: .25rem;
+    }
+}
+
+@media (min-width: 650px) {
+    body {
+        font-size: .23rem;
+    }
+}
+
+.col {
+    display: flex;
+    flex: 1;
+}
+
+.container {
+    box-sizing: border-box;
+    margin: 0 auto;
+    width: 10rem;
+}
+
+footer {
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    bottom: 0;
+    color: #555;
+    position: fixed;
+    width: 100vw;
+}
+
+footer:first-child div {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+footer div {
+    display: flex;
+    justify-content: center;
+}
+
+footer a {
+    display: inline-flex;
+    flex: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 0.05rem;
+
+}
+
+footer a img {
+    display: block;
+    width: 0.7rem;
+}
+
+form {
+    min-width: 100%;
+}
+
+header {
+    align-items: center;
+    background: #e64350;
+    box-sizing: border-box;
+    color: #fefefe;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1em;
+    height: 1rem;
+    padding: 0 0.6em;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 10;
+}
+
+header #menu {
+    font-size: 1.3em;
+}
+
+header #menu .item {
+    padding: 0.2em 0.6em;
+}
+
+header #menu .item a {
+
+    border-bottom: 1px solid #111;
+    display: block;
+    color: #aaa;
+    font-size: 0.4rem;
+    line-height: 2.5em;
+    width: 100%;
+}
+
+header .menu-bg-show {
+    background: #222;
+    height: 100vh;
+    width: 100vw;
+    opacity: 0.71;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+header .menu-hidden {
+    display: none;
+}
+
+header .menu-show {
+    background: #222;
+    display: block;
+    width: 4rem;
+    height: 100vh;
+    padding: 1.1rem 0 0 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 101;
+}
+
+img {
+    object-fit: contain;
+}
+
+.img-45 {
+    height: 4.5rem;
+    width: 4.5rem;
+}
+
+input.submit, button.submit {
+    background-color: #E64350;
+    border: none;
+    color: white;
+    font-size: 0.33rem;
+    letter-spacing: 0.1rem;
+    line-height: 1.02rem;
+    margin: 0.5rem 0;
+    text-align: center;
+    width: 100%;
+}
+
+input.text {
+    box-sizing: border-box;
+    font-size: 0.33rem;
+    letter-spacing: 0.05rem;
+    line-height: 1rem;
+    padding: 0 0.5rem;
+    margin: 0.5rem 0;
+    width: 100%;
+}
+
+#toast-box-parent {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#toast-box {
+    align-items: center;
+    animation: toast-box 0.4s;
+    background-color: #444;
+    border-radius: 0.2rem;
+    color: #fff;
+    display: flex;
+    font-size: 0.45rem;
+    justify-content: center;
+    height: 1.8rem;
+    opacity: 0.91;
+    position: fixed;
+    min-width: 6rem;
+    top: 36vh;
+    z-index: 9999;
+}
+
+@keyframes toast-box {
+    0% {
+        top: 90vh
+    }
+    100% {
+        top: 36vh
+    }
+
+}
+
+/* 首页页脚备案*/
+.beian {
+    align-items: center;
+    color: #999;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding-top: 1.1rem;
+    width: 100vw;
+}
+
+.beian p {
+    margin: 0;
+}
+
+.beian p a, .beian span {
+    color: #999;
+    padding-left: 1.2vw;
+}
+
+.goods-item {
+    align-items: center;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 5rem;
+    outline: 1px solid #ededed;
+    overflow: hidden;
+    padding: .2rem 0 .5rem 0;
+}
+
+.goods-item .goods-name {
+    /* 限制两行 */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    width: 4.5rem;
+    overflow: hidden;
+}
+
+.goods-item .goods-price {
+    width: 4.5rem;
+}
+
+.goods-property {
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column;
+    width: 10rem;
+    padding: 0 .2rem;
+}
+
+.goods-property .goods-name {
+    border-bottom: #e3e3e3 solid 1px;
+    margin: .5rem 0 .1rem 0;
+    font-size: .4rem;
+    line-height: .6rem;
+}
+
+.goods-property .row {
+    border-bottom: #e3e3e3 solid 1px;
+    font-size: 1.1em;
+    line-height: 2.3em;
+}
+
+.price::before {
+    content: '￥';
+    font-size: 0.9em;
+}
+
+.price {
+    color: #d42525;
+}
+
+.red {
+    color: #d62222;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}

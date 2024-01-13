@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(link=~{::link})}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/theme/' + theme + '/user.css')}">
+</head>
+<body>
+<div th:replace="~{__${theme}__/components::header}"></div>
+<div class="container">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item"><a href="/user/central">用户中心</a></li>
+                <li aria-current="page" class="breadcrumb-item active" th:text="${title}"></li>
+            </ol>
+        </nav>
+    </div>
+    <div th:replace="~{__${theme}__/user/components::menu}"></div>
+
+    <div class="col-10 padding-0">
+        <div class="row">
+            <div class="col-3" th:text="${'订单编号: ' + order.no}"></div>
+            <div class="col-3" th:text="${'订单状态: ' + #helpers.getOrderStatusInfo(order.status)}"></div>
+            <div class="col-3" th:text="${'下单时间: ' + #helpers.dateFormat(order.createTime)}"></div>
+            <div class="col-3">
+                支付时间: [[${#helpers.dateFormat(order.payTime)}]]
+            </div>
+            <div class="col-3">
+                快递公司: [[${#helpers.getExpressNameById(order.expressId)}]]
+            </div>
+            <div class="col-3">
+                快递单号: [[${order.expressNo}]]
+            </div>
+            <div class="col-3">
+                发货时间: [[${#helpers.dateFormat(order.shippingTime)}]]
+            </div>
+        </div>
+        <div class="order-detail">
+            <table>
+                <tr>
+                    <td></td>
+                    <td>商品</td>
+                    <td>状态</td>
+                    <td>单价</td>
+                    <td>数量</td>
+                    <td class="text-center">订单金额</td>
+                    <td class="text-center">运费</td>
+                </tr>
+                <tr th:each="goods,itor : ${goodsList}">
+                    <td>
+                        <a th:href="@{/goods/{id}.html(id=${goods.goodsId})}">
+                            <img class="img-80" th:src="${#helpers.imgZoom(goods.img, 80, 80)}"></a></td>
+
+                    <td>
+                        <a th:href="@{/goods/{id}.html(id=${goods.goodsId})}" th:text="${goods.goodsName}"></a>
+                        <span class="spec" th:if="${goods.specId > 0}" th:text="${goods.specDes}"></span>
+                    </td>
+
+                    <td th:text="${#helpers.getOrderGoodsStatusInfo(goods.status)}">
+                    </td>
+                    <td th:text="${'￥' + #helpers.priceFormat(goods.price)}"></td>
+                    <td th:text="${goods.num}"></td>
+                    <td class="border2 text-center" th:if="${itor.index == 0}">
+                        <span class="price">[[${#helpers.priceFormat(order.amount)}]]</span>
+                    </td>
+                    <td class="border2 border-top-none" th:if="${itor.index > 0}"></td>
+                    <td class="text-center" th:if="${itor.index == 0}" th:text="'￥'+${#helpers.priceFormat(order.shippingFee)}"></td>
+                    <td class="border-top-none" th:if="${itor.index > 0}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+</body>
+</html>

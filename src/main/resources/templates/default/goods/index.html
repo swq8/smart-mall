@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(link=~{::link})}">
+    <link rel="stylesheet" th:href="${#helpers.retouch('/theme/' + theme + '/goods.css')}">
+</head>
+<body>
+<header th:replace="~{__${theme}__/components::header}"></header>
+<div class="container">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item" th:each="categoryEntity : ${categoryPath}">
+                    <a th:href="@{/list(cid=${categoryEntity.id})}" th:text="${categoryEntity.name}"></a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${goodsEntity.name}"></li>
+            </ol>
+        </nav>
+    </div>
+    <div class="goodsImg">
+        <div id="mark"></div>
+        <!-- 放大镜 -->
+        <div id="floatBox"></div>
+        <img id="mainImg" th:src="${#helpers.imgZoom(goodsImgs[0], 800, 800)}">
+        <div class="small">
+            <img th:each="img,status : ${goodsImgs}" th:src="${#helpers.imgZoom(img, 800, 800)}"
+                 th:if="${status.index < 5}">
+        </div>
+        <div id="bigBox" th:style="'background-image:url(' + ${#helpers.imgZoom(goodsImgs[0], 800, 800)} + ')'"></div>
+    </div>
+    <div class="goodsInfo">
+        <input type="hidden" id="goodsId" th:value="${goodsEntity.id}">
+        <p class="name" th:text="${goodsEntity.name}"></p>
+        <div class="row">
+            <span class="tag tagPrice">价格:</span>
+            <span class="price" id="price"></span></div>
+        <div class="row">
+            <span class="tag">库存:</span>
+            <span id="stock"></span></div>
+        <div id="specs" class="row"></div>
+        <div class="row">
+            <span class="tag tagNum">购买数量:</span>
+            <label>
+                <input type="number" id="num" min="1" max="99" step="1" value="1">
+            </label>
+        </div>
+        <div>
+            <button id="addToCart">加入购物车</button>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="goodsRecommend">
+            <p class="title">推荐商品</p>
+            <div class="item" th:each="goods, status : ${recommendGoods}" th:if="${status.index < 6}">
+                <a th:href="@{/goods/{id}.html(id=${goods.id})}">
+                    <img class="img-60" th:src="${#helpers.imgZoom(goods.img, 60, 60)}">
+                </a>
+
+                <div class="name">
+                    <a th:href="@{/goods/{id}.html(id=${goods.id})}" th:text="${goods.name}" th:title="${goods.name}"></a>
+                    <span class="price" th:text="${#helpers.priceFormat(goods.price)}"></span>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="goodsDes">
+            <p class="title">商品详情</p>
+            <div class="content" th:utext="${goodsEntity.des}"></div>
+        </div>
+    </div>
+</div>
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+<script th:inline="javascript">
+    var minPrice = [[${goodsEntity.price}]];
+    var maxPrice = 0;
+    var stockNum = [[${goodsEntity.stock}]];
+    var specItems = [(${specItems})];
+    const spec = [(${goodsEntity.getSpec().length() < 10 ? "[]" : goodsEntity.spec})];
+</script>
+<script th:src="${#helpers.retouch('/theme/' + theme + '/goods.js')}"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(link= ~{::link})}">
+    <title th:text="'购物车-' + ${siteName}"/>
+    <link rel="stylesheet" th:href="${#helpers.retouch('/theme/' + theme + '/cart.css')}">
+</head>
+<body>
+<style>
+    #headerCart {
+        display: none;
+    }
+</style>
+<header th:replace="~{__${theme}__/components::header}"></header>
+
+<div class="container">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">首页</a></li>
+            <li class="breadcrumb-item active" aria-current="page">购物车</li>
+        </ol>
+    </nav>
+
+    <table class="table" id="cartList">
+        <thead>
+        <tr>
+            <th><input type="checkbox" id="selectAll"><label for="selectAll">全选</label></th>
+            <th class="img">图片</th>
+            <th class="name">商品名称</th>
+            <th>单件重量</th>
+            <th>单价</th>
+            <th class="num">数量</th>
+            <th class="sum">小计</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+    </table>
+    <div class="row cartFooter">
+        <a class="clearCart" href="javascript:clearCart();">清空购物车</a>
+        <a class="button toBuy" href="/cart/buy"><i class="fa fa-credit-card"></i>去结算</a>
+    </div>
+</div>
+<br><br>
+
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+<script th:src="${#helpers.retouch('/theme/' + theme + '/cart.js')}"></script>
+</body>
+</html>

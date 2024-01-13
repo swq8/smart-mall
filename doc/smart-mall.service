@@ -1,0 +1,14 @@
+[Unit]
+Description=Smart Mall Service
+After=network.target
+[Service]
+Type=simple
+User=user
+Group=user
+StandardOutput=null
+WorkingDirectory=/opt/smart-mall
+ExecStart=/usr/bin/java -Xlog:gc:gc.log:time:filesize=10M,filecount=5 -Xms200M -Xmx200M -Xss256K -XX:+AlwaysPreTouch -jar smart-mall.jar
+Restart=always
+RestartSec=30s
+[Install]
+WantedBy=multi-user.target

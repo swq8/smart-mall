@@ -1,0 +1,77 @@
+app:
+  # Whether develop mode, default value is false.
+  # In develop mode will:
+  #   disable thymeleaf template cache
+  #   show more detail with bad request
+  devMode: true
+  # AES key
+  key: key1
+
+logging:
+  charset:
+    file: utf-8
+  file:
+    name: logs/run.log
+  logback:
+    rolling policy:
+      clean-history-on-start: true
+      file-name-pattern: '${LOG_FILE}.%d{yyMM}.%i.log'
+      max-file-size: 100MB
+      max-history: 365
+
+server:
+  address: 127.0.0.1
+  compression:
+    enabled: false
+  port: 8080
+  tomcat:
+    access-log:
+      enabled: true
+      file-date-format: '.yyMMdd'
+      max-days: 365
+      pattern: '%a | "%{x-forwarded-for}i" | %t |  "%r" | %D | %s | %B | "%{referer}i" | "%{user-agent}i" | "%{content-type}i"'
+      prefix: tomcat
+    basedir: ./
+    max-swallow-size: -1
+    # 视业务类型 cpu core * (1-4)
+    threads:
+      min-spare: 4
+      max: 4
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+    session:
+      # 留空,禁用跟踪模式
+      tracking-modes:
+spring:
+  data:
+    redis:
+      repositories:
+        enabled: false
+      database: 0
+      host: 127.0.0.1
+  datasource:
+    url: jdbc:mysql://127.0.0.1/smart_mall
+    username: root
+    password:
+    hikari:
+      auto-commit: false
+      # 4(dev mode) - 10 or more
+      maximum-pool-size: 4
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    open-in-view: false
+  main:
+    banner-mode: off
+  mvc:
+    servlet:
+      load-on-startup: 1
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="~{__${theme}__/components::head}">
+</head>
+<body class="article-list">
+<header th:replace="~{__${theme}__/components::header}"></header>
+<div class="page-main">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item" th:text="${cateName}">电脑办公</li>
+            </ol>
+        </nav>
+        <div class="row">
+            <div class="left">
+                <div>
+                    <a th:each="item : ${articleList}" th:href="@{/article/list(cid=${item.id})}"
+                       th:text="${item.name}" th:class="${item.id == cateId ? 'active' : ''}"></a>
+                </div>
+            </div>
+            <div class="right">
+                <p class="item" th:each="article:${articles}" th:if="${article.visible}">
+                    <a th:href="${'/article/detail/' + article.id}"
+                       th:text="${article.cateId == 1 ? #helpers.dateFormat(article.releaseTime, 'yyyy-MM-dd''&nbsp;&nbsp;''') + article.title : article.title}"></a>
+                </p>
+            </div>
+        </div>
+        <br><br><br><br>
+    </div>
+</div>
+
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+</body>
+</html>
