@@ -1,9 +1,13 @@
 package smart.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import smart.lib.status.AccountStatus;
+import smart.lib.status.GenderInfo;
+import smart.util.Helper;
 
 import java.sql.Timestamp;
 
@@ -23,6 +27,7 @@ public class UserEntity extends AbstractEntity {
     private Integer level;
     private String phone;
     private String name;
+    @JsonIgnore
     private String password;
     private Long gender;
     private Long status;
@@ -30,6 +35,7 @@ public class UserEntity extends AbstractEntity {
     private String registerIp;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Timestamp registerTime;
+    @JsonIgnore
     private String salt;
 
     public String getAvatar() {
@@ -123,6 +129,10 @@ public class UserEntity extends AbstractEntity {
         this.gender = code;
     }
 
+    public String getGenderStr() {
+        return GenderInfo.getGenderName(gender);
+    }
+
     public Long getStatus() {
         return status;
     }
@@ -131,12 +141,20 @@ public class UserEntity extends AbstractEntity {
         this.status = status;
     }
 
+    public String getStatusStr() {
+        return AccountStatus.getStatusName(status);
+    }
+
     public Long getBalance() {
         return balance;
     }
 
     public void setBalance(Long balance) {
         this.balance = balance;
+    }
+
+    public String getBalanceStr() {
+        return Helper.priceFormat(balance);
     }
 
     public Timestamp getRegisterTime() {

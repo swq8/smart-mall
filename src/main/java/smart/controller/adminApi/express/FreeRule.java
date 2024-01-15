@@ -39,8 +39,8 @@ public class FreeRule {
     }
 
     @Authorize("/express/freeRule/query")
-    @PostMapping("info")
-    public ApiJsonResult info() {
+    @PostMapping("get")
+    public ApiJsonResult get() {
         var provinces = RegionCache.getProvinces().stream()
                 .map(item -> Map.of("code", item.getCode(), "name", item.getName()))
                 .toList();

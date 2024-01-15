@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import smart.cache.RegionCache;
+import smart.util.Helper;
+
+import java.util.Objects;
 
 @DynamicInsert
 @DynamicUpdate
@@ -67,6 +71,10 @@ public class UserAddressEntity extends AbstractEntity {
 
     public Long getRegion() {
         return region;
+    }
+
+    public String getRegionStr(){
+        return Objects.requireNonNull(RegionCache.getRegion(region)).toString();
     }
 
     public void setRegion(Long region) {

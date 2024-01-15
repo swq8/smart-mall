@@ -5,21 +5,20 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.http.MediaType;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import smart.auth.Authorize;
+import smart.dto.PaginationDto;
 import smart.entity.AdminUserEntity;
 import smart.lib.ApiJsonResult;
 import smart.repository.AdminRoleRepository;
 import smart.service.AdminLogService;
 import smart.service.AdminUserService;
-import smart.dto.PaginationDto;
-import smart.dto.UserIdDto;
 import smart.util.validategroups.Add;
+import smart.util.validategroups.Delete;
 import smart.util.validategroups.Edit;
 
 import java.util.ArrayList;
@@ -51,19 +50,17 @@ public class Manager {
 
     @Authorize("/system/manager/delete")
     @PostMapping("delete")
-    public ApiJsonResult delete(HttpServletRequest request, @Validated @RequestBody UserIdDto userIdDto, BeanPropertyBindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) return ApiJsonResult.badRequest(bindingResult);
-        var msg = adminUserService.delete(userIdDto.getUserId());
-        if (msg != null) return ApiJsonResult.error(msg);
-        adminLogService.addLog(request, "删除管理账号", userIdDto);
-        return ApiJsonResult.success();
+    public ApiJsonResult delete(HttpServletRequest request,
+                                @RequestBody @Validated(Delete.class) AdminUserEntity entity) {
+        var result = ApiJsonResult.successOrError(adminUserService.deleteByUserId(entity.getUserId()));
+        adminLogService.addLogIfSuccess(result, request, "删除管理账号", Map.of("uid", entity.getUserId()));
+        return result;
     }
 
 
     @Authorize("/system/manager/query")
     @PostMapping("list")
-    public ApiJsonResult list(@RequestBody @Validated PaginationDto query, BeanPropertyBindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) return ApiJsonResult.badRequest(bindingResult);
+    public ApiJsonResult list(@RequestBody @Validated PaginationDto query) {
         List<Map<String, Object>> roles = new ArrayList<>();
         for (var row : adminRoleRepository.findAllByOrderByOrderNum()) {
             roles.add(Map.of("id", row.getId(), "name", row.getName()));
@@ -75,7 +72,7 @@ public class Manager {
     @Authorize("/system/manager/edit")
     @PostMapping("edit")
     public ApiJsonResult edit(HttpServletRequest request,
-                             @RequestBody @Validated(Edit.class) AdminUserEntity adminUserEntity) {
+                              @RequestBody @Validated(Edit.class) AdminUserEntity adminUserEntity) {
         var result = ApiJsonResult.successOrError(adminUserService.save(adminUserEntity));
         adminLogService.addLogIfSuccess(result, request, "编辑管理账号", adminUserEntity);
         return result;

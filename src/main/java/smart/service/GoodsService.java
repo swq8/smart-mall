@@ -5,16 +5,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import smart.cache.CategoryCache;
 import smart.cache.GoodsCache;
+import smart.dto.GeneralQueryDto;
+import smart.dto.IdDto;
 import smart.entity.BrandEntity;
 import smart.entity.CategoryEntity;
 import smart.entity.GoodsEntity;
 import smart.lib.Pagination;
+import smart.lib.thymeleaf.HelperUtils;
 import smart.repository.GoodsSpecRepository;
 import smart.util.DbUtils;
+import smart.util.Helper;
 import smart.util.Json;
 import smart.util.SqlBuilder;
-import smart.dto.GeneralQueryDto;
-import smart.dto.IdDto;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -92,14 +94,30 @@ public class GoodsService {
 
     public Pagination query(GeneralQueryDto query) {
         List<Object> sqlParams = new ArrayList<>();
-        String sql = "select id,imgs,name,price from t_goods";
+        String sql = "select id,cate_id,imgs->>'$[0]' as img,name,price from t_goods";
         SqlBuilder sqlBuilder = new SqlBuilder(sql, sqlParams)
                 .andLikeIfNotBlank("name", query.getName())
                 .orderBy(SORTABLE_COLUMNS, query.getSort(), "id,desc");
-        return Pagination.newBuilder(sqlBuilder.buildSql(), sqlParams.toArray())
+        var pagination = Pagination.newBuilder(sqlBuilder.buildSql(), sqlParams.toArray())
                 .page(query.getPage())
                 .pageSize(query.getPageSize())
                 .build();
+        pagination.getRows().forEach(row -> {
+            StringBuilder cateName = new StringBuilder();
+            Long cid = Helper.parseNumber(row.get("cateId"), Long.class);
+            var list = CategoryCache.getCategoryPath(cid);
+            if (list != null) {
+                for (var i = 0; i < list.size(); i++) {
+                    var item = list.get(i);
+                    cateName.append(item.getName());
+                    if ((i + 1) < list.size()) cateName.append(" / ");
+                }
+            }
+            row.put("cateName", cateName.toString());
+            String img = (String) row.get("img");
+            row.put("img", HelperUtils.imgZoom(img, 80));
+        });
+        return pagination;
 
     }
 

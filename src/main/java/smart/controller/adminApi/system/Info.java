@@ -55,8 +55,8 @@ public class Info {
     }
 
     @Authorize("/system/info/query")
-    @PostMapping(value = "")
-    public ApiJsonResult index() {
+    @PostMapping(value = "get")
+    public ApiJsonResult get() {
         return ApiJsonResult.success("").putDataItem("record", systemService.getInfo());
     }
 

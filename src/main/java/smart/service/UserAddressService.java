@@ -1,12 +1,13 @@
 package smart.service;
 
 import jakarta.annotation.Resource;
-import jakarta.transaction.Transactional;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 import smart.entity.UserAddressEntity;
 import smart.repository.UserAddressRepository;
 import smart.util.DbUtils;
+
+import java.util.List;
 
 @Service
 public class UserAddressService {
@@ -16,7 +17,6 @@ public class UserAddressService {
     @Resource
     UserAddressRepository userAddressRepository;
 
-    @Transactional
     public String addAddress(UserAddressEntity entity) {
         long maxAddress = 10;
         if (userAddressRepository.countByUserId(entity.getUserId()) >= maxAddress) {
@@ -25,25 +25,24 @@ public class UserAddressService {
         DbUtils.insert(entity);
         entity.setId(DbUtils.getLastInsertId());
         if (entity.getDft() > 0) {
-            jdbcClient.sql("update t_user_address set dft=0 where user_id=? and id != ?")
-                    .params(entity.getUserId(), entity.getId()).update();
+            jdbcClient.sql("update t_user_address set dft=0 where user_id=? and id != ?").params(entity.getUserId(), entity.getId()).update();
         }
         return null;
     }
 
-    @Transactional
-    public void setDefault(UserAddressEntity entity) {
-        jdbcClient.sql("update t_user_address set dft=1 where id=?").param(entity.getId()).update();
-        jdbcClient.sql("update t_user_address set dft=0 where user_id=? and id != ?")
-                .params(entity.getUserId(), entity.getId()).update();
+    public List<UserAddressEntity> findByUserId(Long userId) {
+        return userAddressRepository.findAllByUserIdOrderByDftDesc(userId);
     }
 
-    @Transactional
+    public void setDefault(UserAddressEntity entity) {
+        jdbcClient.sql("update t_user_address set dft=1 where id=?").param(entity.getId()).update();
+        jdbcClient.sql("update t_user_address set dft=0 where user_id=? and id != ?").params(entity.getUserId(), entity.getId()).update();
+    }
+
     public void updateAddress(UserAddressEntity entity) {
         DbUtils.update(entity);
         if (entity.getDft() > 0) {
-            jdbcClient.sql("update t_user_address set dft=0 where user_id=? and id != ?")
-                    .params(entity.getUserId(), entity.getId()).update();
+            jdbcClient.sql("update t_user_address set dft=0 where user_id=? and id != ?").params(entity.getUserId(), entity.getId()).update();
         }
     }
 }

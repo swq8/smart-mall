@@ -80,8 +80,8 @@ public class Goods {
     }
 
     @Authorize("/goods/goods/query")
-    @PostMapping("info")
-    public ApiJsonResult info(@RequestBody @Validated IdDto idDto) {
+    @PostMapping("get")
+    public ApiJsonResult get(@RequestBody @Validated IdDto idDto) {
         var goodsEntity = DbUtils.findById(idDto.getId(), GoodsEntity.class);
         if (goodsEntity == null) return ApiJsonResult.error("商品不存在");
         goodsEntity.setSpecProps(goodsSpecRepository.findByGoodsId(idDto.getId()));

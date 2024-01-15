@@ -43,7 +43,7 @@ public class HelperUtils {
      * @return info
      */
     public static String getAccountStatusInfo(long code) {
-        return AccountStatus.getStatusInfo(code);
+        return AccountStatus.getStatusName(code);
     }
 
     /**
@@ -77,7 +77,7 @@ public class HelperUtils {
      * @return info
      */
     public static String getGenderInfo(long code) {
-        return GenderInfo.getGenderInfo(code);
+        return GenderInfo.getGenderName(code);
     }
 
     /**

@@ -32,7 +32,7 @@ public enum GenderInfo {
         return null;
     }
 
-    public static String getGenderInfo(long code) {
+    public static String getGenderName(long code) {
         var item = getInstance(code);
         if (item == null) {
             return null;

@@ -39,8 +39,8 @@ public class Order {
     AdminLogService adminLogService;
 
     @Authorize("/order/order/query")
-    @PostMapping("info")
-    public ApiJsonResult info(@RequestBody OrderQueryDto query) {
+    @PostMapping("get")
+    public ApiJsonResult get(@RequestBody OrderQueryDto query) {
         long orderNo = Helper.parseNumber(query.getNo(), Long.class);
         var orderEntity = orderService.getOrder(orderNo);
         if (orderEntity == null) return ApiJsonResult.error("订单不存在");

@@ -4,13 +4,13 @@ import jakarta.annotation.Resource;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import smart.auth.UserToken;
+import smart.dto.PaginationDto;
 import smart.entity.AdminUserEntity;
 import smart.lib.Pagination;
 import smart.repository.AdminRoleRepository;
 import smart.repository.AdminUserRepository;
 import smart.repository.UserRepository;
 import smart.util.DbUtils;
-import smart.dto.PaginationDto;
 
 import java.util.Objects;
 
@@ -29,10 +29,12 @@ public class AdminUserService {
     @Resource
     AdminUserRepository adminUserRepository;
 
-    public String delete(Long userId) {
+
+    public String deleteByUserId(Long userId) {
         var entity = adminUserRepository.findByUserIdForWrite(userId);
         if (entity == null) return "管理账号不存在";
-        DbUtils.delete(entity);
+        adminUserRepository.delete(entity);
+        adminUserRepository.flush();
         return null;
     }
 
@@ -65,7 +67,7 @@ public class AdminUserService {
     public LoginResult login(String name, String password, String ip) {
 
         LoginResult loginResult = new LoginResult();
-        var result = userService.getUser(name, password, ip);
+        var result = userService.getUserWithLogin(name, password, ip);
         if (result.getUserEntity() == null) {
             return loginResult.setError(result.getError());
         }

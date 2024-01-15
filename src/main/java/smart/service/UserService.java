@@ -6,6 +6,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import smart.auth.UserToken;
+import smart.dto.GeneralQueryDto;
 import smart.entity.UserBalanceLogEntity;
 import smart.entity.UserEntity;
 import smart.lib.Pagination;
@@ -14,7 +15,6 @@ import smart.lib.status.AccountStatus;
 import smart.repository.UserBalanceLogRepository;
 import smart.repository.UserRepository;
 import smart.util.*;
-import smart.dto.GeneralQueryDto;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -69,7 +69,8 @@ public class UserService {
         return null;
     }
 
-    public Result getUser(String name, String password, String ip) {
+
+    public Result getUserWithLogin(String name, String password, String ip) {
         Result result = new Result();
         if (ValidatorUtils.validateNotNameAndPassword(name, password))
             return result.setError(ValidatorUtils.ID_OR_PASS_ERROR);
@@ -80,7 +81,7 @@ public class UserService {
             return result.setError(ValidatorUtils.ID_OR_PASS_ERROR);
         long status = userEntity.getStatus();
         if (status > 0)
-            return result.setError(AccountStatus.getStatusInfo(status));
+            return result.setError(AccountStatus.getStatusName(status));
         if (ip != null) {
             userEntity.setLastLoginIp(ip);
             userEntity.setLastLoginTime(new Timestamp(System.currentTimeMillis()));
@@ -92,7 +93,7 @@ public class UserService {
     }
 
     public Result login(String name, String password, String ip) {
-        Result result = getUser(name, password, ip);
+        Result result = getUserWithLogin(name, password, ip);
         if (result.getUserEntity() == null) {
             result.errors.put("name", result.getError());
             result.errors.put("password", result.getError());

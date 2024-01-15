@@ -45,8 +45,8 @@ public class Payment {
     }
 
     @Authorize("/system/payment/edit")
-    @PostMapping("info")
-    public ApiJsonResult info(@RequestBody GeneralQueryDto query) {
+    @PostMapping("get")
+    public ApiJsonResult get(@RequestBody GeneralQueryDto query) {
         var entity = paymentRepository.findByName(query.getName());
         var payment = PaymentCache.getPaymentByName(query.getName());
         if (entity == null || payment == null) return ApiJsonResult.error("支付方式不存在");

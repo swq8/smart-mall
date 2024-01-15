@@ -32,7 +32,7 @@ public enum AccountStatus {
         return null;
     }
 
-    public static String getStatusInfo(long code) {
+    public static String getStatusName(long code) {
         var item = getInstance(code);
         if (item == null) {
             return null;
