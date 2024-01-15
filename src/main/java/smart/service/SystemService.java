@@ -9,6 +9,7 @@ import smart.cache.ExpressCache;
 import smart.cache.SystemCache;
 import smart.config.AppConfig;
 import smart.config.RedisConfig;
+import smart.dto.GoodsTemplateDto;
 import smart.dto.express.FeeRuleDto;
 import smart.dto.express.FreeRuleDto;
 import smart.dto.other.CarouselDto;
@@ -78,46 +79,55 @@ public class SystemService {
         return null;
     }
 
-    public String saveConfig(ConfigDto configDto) {
-        systemRepository.updateValueByEa(configDto.beian, "sys", "beian");
-        systemRepository.updateValueByEa(configDto.keywords, "sys", "keywords");
-        systemRepository.updateValueByEa(configDto.maxBuyNum, "sys", "maxBuyNum");
-        systemRepository.updateValueByEa(configDto.ossAk, "storage", Security.aesEncrypt("ossAk"));
-        systemRepository.updateValueByEa(configDto.ossAks, "storage", Security.aesEncrypt("ossAks"));
-        systemRepository.updateValueByEa(configDto.ossBucket, "storage", "ossBucket");
-        systemRepository.updateValueByEa(configDto.ossBucketUrl, "storage", "ossBucketUrl");
-        systemRepository.updateValueByEa(configDto.ossEndpoint, "storage", "ossEndpoint");
-        systemRepository.updateValueByEa(configDto.siteName, "sys", "siteName");
-        systemRepository.updateValueByEa(configDto.siteUrl, "sys", "url");
-        systemRepository.updateValueByEa(configDto.storageType, "storage", "type");
-        systemRepository.updateValueByEa(configDto.themeMobile, "theme", "mobile");
-        systemRepository.updateValueByEa(configDto.themePc, "theme", "pc");
+    public String saveConfig(ConfigDto config) {
+        systemRepository.updateValueByEa(config.beian, "sys", "beian");
+        systemRepository.updateValueByEa(config.keywords, "sys", "keywords");
+        systemRepository.updateValueByEa(config.maxBuyNum, "sys", "maxBuyNum");
+        systemRepository.updateValueByEa(config.ossAk, "storage", Security.aesEncrypt("ossAk"));
+        systemRepository.updateValueByEa(config.ossAks, "storage", Security.aesEncrypt("ossAks"));
+        systemRepository.updateValueByEa(config.ossBucket, "storage", "ossBucket");
+        systemRepository.updateValueByEa(config.ossBucketUrl, "storage", "ossBucketUrl");
+        systemRepository.updateValueByEa(config.ossEndpoint, "storage", "ossEndpoint");
+        systemRepository.updateValueByEa(config.siteName, "sys", "siteName");
+        systemRepository.updateValueByEa(config.siteUrl, "sys", "url");
+        systemRepository.updateValueByEa(config.storageType, "storage", "type");
+        systemRepository.updateValueByEa(config.themeMobile, "theme", "mobile");
+        systemRepository.updateValueByEa(config.themePc, "theme", "pc");
         SystemCache.update();
         return null;
     }
 
-    public String saveExpressFeeRule(FeeRuleDto feeRuleDto) {
+    public String saveExpressFeeRule(FeeRuleDto feeRule) {
         var entity = systemRepository.findByEaForWrite("shipping", "feeRule");
         if (entity == null) return "记录不存在";
         List<Long> provinces = new ArrayList<>();
-        for (var item : feeRuleDto.getProvinceFees()) {
+        for (var item : feeRule.getProvinceFees()) {
             if (item.getProvinces().stream().anyMatch(provinces::contains)) return "同地区存在多条规则";
             provinces.addAll(item.getProvinces());
         }
-        entity.setValue(Json.stringify(feeRuleDto));
+        entity.setValue(Json.stringify(feeRule));
         systemRepository.saveAndFlush(entity);
         ExpressCache.update();
         return null;
     }
 
-    public String saveExpressFreeRule(FreeRuleDto freeRuleDto) {
+    public String saveExpressFreeRule(FreeRuleDto freeRule) {
         var entity = systemRepository.findByEaForWrite("shipping", "freeRule");
         if (entity == null) return "记录不存在";
-        entity.setValue(Json.stringify(freeRuleDto));
+        entity.setValue(Json.stringify(freeRule));
         systemRepository.saveAndFlush(entity);
         ExpressCache.update();
         return null;
     }
+    public String saveGoodsTemplate(GoodsTemplateDto goodsTemplate) {
+        var entity = systemRepository.findByEaForWrite("sys", "goodsTemplate");
+        if (entity == null) return "记录不存在";
+        entity.setValue(Json.stringify(goodsTemplate));
+        systemRepository.saveAndFlush(entity);
+        SystemCache.update();
+        return null;
+    }
+
 
     public String saveStaticRes(StaticResDto staticRes) {
         var entity = systemRepository.findByEaForWrite("other", "staticRes");

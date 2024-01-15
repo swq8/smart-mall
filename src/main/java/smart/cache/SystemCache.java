@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import smart.dto.GoodsTemplateDto;
 import smart.dto.other.CarouselDto;
 import smart.dto.other.StaticResDto;
 import smart.repository.SystemRepository;
@@ -21,6 +22,7 @@ public class SystemCache {
 
     // 首页轮播
     private static CarouselDto carousel;
+    private static GoodsTemplateDto goodsTemplate;
     private static List<String> keywords;
     private static String keywordsStr;
     private static long maxBuyNum;
@@ -59,6 +61,7 @@ public class SystemCache {
             if (entity.getEntity().equals("sys")) {
                 switch (entity.getAttribute()) {
                     case "beian" -> beian = entity.getValue();
+                    case "goodsTemplate" -> setGoodsTemplate(entity.getValue());
                     case "keywords" -> {
                         keywordsStr = entity.getValue();
                         for (var str : keywordsStr.split(",")) {
@@ -123,6 +126,15 @@ public class SystemCache {
     public static void setCarousel(String json) {
         if (!StringUtils.hasText(json)) json = "{}";
         SystemCache.carousel = Json.parse(json, CarouselDto.class);
+    }
+
+    public static GoodsTemplateDto getGoodsTemplate() {
+        return goodsTemplate;
+    }
+
+    public static void setGoodsTemplate(String json) {
+        if (!StringUtils.hasText(json)) json = "{}";
+        SystemCache.goodsTemplate = Json.parse(json, GoodsTemplateDto.class);
     }
 
     public static List<String> getKeywords() {

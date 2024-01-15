@@ -1,23 +1,24 @@
 package smart.controller;
 
 import jakarta.annotation.Resource;
-import smart.cache.CategoryCache;
-import smart.cache.GoodsCache;
-import smart.cache.SystemCache;
-import smart.entity.CategoryEntity;
-import smart.entity.GoodsEntity;
-import smart.util.Helper;
-import smart.util.Json;
-import smart.repository.GoodsRepository;
-import smart.repository.GoodsSpecRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import smart.cache.CategoryCache;
+import smart.cache.GoodsCache;
+import smart.cache.SystemCache;
+import smart.entity.CategoryEntity;
+import smart.entity.GoodsEntity;
+import smart.repository.GoodsRepository;
+import smart.repository.GoodsSpecRepository;
+import smart.util.DbUtils;
+import smart.util.Helper;
+import smart.util.Json;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
 import java.util.List;
 
 @Controller
@@ -26,16 +27,13 @@ import java.util.List;
 public class Goods {
 
     @Resource
-    GoodsRepository goodsRepository;
-
-    @Resource
     GoodsSpecRepository goodsSpecRepository;
 
     /**
      * 商品页面
      *
      * @param goodsIdStr 商品ID
-     * @param request http request
+     * @param request    http request
      * @return 商品页面
      */
     @GetMapping(path = "{goodsIdStr:\\S+}.html")
@@ -43,7 +41,7 @@ public class Goods {
             @PathVariable String goodsIdStr,
             HttpServletRequest request) {
         long goodsId = Helper.parseNumber(goodsIdStr, Long.class);
-        GoodsEntity goodsEntity = goodsRepository.findById(goodsId).orElse(null);
+        GoodsEntity goodsEntity = DbUtils.findById(goodsId, GoodsEntity.class);
         if (goodsEntity == null) {
             return Helper.msgPage("商品不存在", "", request);
         }
@@ -51,21 +49,38 @@ public class Goods {
         if (specItems == null || specItems.length() < 10) {
             specItems = "[]";
         }
-        // 商品详情内容适配移动端,元素移除宽高值
-        if (Helper.isMobileRequest(request)) {
-            String des = goodsEntity.getDes();
-            des = Helper.stringReplaceAll(des, "\\s+width=('|\")?\\d+('|\")?\\s*", " ");
-            des = Helper.stringReplaceAll(des, "\\s+height=('|\")?\\d+('|\")?\\s*", " ");
-            goodsEntity.setDes(des);
-        }
+        initDes(goodsEntity, request);
         List<CategoryEntity> categoryPath = CategoryCache.getCategoryPath(goodsEntity.getCateId());
-        ModelAndView modelAndView = Helper.newModelAndView("goods/index", request);
-        modelAndView.addObject("categoryPath", categoryPath);
-        modelAndView.addObject("goodsEntity", goodsEntity);
-        modelAndView.addObject("goodsImgs", goodsEntity.getImgsObj());
-        modelAndView.addObject("recommendGoods", GoodsCache.getRecommendGoodsList(categoryPath.get(0).getId()));
-        modelAndView.addObject("specItems", specItems);
-        modelAndView.addObject("title", goodsEntity.getName() + " - " + SystemCache.getSiteName());
-        return modelAndView;
+        ModelAndView view = Helper.newModelAndView("goods/index", request);
+
+        view.addObject("categoryPath", categoryPath);
+        view.addObject("goodsEntity", goodsEntity);
+        view.addObject("goodsImgs", goodsEntity.getImgsObj());
+        view.addObject("recommendGoods", GoodsCache.getRecommendGoodsList(categoryPath.getFirst().getId()));
+        view.addObject("specItems", specItems);
+        view.addObject("title", goodsEntity.getName() + " - " + SystemCache.getSiteName());
+        return view;
+    }
+
+    private void initDes(GoodsEntity entity, HttpServletRequest request) {
+        var goodsTemplate = SystemCache.getGoodsTemplate();
+        var sb = new StringBuilder();
+        if (goodsTemplate.getHeaderEnable()) sb.append(goodsTemplate.getHeader());
+        sb.append(entity.getDes());
+        if (goodsTemplate.getFooterEnable()) sb.append(goodsTemplate.getFooter());
+        String html = sb.toString();
+        if (Helper.isMobileRequest(request)) html = adaptMobile(html);
+        entity.setDes(html);
+    }
+
+    /**
+     * 商品详情内容适配移动端,元素移除宽高值
+     *
+     * @param html html
+     * @return html
+     */
+    private String adaptMobile(String html) {
+        html = Helper.stringReplaceAll(html, "\\s+width=('|\")?\\d+('|\")?\\s*", " ");
+        return Helper.stringReplaceAll(html, "\\s+height=('|\")?\\d+('|\")?\\s*", " ");
     }
 }
