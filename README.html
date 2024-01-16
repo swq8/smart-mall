@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="dns-prefetch" href="//github.com">
     <link rel="dns-prefetch" href="//g686.net">
-    <link rel="dns-prefetch" href="//smart.g686.net">
+    <link rel="dns-prefetch" href="//smart-mall.g686.net">
     <link rel="dns-prefetch" href="//www.g686.net">
     <link rel="dns-prefetch" href="//0-00.oss-cn-beijing.aliyuncs.com">
     <link rel="shortcut icon" href="https://0-00.oss-cn-beijing.aliyuncs.com/static/favicon.ico">
@@ -29,6 +29,7 @@
             justify-content: center;
             font-family: "PingFang SC", "Helvetica Neue", "Hiragino Sans GB", "Segoe UI", "Microsoft YaHei", 微软雅黑, sans-serif;
             font-size: 16px;
+            line-height: 1.5em;
         }
 
         .container {
@@ -58,19 +59,33 @@
             margin: 1rem 0 0.5rem 0;
         }
 
-
+        .note {
+            background-color: #f5f7fa;
+            font-size: 0.9em;
+            padding: 0.5em;
+        }
         table {
             border-spacing: 0;
             border: 1px solid #ccc;
+            width: 100%;
         }
 
-        td, th {
-            border: 1px solid #ddd;
-            padding: 4px 8px;
+        td {
+            padding: 0.5em;
         }
 
         th {
-            font-weight: normal;
+            border: 1px solid #fff;
+            font-weight: 700;
+            background: #dadfe6;
+            border-top: 1px solid #dadfe6;
+            color: #202d40;
+            text-align: center;
+            padding: 0.6em;
+        }
+
+        tr:nth-child(2n) {
+            background-color: #f5f7f6;
         }
     </style>
 </head>
@@ -87,7 +102,8 @@
             在确保软件质量的同时对速度追求极致，实现了高效的缓存、认证鉴权机制，客户端流畅度及压力测试数据在同类软件中表现优秀。
             无论开箱即用还是二次开发，SmartMall商城系统都将是您在企业级商城系统中的优秀选择。</p>
         <div class="h2">项目演示</div>
-        浏览器端:&ensp;<a href="https://smart-mall.g686.net" target="_blank">https://smart-mall.g686.net</a><br>
+        浏览器端:&ensp;<a href="https://smart-mall.g686.net" target="_blank">https://smart-mall.g686.net</a>
+        &ensp;账号:demo 密码:demodemo<br>
         后台管理:&ensp;<a href="https://smart-mall.g686.net/manage"
                           target="_blank">https://smart-mall.g686.net/manage</a>&emsp;账号:demo 密码:demodemo<br>
         微信小程序:&nbsp;开发中
@@ -97,6 +113,7 @@
                 <th>名称</th>
                 <th>推荐</th>
             </tr>
+            <tbody>
             <tr>
                 <td>Java</td>
                 <td>21</td>
@@ -109,8 +126,13 @@
                 <td>MySQL</td>
                 <td>8.0</td>
             </tr>
+            </tbody>
         </table>
         <div class="h2">压力测试</div>
+        <p class="note">
+            机器配置: Lenovo Legion Y7000P (Intel Core i7-10875H / 16GB RAM / WDC PC SN730 512G)<br>
+            软件环境: Rocky Linux 9.3 / OpenJDK 21 / MySql 8.0 / Redis 7.2
+        </p>
         <table>
             <tr>
                 <th>页面/功能</th>
@@ -118,6 +140,7 @@
                 <th>时间(最小/最大/平均)</th>
                 <th>错误</th>
             </tr>
+            <tbody>
             <tr>
                 <td>首页</td>
                 <td>7355</td>
@@ -134,11 +157,8 @@
                 <td>生成订单</td>
                 <td colspan="3">等待测试</td>
             </tr>
+            </tbody>
         </table>
-        <p>
-            机器配置: Lenovo Legion Y7000P (Intel Core i7-10875H / 16GB RAM / WDC PC SN730 512G)<br>
-            软件环境: Rocky Linux 9.3 / OpenJDK 21 / MySql 8.0 / Redis 7.2
-        </p>
         <div class="h2">客户端支持列表</div>
         <table>
             <tr>
@@ -146,6 +166,7 @@
                 <th>浏览器/平台</th>
                 <th>状态</th>
             </tr>
+            <tbody>
             <tr>
                 <td>电脑端</td>
                 <td>Edge</td>
@@ -171,10 +192,11 @@
                 <td>微信小程序</td>
                 <td>开发中</td>
             </tr>
+            </tbody>
         </table>
         <div class="h2">源代码</div>
         项目地址:<a href="https://github.com/swq8/smart-mall" target="_blank">https://github.com/swq8/smart-mall</a>
-       <br>
+        <br>
         管理界面:<a href="https://github.com/swq8/vue-manage" target="_blank">https://github.com/swq8/vue-manage</a>
         <br>
         <br><br>

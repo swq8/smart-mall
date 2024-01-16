@@ -8,7 +8,7 @@
 
 #### 项目演示
 
-浏览器端:<https://smart-mall.g686.net><br>
+浏览器端:<https://smart-mall.g686.net> 账号:demo 密码:demodemo<br>
 后台管理:<https://smart-mall.g686.net/manage> 账号:demo 密码:demodemo<br>
 微信小程序:开发中
 

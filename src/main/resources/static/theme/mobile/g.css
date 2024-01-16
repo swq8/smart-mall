@@ -142,7 +142,8 @@ header .menu-hidden {
 header .menu-show {
     background: #222;
     display: block;
-    width: 4rem;
+    width: 50%;
+    max-width: 20em;
     height: 100vh;
     padding: 1.1rem 0 0 0;
     position: absolute;

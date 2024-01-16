@@ -5,26 +5,113 @@
         .row {
             display: flex;
         }
-        .row .item{
+
+        .row .item {
             display: flex;
             justify-content: center;
             width: 33%;
         }
+
+        .user-info {
+            background-color: #e64350;
+            background-image: linear-gradient(0deg, #c53815, #e64350);
+            color: #fff;
+            padding: 2em 0;
+            margin-bottom: 2em;
+            width: 100%;
+        }
+
+        .user-info .name {
+            padding: 0 0.2em 1.5em 1em;
+            font-size: 1.4em;
+        }
+
+        .user-info .list {
+            display: flex;
+            font-size: 1.1em;
+            padding-bottom: 1em;
+        }
+
+        .user-info .list .item {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .user-info .list .item a {
+            color: #fff;
+        }
+
+        .menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .menu li {
+            float: left;
+            outline: 1px solid #ededed;
+            text-align: center;
+        }
+
+        .menu li a {
+            display: block;
+            padding: 1em 0;
+            width: 25vw;
+        }
+
+        .menu li a i {
+            font-size: 2.5em;
+            margin-bottom: 0.2em;
+        }
     </style>
 </head>
 <body>
-<header th:replace="~{__${theme}__/components::header}">
-</header>
-<div class="container">
-    <div class="row">
+<header th:replace="~{__${theme}__/components::header}"></header>
+<div class="user-info">
+    <div class="name" th:text="${userToken.name}"></div>
+    <div class="list">
         <div class="item">
-            <i class="fa fa-bars"></i><br>
-            我的订单</div>
-        <div class="item">收货地址</div>
-        <div class="item">修改密码</div>
+            用户级别<br>
+            [[${userEntity.level}]]
+        </div>
+        <div class="item">
+            账户余额<br>
+            <a href="" th:text="${#helpers.priceFormat(userEntity.balance)}"></a>
+        </div>
     </div>
-    <br>
-    <button class="submit" onclick="javascript:window.open('/user/login?logout', '_self')">退出登录</button>
+</div>
+<div class="container">
+    <ul class="menu">
+        <li>
+            <a href="#">
+                <i class="fa fa-shopping-bag" style="color: rgb(31, 171, 235);"></i><br>
+                我的订单
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="fa fa-map-marker" style="color: rgb(248, 141, 145);"></i><br>
+                收货地址
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="fa fa-user-o" style="color: rgb(248, 141, 145);"></i><br>
+                个人信息
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="fa fa-key" style="color: rgb(248, 141, 145);"></i><br>
+                修改密码
+            </a>
+        </li>
+        <li>
+            <a href="/user/login?logout">
+                <i class="fa fa-sign-out" style="color: rgb(241, 64, 123);"></i><br>
+                退出登录
+            </a>
+        </li>
+    </ul>
 </div>
 
 <footer th:replace="~{__${theme}__/components::footer}"></footer>
