@@ -76,6 +76,7 @@ public class ApiSession implements BaseSession {
         return false;
     }
 
+    @Override
     public Object get(String key) {
         return id == null ? null : RedisConfig.getStringObjectRedisTemplate().opsForHash().get(REDIS_PREFIX + id, key);
     }

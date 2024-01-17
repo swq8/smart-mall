@@ -32,7 +32,9 @@ public class AdminUserService {
 
     public String deleteByUserId(Long userId) {
         var entity = adminUserRepository.findByUserIdForWrite(userId);
-        if (entity == null) return "管理账号不存在";
+        if (entity == null) {
+            return "管理账号不存在";
+        }
         adminUserRepository.delete(entity);
         adminUserRepository.flush();
         return null;
@@ -58,8 +60,12 @@ public class AdminUserService {
                                 """;
 
         var builder = Pagination.newBuilder(sql);
-        if (query.getPage() != null) builder.page(query.getPage());
-        if (query.getPageSize() != null) builder.pageSize(query.getPageSize());
+        if (query.getPage() != null) {
+            builder.page(query.getPage());
+        }
+        if (query.getPageSize() != null) {
+            builder.pageSize(query.getPageSize());
+        }
         return builder.build();
 
     }
@@ -81,7 +87,9 @@ public class AdminUserService {
 
     public String save(AdminUserEntity adminUserEntity) {
         var userEntity = userRepository.findByNameForWrite(adminUserEntity.getName());
-        if (userEntity == null) return "用户不存在";
+        if (userEntity == null) {
+            return "用户不存在";
+        }
         adminUserEntity.setRolesId(adminRoleRepository.getAvailableRolesId(adminUserEntity.getRolesId()));
         if (adminUserEntity.getUserId() == null) {
             adminUserEntity.setUserId(userEntity.getId());
@@ -93,7 +101,9 @@ public class AdminUserService {
             }
         } else if (Objects.equals(userEntity.getId(), adminUserEntity.getUserId())) {
             var entity = adminUserRepository.findByUserIdForWrite(userEntity.getId());
-            if (entity == null) return "管理账号不存在";
+            if (entity == null) {
+                return "管理账号不存在";
+            }
             adminUserEntity.setId(entity.getId());
             DbUtils.update(adminUserEntity);
         }

@@ -1,16 +1,18 @@
 package smart.service;
 
-import smart.repository.GoodsSpecRepository;
-import org.springframework.stereotype.Service;
-
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+import smart.entity.GoodsSpecEntity;
+import smart.repository.GoodsSpecRepository;
+
+import java.util.List;
 
 @Service
 public class GoodsSpecService {
     @Resource
     GoodsSpecRepository goodsSpecRepository;
 
-    long deleteByGoodsId(long goodsId, long[] notIn) {
-        return 0;
+    public List<GoodsSpecEntity> findByGoodsId(Long goodsId) {
+        return goodsSpecRepository.findByGoodsId(goodsId);
     }
 }

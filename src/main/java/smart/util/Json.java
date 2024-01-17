@@ -110,7 +110,9 @@ public class Json {
             list = mapper.readValue(str, mapper.getTypeFactory().constructParametricType(List.class, tClass));
         } catch (JsonProcessingException ignored) {
         }
-        if (list == null && notReturnNull) list = new ArrayList<>();
+        if (list == null && notReturnNull) {
+            list = new ArrayList<>();
+        }
         return list;
     }
 

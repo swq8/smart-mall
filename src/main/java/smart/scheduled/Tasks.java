@@ -34,7 +34,9 @@ public class Tasks {
             if (files != null) {
                 for (var tmp : files) {
                     all++;
-                    if (tmp.delete()) deleted++;
+                    if (tmp.delete()) {
+                        deleted++;
+                    }
                 }
             }
         }

@@ -34,7 +34,9 @@ public class AdminAuth extends Auth {
     @Before("pointcut()")
     public void auth(JoinPoint joinPoint) throws AdminAuthException, UserAuthException {
         HttpServletRequest request = getRequest();
-        if (request.getRequestURI().startsWith("/adminApi/main/")) return;
+        if (request.getRequestURI().startsWith("/adminApi/main/")) {
+            return;
+        }
 
         UserToken userToken = (UserToken) request.getAttribute(StringUtils.uncapitalize(UserToken.class.getSimpleName()));
         if (userToken == null) {
@@ -52,20 +54,31 @@ public class AdminAuth extends Auth {
         request.setAttribute(StringUtils.uncapitalize(AdminToken.class.getSimpleName()), adminToken);
 
         // System built-in administrator skips authorize check
-        if (ObjectUtils.containsElement(adminUserEntity.getRolesId().split(","), "1")) return;
+        if (ObjectUtils.containsElement(adminUserEntity.getRolesId().split(","), "1")) {
+            return;
+        }
 
         var signature = (MethodSignature) joinPoint.getSignature();
         var authorize = signature.getMethod().getAnnotation(Authorize.class);
-        if (authorize == null || authorize.value() == null) throw new AdminAuthException(true);
-
-        // Specially designed for Account demo
-        if (userToken.getName().equals("demo")) {
-            if (Arrays.stream(authorize.value()).anyMatch(item -> item.endsWith("/query") && !item.equals("/system/config/query")))
-                return;
-            else throw new AdminAuthException(true);
+        if (authorize == null || authorize.value() == null) {
+            throw new AdminAuthException(true);
         }
 
-        for (var item : authorizeNames) if (ObjectUtils.containsElement(authorize.value(), item)) return;
+        // Specially designed for Account demo
+        if ("demo".equals(userToken.getName())) {
+            if (Arrays.stream(authorize.value()).anyMatch(item -> item.endsWith("/query") && !"/system/config/query".equals(item))) {
+                return;
+            } else {
+                throw new AdminAuthException(true);
+            }
+        }
+
+        for (var item : authorizeNames) {
+            if (ObjectUtils.containsElement(authorize.value(), item)) {
+                return;
+            }
+
+        }
         throw new AdminAuthException(true);
     }
 }

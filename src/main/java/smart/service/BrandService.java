@@ -49,12 +49,14 @@ public class BrandService {
         brandEntity.setName(brandEntity.getName().trim());
         try {
             if (brandEntity.getId() == null) {
-                if (brandRepository.findFirstByName(brandEntity.getName()) != null)
+                if (brandRepository.findFirstByName(brandEntity.getName()) != null) {
                     return BRAND_IS_EXIST;
+                }
                 DbUtils.insert(brandEntity);
             } else {
-                if (brandRepository.findFirstByNameAndIdIsNot(brandEntity.getName(), brandEntity.getId()) != null)
+                if (brandRepository.findFirstByNameAndIdIsNot(brandEntity.getName(), brandEntity.getId()) != null) {
                     return BRAND_IS_EXIST;
+                }
                 DbUtils.update(brandEntity);
             }
         } catch (DuplicateKeyException ignored) {

@@ -91,6 +91,7 @@ public class Session implements BaseSession {
     }
 
 
+    @Override
     public Object get(String key) {
         return id == null ? null : RedisConfig.getStringObjectRedisTemplate().opsForHash().get(REDIS_PREFIX + id, key);
     }
@@ -151,6 +152,7 @@ public class Session implements BaseSession {
      * @param key   string
      * @param value object
      */
+    @Override
     public void set(String key, Object value) {
         RedisConfig.getStringObjectRedisTemplate().opsForHash().put(REDIS_PREFIX + getId(true), key, value);
     }

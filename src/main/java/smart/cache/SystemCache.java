@@ -51,14 +51,14 @@ public class SystemCache {
     public synchronized static void update() {
         List<String> keywords1 = new ArrayList<>();
         systemRepository.findAll().forEach(entity -> {
-            if (entity.getEntity().equals("other")) {
+            if ("other".equals(entity.getEntity())) {
                 switch (entity.getAttribute()) {
                     case "carousel" -> setCarousel(entity.getValue());
                     case "staticRes" -> setStaticRes(entity.getValue());
                 }
                 return;
             }
-            if (entity.getEntity().equals("sys")) {
+            if ("sys".equals(entity.getEntity())) {
                 switch (entity.getAttribute()) {
                     case "beian" -> beian = entity.getValue();
                     case "goodsTemplate" -> setGoodsTemplate(entity.getValue());
@@ -80,7 +80,7 @@ public class SystemCache {
                 }
                 return;
             }
-            if (entity.getEntity().equals("storage")) {
+            if ("storage".equals(entity.getEntity())) {
                 switch (entity.getAttribute()) {
                     case "type" -> storageType = entity.getValue();
                     case "ossAk" -> ossAk = Security.aesDecrypt(entity.getValue());
@@ -91,7 +91,7 @@ public class SystemCache {
                 }
                 return;
             }
-            if (entity.getEntity().equals("theme")) {
+            if ("theme".equals(entity.getEntity())) {
                 switch (entity.getAttribute()) {
                     case "mobile" -> themeMobile = entity.getValue();
                     case "pc" -> themePc = entity.getValue();
@@ -124,7 +124,9 @@ public class SystemCache {
      * @param json 首页轮播JSON
      */
     public static void setCarousel(String json) {
-        if (!StringUtils.hasText(json)) json = "{}";
+        if (!StringUtils.hasText(json)) {
+            json = "{}";
+        }
         SystemCache.carousel = Json.parse(json, CarouselDto.class);
     }
 
@@ -133,7 +135,9 @@ public class SystemCache {
     }
 
     public static void setGoodsTemplate(String json) {
-        if (!StringUtils.hasText(json)) json = "{}";
+        if (!StringUtils.hasText(json)) {
+            json = "{}";
+        }
         SystemCache.goodsTemplate = Json.parse(json, GoodsTemplateDto.class);
     }
 
@@ -186,7 +190,9 @@ public class SystemCache {
     }
 
     public static void setStaticRes(String json) {
-        if (!StringUtils.hasText(json)) json = "{}";
+        if (!StringUtils.hasText(json)) {
+            json = "{}";
+        }
         SystemCache.staticRes = Json.parse(json, StaticResDto.class);
     }
 

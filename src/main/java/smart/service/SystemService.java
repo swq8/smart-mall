@@ -72,7 +72,9 @@ public class SystemService {
 
     public String saveCarousel(CarouselDto carousel) {
         var entity = systemRepository.findByEaForWrite("other", "carousel");
-        if (entity == null) return "记录不存在";
+        if (entity == null) {
+            return "记录不存在";
+        }
         entity.setValue(Json.stringify(carousel));
         systemRepository.saveAndFlush(entity);
         SystemCache.update();
@@ -99,10 +101,14 @@ public class SystemService {
 
     public String saveExpressFeeRule(FeeRuleDto feeRule) {
         var entity = systemRepository.findByEaForWrite("shipping", "feeRule");
-        if (entity == null) return "记录不存在";
+        if (entity == null) {
+            return "记录不存在";
+        }
         List<Long> provinces = new ArrayList<>();
         for (var item : feeRule.getProvinceFees()) {
-            if (item.getProvinces().stream().anyMatch(provinces::contains)) return "同地区存在多条规则";
+            if (item.getProvinces().stream().anyMatch(provinces::contains)) {
+                return "同地区存在多条规则";
+            }
             provinces.addAll(item.getProvinces());
         }
         entity.setValue(Json.stringify(feeRule));
@@ -113,7 +119,9 @@ public class SystemService {
 
     public String saveExpressFreeRule(FreeRuleDto freeRule) {
         var entity = systemRepository.findByEaForWrite("shipping", "freeRule");
-        if (entity == null) return "记录不存在";
+        if (entity == null) {
+            return "记录不存在";
+        }
         entity.setValue(Json.stringify(freeRule));
         systemRepository.saveAndFlush(entity);
         ExpressCache.update();
@@ -121,7 +129,9 @@ public class SystemService {
     }
     public String saveGoodsTemplate(GoodsTemplateDto goodsTemplate) {
         var entity = systemRepository.findByEaForWrite("sys", "goodsTemplate");
-        if (entity == null) return "记录不存在";
+        if (entity == null) {
+            return "记录不存在";
+        }
         entity.setValue(Json.stringify(goodsTemplate));
         systemRepository.saveAndFlush(entity);
         SystemCache.update();
@@ -131,7 +141,9 @@ public class SystemService {
 
     public String saveStaticRes(StaticResDto staticRes) {
         var entity = systemRepository.findByEaForWrite("other", "staticRes");
-        if (entity == null) return "记录不存在";
+        if (entity == null) {
+            return "记录不存在";
+        }
         staticRes.setPath(staticRes.getPath().replaceAll("\\s+", ""));
         staticRes.setVersion(staticRes.getVersion().replaceAll("\\s+", ""));
         entity.setValue(Json.stringify(staticRes));
@@ -144,7 +156,9 @@ public class SystemService {
         Map<String, Object> map = new HashMap<>();
         StringBuilder gc = new StringBuilder();
         for (var bean : ManagementFactory.getGarbageCollectorMXBeans()) {
-            if (!gc.isEmpty()) gc.append(", ");
+            if (!gc.isEmpty()) {
+                gc.append(", ");
+            }
             gc.append(bean.getName());
         }
         Runtime rt = Runtime.getRuntime();

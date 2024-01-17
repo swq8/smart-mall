@@ -91,7 +91,9 @@ public final class Helper {
      */
     public static String getClientIp(HttpServletRequest request) {
         String xForwardedFor = request.getHeader("X-Forwarded-For");
-        if (xForwardedFor == null || xForwardedFor.length() < 6) return request.getRemoteAddr();
+        if (xForwardedFor == null || xForwardedFor.length() < 6) {
+            return request.getRemoteAddr();
+        }
         return xForwardedFor.split(",")[0].trim();
     }
 
@@ -147,7 +149,9 @@ public final class Helper {
     public static String getSizes(long size) {
         String numStr, unit;
         BigDecimal num = new BigDecimal(size);
-        if (size < 1024) return num.toString();
+        if (size < 1024) {
+            return num.toString();
+        }
         if (size < 0x10_0000) {
             numStr = num.divide(new BigDecimal(1024), 2, RoundingMode.HALF_UP).toString();
             unit = "K";
@@ -161,8 +165,11 @@ public final class Helper {
             numStr = num.divide(new BigDecimal(0x100_0000_0000L), 2, RoundingMode.HALF_UP).toString();
             unit = "P";
         }
-        if (numStr.endsWith("00")) numStr = numStr.substring(0, numStr.length() - 3);
-        else if (numStr.endsWith("0")) numStr = numStr.substring(0, numStr.length() - 1);
+        if (numStr.endsWith("00")) {
+            numStr = numStr.substring(0, numStr.length() - 3);
+        } else if (numStr.endsWith("0")) {
+            numStr = numStr.substring(0, numStr.length() - 1);
+        }
         return numStr + unit + "B";
 
     }
@@ -305,7 +312,9 @@ public final class Helper {
     }
 
     public static <T extends Number> T parseNumber(Object obj, Class<T> targetClass, String defaultValue) {
-        if (obj == null) obj = defaultValue;
+        if (obj == null) {
+            obj = defaultValue;
+        }
         T result;
         try {
             result = NumberUtils.parseNumber(obj.toString(), targetClass);

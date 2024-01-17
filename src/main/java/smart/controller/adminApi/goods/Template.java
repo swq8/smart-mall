@@ -48,7 +48,9 @@ public class Template {
     public ApiJsonResult upload(HttpServletRequest request,
                                 @RequestParam(name = "file") MultipartFile file) {
         var msg = General.checkFile(file, 501_000, true);
-        if (msg != null) return ApiJsonResult.error(msg);
+        if (msg != null) {
+            return ApiJsonResult.error(msg);
+        }
         var result = General.upload(request, file);
         if (result.isSuccess()) {
             adminLogService.addLog(request, "上传图片(商品模板)",

@@ -110,7 +110,9 @@ public class GoodsService {
                 for (var i = 0; i < list.size(); i++) {
                     var item = list.get(i);
                     cateName.append(item.getName());
-                    if ((i + 1) < list.size()) cateName.append(" / ");
+                    if ((i + 1) < list.size()) {
+                        cateName.append(" / ");
+                    }
                 }
             }
             row.put("cateName", cateName.toString());
@@ -123,37 +125,57 @@ public class GoodsService {
 
     public String save(GoodsEntity goodsEntity) {
         var msg = validate(goodsEntity);
-        if (Objects.nonNull(msg)) return msg;
-        if (Objects.isNull(goodsEntity.getImgs())) goodsEntity.setImgs(Json.stringify(goodsEntity.getImgsObj()));
-        if (Objects.isNull(goodsEntity.getSpec())) goodsEntity.setSpec(Json.stringify(goodsEntity.getSpecObj()));
+        if (Objects.nonNull(msg)) {
+            return msg;
+        }
+        if (Objects.isNull(goodsEntity.getImgs())) {
+            goodsEntity.setImgs(Json.stringify(goodsEntity.getImgsObj()));
+        }
+        if (Objects.isNull(goodsEntity.getSpec())) {
+            goodsEntity.setSpec(Json.stringify(goodsEntity.getSpecObj()));
+        }
         goodsEntity.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         Long goodsId = goodsEntity.getId();
         if (Objects.isNull(goodsId)) {
             goodsEntity.setCreateTime(new Timestamp(System.currentTimeMillis()));
             DbUtils.insert(goodsEntity);
             goodsId = DbUtils.getLastInsertId();
-            for (var item : goodsEntity.getSpecProps()) item.setGoodsId(goodsId);
+            for (var item : goodsEntity.getSpecProps()) {
+                item.setGoodsId(goodsId);
+            }
         } else {
             DbUtils.update(goodsEntity);
         }
-        if (goodsEntity.getBrandNewSpec()) DbUtils.insertAll(goodsEntity.getSpecProps());
-        else goodsEntity.getSpecProps().forEach(DbUtils::update);
-        if (goodsEntity.getSpecProps().isEmpty()) goodsSpecRepository.deleteByGoodsId(goodsId);
+        if (goodsEntity.getBrandNewSpec()) {
+            DbUtils.insertAll(goodsEntity.getSpecProps());
+        } else {
+            goodsEntity.getSpecProps().forEach(DbUtils::update);
+        }
+        if (goodsEntity.getSpecProps().isEmpty()) {
+            goodsSpecRepository.deleteByGoodsId(goodsId);
+        }
         GoodsCache.update();
         return null;
     }
 
     public String validate(GoodsEntity goodsEntity) {
         if (Objects.nonNull(goodsEntity.getId())
-                && Objects.isNull(DbUtils.findByIdForRead(goodsEntity.getId(), GoodsEntity.class)))
+                && Objects.isNull(DbUtils.findByIdForRead(goodsEntity.getId(), GoodsEntity.class))) {
             return "商品不存在";
+        }
         if (goodsEntity.getBrandId() != null &&
-                DbUtils.findByIdForRead(goodsEntity.getBrandId(), BrandEntity.class) == null) return "品牌不存在";
-        if (DbUtils.findByIdForRead(goodsEntity.getCateId(), CategoryEntity.class) == null) return "类别不存在";
-        if (Objects.isNull(goodsEntity.getId()) && !goodsEntity.getBrandNewSpec())
+                DbUtils.findByIdForRead(goodsEntity.getBrandId(), BrandEntity.class) == null) {
+            return "品牌不存在";
+        }
+        if (DbUtils.findByIdForRead(goodsEntity.getCateId(), CategoryEntity.class) == null) {
+            return "类别不存在";
+        }
+        if (Objects.isNull(goodsEntity.getId()) && !goodsEntity.getBrandNewSpec()) {
             return "规格数据错误,新建商品中的brandNewSpec必须为true";
-        if (goodsEntity.getSpecObj().isEmpty() && !goodsEntity.getSpecProps().isEmpty())
+        }
+        if (goodsEntity.getSpecObj().isEmpty() && !goodsEntity.getSpecProps().isEmpty()) {
             return "规格数据错误，未知的规格属性数据";
+        }
         // validate spec data
         if (!goodsEntity.getSpecObj().isEmpty()) {
             int len = goodsEntity.getSpecObj().size();
@@ -162,7 +184,9 @@ public class GoodsService {
             while (arr[0] < goodsEntity.getSpecObj().getFirst().getList().size()) {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < len; i++) {
-                    if (i > 0) sb.append(" ");
+                    if (i > 0) {
+                        sb.append(" ");
+                    }
                     sb.append(goodsEntity.getSpecObj().get(i).getList().get(arr[i]).getVal());
                 }
                 specNames.add(sb.toString());
@@ -174,24 +198,31 @@ public class GoodsService {
                     }
                 }
             }
-            if (specNames.size() != goodsEntity.getSpecProps().size()) return "规格数据错误,规格属性不匹配";
+            if (specNames.size() != goodsEntity.getSpecProps().size()) {
+                return "规格数据错误,规格属性不匹配";
+            }
             if (goodsEntity.getBrandNewSpec()) {
-                if (goodsEntity.getSpecProps().stream().anyMatch(item -> Objects.nonNull(item.getId())))
+                if (goodsEntity.getSpecProps().stream().anyMatch(item -> Objects.nonNull(item.getId()))) {
                     return "规格数据错误,新规格属性中id字段必须为null";
+                }
             } else {
-                if (goodsEntity.getSpecProps().stream().anyMatch(item -> Objects.isNull(item.getId())))
+                if (goodsEntity.getSpecProps().stream().anyMatch(item -> Objects.isNull(item.getId()))) {
                     return "规格数据错误,现有规格属性中id字段不能为null";
+                }
                 for (int i = 1; i < goodsEntity.getSpecProps().size(); i++) {
-                    if (goodsEntity.getSpecProps().get(i - 1).getId() >= goodsEntity.getSpecProps().get(i).getId())
+                    if (goodsEntity.getSpecProps().get(i - 1).getId() >= goodsEntity.getSpecProps().get(i).getId()) {
                         return "规格数据错误,现有规格属性id必须唯一且按id排序";
+                    }
                 }
                 var specList = goodsSpecRepository.findAllByGoodsIdForWrite(goodsEntity.getId());
-                if (specList.size() != goodsEntity.getSpecProps().size())
+                if (specList.size() != goodsEntity.getSpecProps().size()) {
                     return "规格数据错误,现有规格属性数量错误";
+                }
                 for (int i = 0; i < specList.size(); i++) {
                     long tmpId = goodsEntity.getSpecProps().get(i).getId();
-                    if (specList.stream().noneMatch(item -> item.getId() == tmpId))
+                    if (specList.stream().noneMatch(item -> item.getId() == tmpId)) {
                         return String.format("规格数据错误,现有规格属性id:%d 系统中不存在", tmpId);
+                    }
                 }
             }
             // write goods info, spec des info,
@@ -201,7 +232,9 @@ public class GoodsService {
             for (int i = 0; i < specNames.size(); i++) {
                 var item = goodsEntity.getSpecProps().get(i);
                 item.setGoodsId(goodsEntity.getId());
-                if (goodsEntity.getPrice() > item.getPrice()) goodsEntity.setPrice(item.getPrice());
+                if (goodsEntity.getPrice() > item.getPrice()) {
+                    goodsEntity.setPrice(item.getPrice());
+                }
                 item.setDes(specNames.get(i));
             }
         }

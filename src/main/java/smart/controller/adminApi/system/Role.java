@@ -51,9 +51,13 @@ public class Role {
     @Authorize("/system/role/delete")
     @PostMapping("delete")
     public ApiJsonResult delete(HttpServletRequest request, @Validated @RequestBody IdDto idDto, BeanPropertyBindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) return ApiJsonResult.badRequest(bindingResult);
+        if (bindingResult.hasFieldErrors()) {
+            return ApiJsonResult.badRequest(bindingResult);
+        }
         var msg = adminRoleService.delete(idDto.getId());
-        if (msg != null) return ApiJsonResult.error(msg);
+        if (msg != null) {
+            return ApiJsonResult.error(msg);
+        }
         adminLogService.addLog(request, "删除角色", idDto);
         return ApiJsonResult.success();
     }

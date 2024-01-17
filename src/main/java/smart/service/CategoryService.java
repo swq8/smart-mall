@@ -18,7 +18,9 @@ public class CategoryService {
     CategoryRepository categoryRepository;
 
     public String delete(IdDto idDto) {
-        if (categoryRepository.countByParentId(idDto.getId()) > 0) return "请先删除子分类";
+        if (categoryRepository.countByParentId(idDto.getId()) > 0) {
+            return "请先删除子分类";
+        }
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setId(idDto.getId());
         DbUtils.delete(categoryEntity);
@@ -38,8 +40,11 @@ public class CategoryService {
     }
 
     public String save(CategoryEntity categoryEntity) {
-        if (categoryEntity.getId() == null) DbUtils.insert(categoryEntity);
-        else DbUtils.update(categoryEntity);
+        if (categoryEntity.getId() == null) {
+            DbUtils.insert(categoryEntity);
+        } else {
+            DbUtils.update(categoryEntity);
+        }
         CategoryCache.update();
         return null;
     }

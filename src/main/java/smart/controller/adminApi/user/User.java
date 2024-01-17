@@ -46,9 +46,13 @@ public class User {
     @PostMapping("changeBalance")
     public ApiJsonResult changeBalance(HttpServletRequest request,
                                        @RequestBody @Validated(Add.class) UserBalanceLogEntity logEntity) {
-        if (logEntity.getAmount() == 0) return ApiJsonResult.error("无需调整");
+        if (logEntity.getAmount() == 0) {
+            return ApiJsonResult.error("无需调整");
+        }
         var userEntity = userRepository.findByIdForWrite(logEntity.getUid());
-        if (userEntity == null) return ApiJsonResult.error("用户不存在");
+        if (userEntity == null) {
+            return ApiJsonResult.error("用户不存在");
+        }
         var result = ApiJsonResult.successOrError(userService.changeBalance(userEntity, logEntity.getAmount(), logEntity.getNote()));
         adminLogService.addLogIfSuccess(result, request, "调整用户余额", logEntity);
         return result;
@@ -58,7 +62,9 @@ public class User {
     @PostMapping("get")
     public ApiJsonResult get(@RequestBody @Validated IdDto idDto) {
         var entity = DbUtils.findById(idDto.getId(), UserEntity.class);
-        if (entity == null) ApiJsonResult.error("用户不存在, id:" + idDto.getId());
+        if (entity == null) {
+            ApiJsonResult.error("用户不存在, id:" + idDto.getId());
+        }
         return ApiJsonResult.success()
                 .putDataItem("address", userAddressService.findByUserId(idDto.getId()))
                 .putDataItem("record", entity);
@@ -77,9 +83,13 @@ public class User {
         String pass = query.getPass();
         pass = Security.rsaDecrypt(SystemCache.getRsaPrivateKey(), pass);
         String msg = ValidatorUtils.validatePassword(pass, "密码");
-        if (msg != null) return new ApiJsonResult().setCode(ApiJsonResult.CODE_BAD_REQUEST).setMsg(msg);
+        if (msg != null) {
+            return new ApiJsonResult().setCode(ApiJsonResult.CODE_BAD_REQUEST).setMsg(msg);
+        }
         msg = userService.changePassword(userId, pass);
-        if (msg != null) return new ApiJsonResult().setCode(ApiJsonResult.CODE_BAD_REQUEST).setMsg(msg);
+        if (msg != null) {
+            return new ApiJsonResult().setCode(ApiJsonResult.CODE_BAD_REQUEST).setMsg(msg);
+        }
         adminLogService.addLog(request, "更改用户密码", Map.of("userId", userId));
         return ApiJsonResult.success();
     }

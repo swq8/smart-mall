@@ -31,7 +31,9 @@ public class UserBalanceLogService {
         pagination.getRows().forEach(row -> {
             var change = Helper.parseNumber(row.get("amount"), Long.class);
             String changeStr = Helper.priceFormat(change);
-            if (change > 0) changeStr = "+" + changeStr;
+            if (change > 0) {
+                changeStr = "+" + changeStr;
+            }
             row.put("amountStr", changeStr);
             row.put("balanceStr", Helper.priceFormat(Helper.parseNumber(row.get("balance"), Long.class)));
         });

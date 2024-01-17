@@ -68,7 +68,9 @@ public class Article {
     @PostMapping("upload")
     public ApiJsonResult upload(HttpServletRequest request, @RequestParam(name = "file") MultipartFile file) {
         var msg = General.checkFile(file, 501_000, true);
-        if (msg != null) return ApiJsonResult.error(msg);
+        if (msg != null) {
+            return ApiJsonResult.error(msg);
+        }
         var result = General.upload(request, file);
         if (result.isSuccess()) {
             adminLogService.addLog(request, "上传图片(文章)", Map.of("src", Objects.requireNonNull(file.getOriginalFilename()), "size", Helper.getSizes(file.getSize()), "target", result.getData().get("url")));

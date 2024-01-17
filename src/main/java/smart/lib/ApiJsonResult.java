@@ -94,7 +94,9 @@ public class ApiJsonResult {
      * @return result
      */
     public static ApiJsonResult successOrError(String msg) {
-        if (msg == null) return ApiJsonResult.success();
+        if (msg == null) {
+            return ApiJsonResult.success();
+        }
         return ApiJsonResult.error(msg);
     }
 

@@ -21,10 +21,8 @@ public class Alipay implements Payment {
 
     public static final String NAME = "alipay";
     private final String nameCn;
-
-    private ConfigDto configDto = new ConfigDto();
-
     private final boolean enable;
+    private ConfigDto configDto = new ConfigDto();
 
     public Alipay(String nameCn, boolean enable) {
         this.nameCn = nameCn;
@@ -100,7 +98,7 @@ public class Alipay implements Payment {
     public String refund(long orderNo, long amount) {
         try {
             AlipayTradeRefundResponse response = Factory.Payment.Common().refund(Long.toString(orderNo), Helper.priceFormat(amount));
-            if (!response.msg.equals("Success")) {
+            if (!"Success".equals(response.msg)) {
                 return response.subMsg;
             }
         } catch (Exception e) {
@@ -121,14 +119,19 @@ public class Alipay implements Payment {
         if (configTmp != null) {
             configDto = configTmp;
         }
-        if (configDto.sanBox == null) configDto.sanBox = true;
+        if (configDto.sanBox == null) {
+            configDto.sanBox = true;
+        }
         Config config = new Config();
         config.protocol = "https";
 
         // 正式 openapi.alipay.com
         // 沙箱 openapi-sandbox.dl.alipaydev.com
-        if (configDto.getSanBox()) config.gatewayHost = "openapi-sandbox.dl.alipaydev.com";
-        else config.gatewayHost = "openapi.alipay.com";
+        if (configDto.getSanBox()) {
+            config.gatewayHost = "openapi-sandbox.dl.alipaydev.com";
+        } else {
+            config.gatewayHost = "openapi.alipay.com";
+        }
         config.signType = "RSA2";
         config.appId = configDto.getAppId();
         config.merchantPrivateKey = configDto.getMerchantPrivateKey();

@@ -65,11 +65,17 @@ public class Goods {
     private void initDes(GoodsEntity entity, HttpServletRequest request) {
         var goodsTemplate = SystemCache.getGoodsTemplate();
         var sb = new StringBuilder();
-        if (goodsTemplate.getHeaderEnable()) sb.append(goodsTemplate.getHeader());
+        if (goodsTemplate.getHeaderEnable()) {
+            sb.append(goodsTemplate.getHeader());
+        }
         sb.append(entity.getDes());
-        if (goodsTemplate.getFooterEnable()) sb.append(goodsTemplate.getFooter());
+        if (goodsTemplate.getFooterEnable()) {
+            sb.append(goodsTemplate.getFooter());
+        }
         String html = sb.toString();
-        if (Helper.isMobileRequest(request)) html = adaptMobile(html);
+        if (Helper.isMobileRequest(request)) {
+            html = adaptMobile(html);
+        }
         entity.setDes(html);
     }
 

@@ -29,8 +29,12 @@ public class AdminMenuService {
      */
     public String delete(Long id) {
         var entity = DbUtils.findByIdForWrite(id, AdminMenuEntity.class);
-        if (entity == null) return null;
-        if (adminMenuRepository.countByParentId(id) > 0) return "请先删除子项";
+        if (entity == null) {
+            return null;
+        }
+        if (adminMenuRepository.countByParentId(id) > 0) {
+            return "请先删除子项";
+        }
         adminMenuRepository.deleteById(id);
         adminMenuRepository.flush();
         AdminMenuCache.update();
@@ -53,11 +57,14 @@ public class AdminMenuService {
             rows.stream().filter(row -> Objects.equals(row.getParentId(), item.getId())).forEach(item1 -> {
 
                 // check authorize
-                if (skipAuthorize || ObjectUtils.containsElement(authorize, item1.getFullRoute() + "/query"))
+                if (skipAuthorize || ObjectUtils.containsElement(authorize, item1.getFullRoute() + "/query")) {
                     menuItem.addChild(new Menu(item1.getComponent(),
                             new MenuMeta(item1.getCache(), item1.getName(), item1.getIcon(), null, item1.getVisible()), item1.getRoute()));
+                }
             });
-            if (menuItem.children != null) menus.add(menuItem);
+            if (menuItem.children != null) {
+                menus.add(menuItem);
+            }
         });
 
         return menus;
@@ -76,11 +83,17 @@ public class AdminMenuService {
                 adminMenuEntity.setComponent("");
             }
             case 2 -> {
-                if (adminMenuEntity.getParentId() == 0L) return "菜单的上级不能为空";
-                if (Strings.isBlank(adminMenuEntity.getComponent())) return "组件路径不能为空";
+                if (adminMenuEntity.getParentId() == 0L) {
+                    return "菜单的上级不能为空";
+                }
+                if (Strings.isBlank(adminMenuEntity.getComponent())) {
+                    return "组件路径不能为空";
+                }
             }
             case 3 -> {
-                if (adminMenuEntity.getParentId() == 0L) return "按钮的上级不能为空";
+                if (adminMenuEntity.getParentId() == 0L) {
+                    return "按钮的上级不能为空";
+                }
                 adminMenuEntity.setIcon("");
                 adminMenuEntity.setComponent("");
                 adminMenuEntity.setVisible(false);
@@ -88,17 +101,25 @@ public class AdminMenuService {
         }
 
         if (adminMenuEntity.getParentId() != 0L) {
-            if (Objects.equals(adminMenuEntity.getId(), adminMenuEntity.getParentId()))
+            if (Objects.equals(adminMenuEntity.getId(), adminMenuEntity.getParentId())) {
                 return "上级不能选择自己";
+            }
             var parentEntity = DbUtils.findByIdForWrite(adminMenuEntity.getParentId(), AdminMenuEntity.class);
-            if (parentEntity == null) return "上级不存在";
-            if (adminMenuEntity.getType() == 2 && parentEntity.getType() != 1)
+            if (parentEntity == null) {
+                return "上级不存在";
+            }
+            if (adminMenuEntity.getType() == 2 && parentEntity.getType() != 1) {
                 return "菜单的上级类型必须为目录";
-            if (adminMenuEntity.getType() == 3 && parentEntity.getType() != 2)
+            }
+            if (adminMenuEntity.getType() == 3 && parentEntity.getType() != 2) {
                 return "按钮的上级类型必须为菜单";
+            }
         }
-        if (adminMenuEntity.getId() == null) DbUtils.insert(adminMenuEntity);
-        else if (DbUtils.update(adminMenuEntity) == 0) return "该记录不存在";
+        if (adminMenuEntity.getId() == null) {
+            DbUtils.insert(adminMenuEntity);
+        } else if (DbUtils.update(adminMenuEntity) == 0) {
+            return "该记录不存在";
+        }
         AdminMenuCache.update();
         return null;
     }
@@ -119,7 +140,9 @@ public class AdminMenuService {
         }
 
         void addChild(Menu child) {
-            if (children == null) children = new ArrayList<>();
+            if (children == null) {
+                children = new ArrayList<>();
+            }
             children.add(child);
         }
 

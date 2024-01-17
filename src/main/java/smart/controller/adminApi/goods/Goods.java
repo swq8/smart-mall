@@ -13,13 +13,7 @@ import smart.dto.GeneralQueryDto;
 import smart.dto.IdDto;
 import smart.entity.GoodsEntity;
 import smart.lib.ApiJsonResult;
-import smart.repository.GoodsRepository;
-import smart.repository.GoodsSpecRepository;
-import smart.repository.SpecRepository;
-import smart.service.AdminLogService;
-import smart.service.BrandService;
-import smart.service.CategoryService;
-import smart.service.GoodsService;
+import smart.service.*;
 import smart.util.DbUtils;
 import smart.util.Helper;
 import smart.util.validategroups.Add;
@@ -42,15 +36,12 @@ public class Goods {
     CategoryService categoryService;
 
     @Resource
-    GoodsRepository goodsRepository;
-    @Resource
     GoodsService goodsService;
+    @Resource
+    GoodsSpecService goodsSpecService;
 
     @Resource
-    GoodsSpecRepository goodsSpecRepository;
-
-    @Resource
-    SpecRepository specRepository;
+    SpecService specService;
 
     @Authorize("/goods/goods/add")
     @PostMapping("add")
@@ -83,8 +74,10 @@ public class Goods {
     @PostMapping("get")
     public ApiJsonResult get(@RequestBody @Validated IdDto idDto) {
         var goodsEntity = DbUtils.findById(idDto.getId(), GoodsEntity.class);
-        if (goodsEntity == null) return ApiJsonResult.error("商品不存在");
-        goodsEntity.setSpecProps(goodsSpecRepository.findByGoodsId(idDto.getId()));
+        if (goodsEntity == null) {
+            return ApiJsonResult.error("商品不存在");
+        }
+        goodsEntity.setSpecProps(goodsSpecService.findByGoodsId(idDto.getId()));
         return ApiJsonResult.success()
                 .putDataItem("goods", goodsEntity);
     }
@@ -96,7 +89,7 @@ public class Goods {
         return ApiJsonResult.success(goodsService.query(query))
                 .putDataItem("brandList", brandService.findAll())
                 .putDataItem("categoryList", categoryService.query())
-                .putDataItem("specList", specRepository.findAllByOrderByName());
+                .putDataItem("specList", specService.findAll());
     }
 
     @Authorize({"/goods/goods/add", "/goods/goods/edit"})
@@ -104,7 +97,9 @@ public class Goods {
     public ApiJsonResult upload(HttpServletRequest request,
                                 @RequestParam(name = "file") MultipartFile file) {
         var msg = General.checkFile(file, 501_000, true);
-        if (msg != null) return ApiJsonResult.error(msg);
+        if (msg != null) {
+            return ApiJsonResult.error(msg);
+        }
         var result = General.upload(request, file);
         if (result.isSuccess()) {
             adminLogService.addLog(request, "上传图片(商品管理)",

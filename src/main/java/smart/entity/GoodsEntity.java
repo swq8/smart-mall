@@ -145,8 +145,9 @@ public class GoodsEntity extends AbstractEntity {
     }
 
     public List<String> getImgsObj() {
-        if (imgsObj == null)
+        if (imgsObj == null) {
             imgsObj = Json.parseList(imgs, String.class);
+        }
         return imgsObj;
     }
 
@@ -212,7 +213,9 @@ public class GoodsEntity extends AbstractEntity {
     }
 
     public List<SpecItem> getSpecObj() {
-        if (specObj == null) specObj = Json.parseList(spec, SpecItem.class, true);
+        if (specObj == null) {
+            specObj = Json.parseList(spec, SpecItem.class, true);
+        }
         return specObj;
     }
 

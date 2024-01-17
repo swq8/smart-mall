@@ -35,10 +35,16 @@ public class UserService {
     private UserRepository userRepository;
 
     public String changeBalance(UserEntity userEntity, Long amount, String note) {
-        if (amount == 0L) return null;
-        if (!StringUtils.hasText(note)) return "备注不得为空";
+        if (amount == 0L) {
+            return null;
+        }
+        if (!StringUtils.hasText(note)) {
+            return "备注不得为空";
+        }
         long newBalance = userEntity.getBalance() + amount;
-        if (newBalance < 0) return "余额不足";
+        if (newBalance < 0) {
+            return "余额不足";
+        }
         userEntity.setBalance(newBalance);
         userRepository.save(userEntity);
         var logEntity = new UserBalanceLogEntity();
@@ -65,23 +71,30 @@ public class UserService {
         userEntity.setId(uid);
         userEntity.setPassword(Security.sha3_256(Security.sha3_256(password) + Security.sha3_256(salt)));
         userEntity.setSalt(salt);
-        if (DbUtils.update(userEntity, "password", "salt") == 0) return "用户不存在";
+        if (DbUtils.update(userEntity, "password", "salt") == 0) {
+            return "用户不存在";
+        }
         return null;
     }
 
 
     public Result getUserWithLogin(String name, String password, String ip) {
         Result result = new Result();
-        if (ValidatorUtils.validateNotNameAndPassword(name, password))
+        if (ValidatorUtils.validateNotNameAndPassword(name, password)) {
             return result.setError(ValidatorUtils.ID_OR_PASS_ERROR);
+        }
         var userEntity = userRepository.findByNameForWrite(name);
-        if (userEntity == null) return result.setError(ValidatorUtils.ID_OR_PASS_ERROR);
-        password = Security.sha3_256(Security.sha3_256(password) + Security.sha3_256(userEntity.getSalt()));
-        if (!password.equals(userEntity.getPassword()))
+        if (userEntity == null) {
             return result.setError(ValidatorUtils.ID_OR_PASS_ERROR);
+        }
+        password = Security.sha3_256(Security.sha3_256(password) + Security.sha3_256(userEntity.getSalt()));
+        if (!password.equals(userEntity.getPassword())) {
+            return result.setError(ValidatorUtils.ID_OR_PASS_ERROR);
+        }
         long status = userEntity.getStatus();
-        if (status > 0)
+        if (status > 0) {
             return result.setError(AccountStatus.getStatusName(status));
+        }
         if (ip != null) {
             userEntity.setLastLoginIp(ip);
             userEntity.setLastLoginTime(new Timestamp(System.currentTimeMillis()));

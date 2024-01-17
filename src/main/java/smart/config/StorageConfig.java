@@ -14,7 +14,7 @@ public class StorageConfig {
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     Storage getStorage() {
-        if (SystemCache.getStorageType().equals("oss")) {
+        if ("oss".equals(SystemCache.getStorageType())) {
             return new OssStorage();
         } else {
             return new LocalStorage();

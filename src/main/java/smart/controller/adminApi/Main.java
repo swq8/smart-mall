@@ -60,8 +60,9 @@ public class Main {
         ApiJsonResult apiJsonResult = ApiJsonResult.success();
         if (userToken == null
                 || (adminUserEntity = adminUserRepository.findByUserId(userToken.getId())) == null
-                || !adminUserEntity.getEnable())
+                || !adminUserEntity.getEnable()) {
             return apiJsonResult;
+        }
         var authorizeIds = adminRoleService.getAuthorizeIdsByRolesId(adminUserEntity.getRolesId());
         var superAdmin = ObjectUtils.containsElement(adminUserEntity.getRolesId().split(","), "1");
         var authorizeNames = AdminMenuCache.getEnabledAuthorizeByIds(authorizeIds);
@@ -82,12 +83,14 @@ public class Main {
     public ApiJsonResult login(@RequestBody GeneralQueryDto query,
                                HttpServletRequest request, Session session) {
         query.setPass(Security.rsaDecrypt(SystemCache.getRsaPrivateKey(), query.getPass()));
-        if (ValidatorUtils.validateNotNameAndPassword(query.getName(), query.getPass()))
+        if (ValidatorUtils.validateNotNameAndPassword(query.getName(), query.getPass())) {
             return ApiJsonResult.error(ValidatorUtils.ID_OR_PASS_ERROR);
+        }
         query.setName(query.getName().toLowerCase());
         var loginResult = adminUserService.login(query.getName(), query.getPass(), Helper.getClientIp(request));
-        if (loginResult.getError() != null)
+        if (loginResult.getError() != null) {
             return ApiJsonResult.error(loginResult.getError());
+        }
         UserToken userToken = loginResult.getUserToken();
         userToken.save(session);
         request.setAttribute(StringUtils.uncapitalize(UserToken.class.getSimpleName()), userToken);
@@ -100,7 +103,9 @@ public class Main {
     @PostMapping("logout")
     public ApiJsonResult logout(HttpServletRequest request, Session session, UserToken userToken) {
         session.destroy();
-        if (userToken != null) adminLogService.addLog(request, "退出登录", userToken);
+        if (userToken != null) {
+            adminLogService.addLog(request, "退出登录", userToken);
+        }
         return ApiJsonResult.success();
     }
 

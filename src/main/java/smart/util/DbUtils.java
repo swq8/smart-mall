@@ -75,7 +75,9 @@ public class DbUtils {
      */
     public static long delete(AbstractEntity entity) {
         var pk = getPrimaryKey(entity);
-        if (pk == null) throw new IllegalArgumentException("missing primary key");
+        if (pk == null) {
+            throw new IllegalArgumentException("missing primary key");
+        }
         return delete(entity.getClass(), Map.of(pk.getName(), pk.getValue()));
     }
 
@@ -88,7 +90,9 @@ public class DbUtils {
      */
     public static long delete(Class<? extends AbstractEntity> entityClass, Map<String, Object> condition) {
         // condition cannot be empty
-        if (condition.isEmpty()) throw new IllegalArgumentException("condition cannot be empty");
+        if (condition.isEmpty()) {
+            throw new IllegalArgumentException("condition cannot be empty");
+        }
         var conditionObject = getConditionObject(condition);
         String sql = "DELETE FROM `" + getTableName(entityClass) + "`" + conditionObject.sql();
         return jdbcClient.sql(sql).params(conditionObject.params).update();
@@ -172,7 +176,9 @@ public class DbUtils {
         final List<String> fieldNames = new LinkedList<>();
         final List<Object> params = new LinkedList<>();
         entities.getFirst().getFieldInfos().forEach((k, v) -> {
-            if (v.getValue() != null) fieldNames.add(k);
+            if (v.getValue() != null) {
+                fieldNames.add(k);
+            }
         });
         StringBuilder sql = new StringBuilder(getInsertHeader(getTableName(entities.getFirst().getClass()), fieldNames.stream().map(DbUtils::camelCaseToUnderscoresNaming).toArray(String[]::new)));
         for (var entity : entities) {
@@ -180,7 +186,9 @@ public class DbUtils {
             Map<String, FiledInfo> fieldInfos = entity.getFieldInfos();
             for (String fieldName : fieldNames) {
                 var val = fieldInfos.get(fieldName).getValue();
-                if (val == null) throw new IllegalArgumentException("value not be null");
+                if (val == null) {
+                    throw new IllegalArgumentException("value not be null");
+                }
                 sql.append("?,");
                 params.add(val);
             }
@@ -338,7 +346,9 @@ public class DbUtils {
         Map<String, FiledInfo> fieldInfos = entity.getFieldInfos();
         for (String name : fieldInfos.keySet()) {
             var filedInfo = fieldInfos.get(name);
-            if (filedInfo.isPrimaryKey()) return filedInfo;
+            if (filedInfo.isPrimaryKey()) {
+                return filedInfo;
+            }
         }
         return null;
     }

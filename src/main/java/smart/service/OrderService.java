@@ -110,13 +110,22 @@ public class OrderService {
         if (cart.sumPrice() != sumPrice || cart.getShippingFee(addressEntity.getRegion()) != shippingFee || cart.sumNum() == 0) {
             return orderInfo.setErr("购物车被修改，请重新提交");
         }
-        if (payBalance < 0) return orderInfo.setErr("余额支付数值错误");
-        if (orderAmount < payBalance) payBalance = orderAmount;
-        if (payBalance > userEntity.getBalance()) return orderInfo.setErr("可用余额不足");
+        if (payBalance < 0) {
+            return orderInfo.setErr("余额支付数值错误");
+        }
+        if (orderAmount < payBalance) {
+            payBalance = orderAmount;
+        }
+        if (payBalance > userEntity.getBalance()) {
+            return orderInfo.setErr("可用余额不足");
+        }
         if (payBalance < sumPrice) {
-            if (payName == null) return orderInfo.setErr("请选择支付方式");
-            if (!PaymentCache.getAvailableNames().contains(payName))
+            if (payName == null) {
+                return orderInfo.setErr("请选择支付方式");
+            }
+            if (!PaymentCache.getAvailableNames().contains(payName)) {
                 orderInfo.setErr("指定的支付方式不存在:" + payName);
+            }
         }
 
 
@@ -236,7 +245,9 @@ public class OrderService {
      * @return null(成功) or 错误信息
      */
     public String cancelOrder(UserEntity userEntity, OrderEntity orderEntity) {
-        if (orderRepository.cancelOrder(orderEntity.getNo()) == 0) return "订单状态错误,仅能取消待付款、待发货订单";
+        if (orderRepository.cancelOrder(orderEntity.getNo()) == 0) {
+            return "订单状态错误,仅能取消待付款、待发货订单";
+        }
         // 增加库存
         orderGoodsService.backOrderGoods(orderEntity.getNo());
         refundOrder(userEntity, orderEntity, false);
@@ -284,7 +295,9 @@ public class OrderService {
 
     public OrderEntity getOrder(long orderNo) {
         var orderEntity = orderRepository.findByNo(orderNo);
-        if (orderEntity == null) return null;
+        if (orderEntity == null) {
+            return null;
+        }
         orderEntity.setPayBalanceStr(Helper.priceFormat(orderEntity.getPayBalance()));
         orderEntity.setAmountStr(Helper.priceFormat(orderEntity.getAmount()));
         orderEntity.setExpressName(ExpressCache.getNameById(orderEntity.getExpressId()));
@@ -314,9 +327,12 @@ public class OrderService {
 
     public String adminPay(Long orderNo) {
         OrderEntity orderEntity = orderRepository.findByNoForWrite(orderNo);
-        if (orderEntity == null) return "订单不存在," + orderNo;
-        if (orderRepository.adminPay(orderNo) == 0)
+        if (orderEntity == null) {
+            return "订单不存在," + orderNo;
+        }
+        if (orderRepository.adminPay(orderNo) == 0) {
             return "订单状态错误," + orderNo;
+        }
         return null;
     }
 
@@ -330,10 +346,16 @@ public class OrderService {
      * @return null 成功，或返回错误信息
      */
     public String pay(long orderNo, String payName, long payAmount, String payNo) {
-        if (payName == null) return "支付方式不得为空";
+        if (payName == null) {
+            return "支付方式不得为空";
+        }
         OrderEntity orderEntity = orderRepository.findByNoForWrite(orderNo);
-        if (orderEntity == null) return "订单不存在";
-        if (orderEntity.getStatus() != OrderStatus.WAIT_FOR_PAY.getCode()) return "该订单不是待支付订单";
+        if (orderEntity == null) {
+            return "订单不存在";
+        }
+        if (orderEntity.getStatus() != OrderStatus.WAIT_FOR_PAY.getCode()) {
+            return "该订单不是待支付订单";
+        }
         jdbcClient.sql("update t_order set pay_name = ?,pay_time = ?,pay_amount = ?,pay_no =?,status = 1 where no = ?")
                 .params(payName, new Timestamp(System.currentTimeMillis()), payAmount, payNo, orderNo).update();
         return null;
@@ -382,11 +404,17 @@ public class OrderService {
      * @return null 成功，或返回错误信息
      */
     public String cancelShip(Long orderNo) {
-        if (orderNo == null) return "订单号不得为空";
+        if (orderNo == null) {
+            return "订单号不得为空";
+        }
         OrderEntity orderEntity = orderRepository.findByNoForWrite(orderNo);
-        if (orderEntity == null) return "订单不存在, no:" + orderNo;
+        if (orderEntity == null) {
+            return "订单不存在, no:" + orderNo;
+        }
 
-        if (orderRepository.cancelShip(orderNo) == 0L) return "订单状态错误";
+        if (orderRepository.cancelShip(orderNo) == 0L) {
+            return "订单状态错误";
+        }
         DbUtils.update(OrderGoodsEntity.class,
                 Map.of("orderNo", orderNo),
                 Map.of("status", OrderGoodsStatus.UNSHIPPED.getCode()));
@@ -400,13 +428,22 @@ public class OrderService {
      * @return null 成功，或返回错误信息
      */
     public String ship(Long orderNo, Long expressId, String expressNo) {
-        if (orderNo == null) return "订单号不得为空";
-        if (expressId == null || ExpressCache.getNameById(expressId) == null)
+        if (orderNo == null) {
+            return "订单号不得为空";
+        }
+        if (expressId == null || ExpressCache.getNameById(expressId) == null) {
             return "快递公司id错误,express id:" + expressId;
+        }
         OrderEntity orderEntity = orderRepository.findByNoForWrite(orderNo);
-        if (orderEntity == null) return "订单不存在, no:" + orderNo;
-        if (!StringUtils.hasText(expressNo)) return "快递单号不得为空";
-        if (orderRepository.ship(orderNo, expressId, expressNo.trim()) == 0L) return "订单状态错误";
+        if (orderEntity == null) {
+            return "订单不存在, no:" + orderNo;
+        }
+        if (!StringUtils.hasText(expressNo)) {
+            return "快递单号不得为空";
+        }
+        if (orderRepository.ship(orderNo, expressId, expressNo.trim()) == 0L) {
+            return "订单状态错误";
+        }
         DbUtils.update(OrderGoodsEntity.class,
                 Map.of("orderNo", orderNo),
                 Map.of("status", OrderGoodsStatus.SHIPPED.getCode()));
@@ -415,7 +452,9 @@ public class OrderService {
 
     public String refundOrder(Long orderNo, Boolean orderStatusOnly) {
         var orderEntity = orderRepository.findByNoForWrite(orderNo);
-        if (orderEntity == null) return "订单不存在, no:" + orderNo;
+        if (orderEntity == null) {
+            return "订单不存在, no:" + orderNo;
+        }
         var userEntity = DbUtils.findByIdForWrite(orderEntity.getUserId(), UserEntity.class);
         return refundOrder(userEntity, orderEntity, orderStatusOnly);
     }
@@ -430,7 +469,9 @@ public class OrderService {
         var statusList = List.of(OrderStatus.WAIT_FOR_SHIPPING.getCode(),
                 OrderStatus.SHIPPED.getCode(),
                 OrderStatus.COMPLETED.getCode());
-        if (!statusList.contains(orderEntity.getStatus())) return "订单状态错误";
+        if (!statusList.contains(orderEntity.getStatus())) {
+            return "订单状态错误";
+        }
         if (!orderStatusOnly) {
             if (orderEntity.getPayBalance() > 0) {
                 userService.changeBalance(userEntity, orderEntity.getPayBalance(),

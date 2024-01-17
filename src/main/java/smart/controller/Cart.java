@@ -123,7 +123,9 @@ public class Cart {
                           @RequestParam(defaultValue = "", name = "sumPrice") String sumPriceStr) {
         JsonResult jsonResult = new JsonResult();
         long addrId = Helper.parseNumber(addrIdStr, Long.class);
-        if (addrId < 1) return jsonResult.setMsg("请选择收货地址").toString();
+        if (addrId < 1) {
+            return jsonResult.setMsg("请选择收货地址").toString();
+        }
         String payName = request.getParameter("payName");
         // 验证提交时的运费和商品价格
         long payBalance = Helper.parseNumber(payBalanceStr, BigDecimal.class).multiply(new BigDecimal(100)).longValue();
@@ -136,8 +138,9 @@ public class Cart {
         if (orderInfo.getErr() != null) {
             return jsonResult.setMsg(orderInfo.getErr()).toString();
         }
-        if (orderInfo.getOrderStatus() == OrderStatus.WAIT_FOR_SHIPPING.getCode())
+        if (orderInfo.getOrderStatus() == OrderStatus.WAIT_FOR_SHIPPING.getCode()) {
             return jsonResult.setMsg("已完成下单").setUrl("/user/order").toString();
+        }
         return jsonResult.setUrl("/user/order/pay?orderNo=" + orderInfo.getOrderNo()).toString();
     }
 

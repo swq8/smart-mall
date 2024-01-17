@@ -14,7 +14,9 @@ public class ArticleCategoryService {
     ArticleRepository articleRepository;
 
     public String delete(Long id) {
-        if (articleRepository.countByCateId(id) > 0) return "请先删除该分类下文章";
+        if (articleRepository.countByCateId(id) > 0) {
+            return "请先删除该分类下文章";
+        }
         var entity = new ArticleCategoryEntity();
         entity.setId(id);
         DbUtils.delete(entity);
@@ -23,8 +25,11 @@ public class ArticleCategoryService {
     }
 
     public String save(ArticleCategoryEntity articleCategoryEntity) {
-        if (articleCategoryEntity.getId() == null) DbUtils.insert(articleCategoryEntity);
-        else DbUtils.update(articleCategoryEntity);
+        if (articleCategoryEntity.getId() == null) {
+            DbUtils.insert(articleCategoryEntity);
+        } else {
+            DbUtils.update(articleCategoryEntity);
+        }
         ArticleCache.update();
         return null;
     }

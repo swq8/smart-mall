@@ -7,7 +7,10 @@ import smart.entity.AdminMenuEntity;
 import smart.repository.AdminMenuRepository;
 import smart.util.Helper;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Component
 public class AdminMenuCache {
@@ -39,14 +42,18 @@ public class AdminMenuCache {
         for (var idStr : ids.split(",")) {
             var id = Helper.parseNumber(idStr, Long.class);
             var row = getRowById(id);
-            if (row != null && row.getType() == 3 && row.getEnable()) set.add(row.getFullRoute());
+            if (row != null && row.getType() == 3 && row.getEnable()) {
+                set.add(row.getFullRoute());
+            }
         }
         return set.toArray(String[]::new);
     }
 
     public static AdminMenuEntity getRowById(Long id) {
         for (var row : rows) {
-            if (Objects.equals(row.getId(), id)) return row;
+            if (Objects.equals(row.getId(), id)) {
+                return row;
+            }
         }
         return null;
     }

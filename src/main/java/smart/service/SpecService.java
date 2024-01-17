@@ -33,6 +33,10 @@ public class SpecService {
         return null;
     }
 
+    public List<SpecEntity> findAll(){
+        return specRepository.findAllByOrderByName();
+    }
+
     public Pagination query(GeneralQueryDto query) {
         List<Object> sqlParams = new ArrayList<>();
         String sql = "select  * from t_spec";
@@ -53,20 +57,24 @@ public class SpecService {
         specEntity.setName(specEntity.getName().trim());
         // image zoom
         specEntity.getItemsObj().forEach(item -> {
-            if (item.getImg().length() > 4 && !item.getImg().contains("?"))
+            if (item.getImg().length() > 4 && !item.getImg().contains("?")) {
                 item.setImg(HelperUtils.imgZoom(item.getImg(), 40));
+            }
         });
-        if (specEntity.getItems() == null && specEntity.getItemsObj() != null)
+        if (specEntity.getItems() == null && specEntity.getItemsObj() != null) {
             specEntity.setItems(Json.stringify(specEntity.getItemsObj()));
+        }
         try {
             if (specEntity.getId() == null) {
-                if (specRepository.findFirstByNameAndNote(specEntity.getName(), specEntity.getNote()) != null)
+                if (specRepository.findFirstByNameAndNote(specEntity.getName(), specEntity.getNote()) != null) {
                     return SPEC_IS_EXIST;
+                }
                 DbUtils.insert(specEntity);
             } else {
                 if (specRepository.findFirstByNameAndNoteAndIdIsNot(specEntity.getName(),
-                        specEntity.getNote(), specEntity.getId()) != null)
+                        specEntity.getNote(), specEntity.getId()) != null) {
                     return SPEC_IS_EXIST;
+                }
                 DbUtils.update(specEntity);
             }
         } catch (DuplicateKeyException ignored) {

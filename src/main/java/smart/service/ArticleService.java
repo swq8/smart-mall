@@ -21,10 +21,14 @@ public class ArticleService {
     }
 
     public String save(ArticleEntity articleEntity) {
-        if (ArticleCache.getArticleCategoryById(articleEntity.getCateId()) == null)
+        if (ArticleCache.getArticleCategoryById(articleEntity.getCateId()) == null) {
             return "文章类别不存在";
-        if (articleEntity.getId() == null) DbUtils.insert(articleEntity);
-        else DbUtils.update(articleEntity);
+        }
+        if (articleEntity.getId() == null) {
+            DbUtils.insert(articleEntity);
+        } else {
+            DbUtils.update(articleEntity);
+        }
         ArticleCache.update();
         return null;
     }

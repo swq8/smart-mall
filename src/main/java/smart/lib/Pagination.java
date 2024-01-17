@@ -1,10 +1,8 @@
 package smart.lib;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.lang.Nullable;
 import smart.config.AppConfig;
-import smart.entity.AbstractEntity;
 import smart.util.DbUtils;
 import smart.util.Helper;
 import smart.util.LogUtils;
@@ -33,8 +31,6 @@ public final class Pagination {
      * http get method query
      */
     private String httpQuery = "?";
-    private long startIndex;
-    private long endIndex;
     private long totalPages;
     private long totalRecords = 0;
 
@@ -124,31 +120,21 @@ public final class Pagination {
         return rows;
     }
 
-    public <T extends AbstractEntity> List<T> getRows(Class<T> t) {
-        ObjectMapper mapper = AppConfig.getContext().getBean(ObjectMapper.class);
-        List<T> result = new ArrayList<>();
-        rows.forEach(row -> result.add(mapper.convertValue(row, t)));
-        return result;
-    }
-
     /**
      * 初始化当前页记录
      */
     private void initRows() {
-        startIndex = (currentPage - 1) * pageSize;
-        if (startIndex < 0) {
-            startIndex = 0;
-        }
-        String sql1 = String.format("%s limit %d,%d", sql, startIndex, pageSize);
         rows = new ArrayList<>();
-        AppConfig.getJdbcClient().sql(sql1).params(params).query().listOfRows()
-                .forEach(row -> {
-                    Map<String, Object> row1 = new LinkedHashMap<>();
-                    row.keySet().forEach(key -> row1.put(DbUtils.underscoresToCamelCaseNaming(key), row.get(key)));
-                    rows.add(row1);
-                });
-
-        endIndex = startIndex + rows.size();
+        if (currentPage < 1) {
+            return;
+        }
+        var startIndex = (currentPage - 1) * pageSize;
+        String sql1 = String.format("%s limit %d,%d", sql, startIndex, pageSize);
+        AppConfig.getJdbcClient().sql(sql1).params(params).query().listOfRows().forEach(row -> {
+            Map<String, Object> row1 = new LinkedHashMap<>();
+            row.keySet().forEach(key -> row1.put(DbUtils.underscoresToCamelCaseNaming(key), row.get(key)));
+            rows.add(row1);
+        });
     }
 
     /**
@@ -200,15 +186,6 @@ public final class Pagination {
     }
 
     /**
-     * 获取结束索引
-     *
-     * @return 结束索引
-     */
-    public long getEndIndex() {
-        return endIndex;
-    }
-
-    /**
      * http query
      *
      * @return http query
@@ -225,15 +202,6 @@ public final class Pagination {
      */
     public List<Map<String, Object>> getPages() {
         return pages;
-    }
-
-    /**
-     * 获取开始索引
-     *
-     * @return 开始索引
-     */
-    public long getStartIndex() {
-        return startIndex;
     }
 
     /**
@@ -295,7 +263,9 @@ public final class Pagination {
          * @return this
          */
         public Builder page(Long page) {
-            if (page != null) this.page = page;
+            if (page != null) {
+                this.page = page;
+            }
             return this;
         }
 
@@ -329,7 +299,9 @@ public final class Pagination {
          * @return this
          */
         public Builder pageSize(Long pageSize) {
-            if (pageSize != null) this.pageSize = pageSize;
+            if (pageSize != null) {
+                this.pageSize = pageSize;
+            }
             return this;
         }
 

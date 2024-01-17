@@ -1,14 +1,12 @@
 package smart.auth;
 
-import org.springframework.util.StringUtils;
-import smart.util.Helper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-
-import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.util.StringUtils;
 
 @Aspect
 @Component
@@ -26,7 +24,7 @@ public class UserAuth extends Auth {
             return;
         }
         uri = uri.substring(6);
-        if (uri.equals("buy")) {
+        if ("buy".equals(uri)) {
             if (request.getAttribute(StringUtils.uncapitalize(UserToken.class.getSimpleName())) == null) {
                 throw new UserAuthException();
             }
@@ -43,7 +41,7 @@ public class UserAuth extends Auth {
         HttpServletRequest request = getRequest();
         String uri = request.getRequestURI();
         uri = uri.substring(6);
-        if (uri.equals("login") || uri.equals("register")) {
+        if ("login".equals(uri) || "register".equals(uri)) {
             return;
         }
         if (request.getAttribute(StringUtils.uncapitalize(UserToken.class.getSimpleName())) == null) {

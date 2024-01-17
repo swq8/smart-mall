@@ -15,8 +15,11 @@ public class ExpressCompanyService {
     }
 
     public String save(ExpressCompanyEntity entity) {
-        if (entity.getId() == null) DbUtils.insert(entity);
-        else DbUtils.update(entity);
+        if (entity.getId() == null) {
+            DbUtils.insert(entity);
+        } else {
+            DbUtils.update(entity);
+        }
         ExpressCache.update();
         return null;
     }

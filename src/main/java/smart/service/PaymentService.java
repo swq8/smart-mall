@@ -23,17 +23,27 @@ public class PaymentService {
      */
     public String save(String jsonStr) {
         var postEntity = Json.parse(jsonStr, PaymentEntity.class);
-        if (postEntity == null) return "数据错误";
+        if (postEntity == null) {
+            return "数据错误";
+        }
         var msg = ValidatorUtils.validate(postEntity, Edit.class);
-        if (msg != null) return msg;
+        if (msg != null) {
+            return msg;
+        }
         var entity = paymentRepository.findByNameForWrite(postEntity.getName());
         var payment = PaymentCache.getPaymentByName(postEntity.getName());
-        if (entity == null || payment == null) return "支付方式不存在, name:" + postEntity.getName();
+        if (entity == null || payment == null) {
+            return "支付方式不存在, name:" + postEntity.getName();
+        }
         var configObj = payment.newConfigInstance(jsonStr);
         msg = ValidatorUtils.validate(configObj);
-        if (msg != null) return msg;
+        if (msg != null) {
+            return msg;
+        }
         var configJson = Json.stringify(configObj);
-        if (configJson == null) configJson = "{}";
+        if (configJson == null) {
+            configJson = "{}";
+        }
         entity.setConfig(Security.aesEncrypt(configJson));
         entity.setEnable(postEntity.getEnable());
         entity.setOrderNum(postEntity.getOrderNum());

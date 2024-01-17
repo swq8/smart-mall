@@ -232,10 +232,14 @@ public class Cart {
         // 常规运费
         long shippingFee = feeRule.getShippingFee(code, sumWeight());
         // 不能送达返回-1
-        if (shippingFee < 0) return -1;
+        if (shippingFee < 0) {
+            return -1;
+        }
 
         // iss there a free shipping item
-        if (hasFreeShippingGoods()) return 0;
+        if (hasFreeShippingGoods()) {
+            return 0;
+        }
 
         // 是否符合免邮费规则
         var freeRule = ExpressCache.getFreeRule();
@@ -243,8 +247,9 @@ public class Cart {
                 // 地址未被包邮规则排除
                 && !freeRule.getExclude().contains(code)
                 // 金额达到包邮金额
-                && sumPrice() >= freeRule.getAmount())
+                && sumPrice() >= freeRule.getAmount()) {
             return 0;
+        }
         // 以上规则都不符合，返回常规运费
         return shippingFee;
     }
@@ -354,6 +359,19 @@ public class Cart {
             this.goodsId = goodsId;
             this.specId = specId;
             this.num = num;
+        }
+
+        @Override
+        public int hashCode() {
+            return (int) (goodsId + specId);
+        }
+
+        @Override
+        public boolean equals(Object anObject) {
+            if (anObject == null) {
+                return false;
+            }
+            return (anObject instanceof Item item && item.hashCode() == hashCode());
         }
 
         public long getGoodsId() {

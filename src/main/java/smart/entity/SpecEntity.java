@@ -72,8 +72,9 @@ public class SpecEntity extends AbstractEntity {
     }
 
     public List<Item> getItemsObj() {
-        if (itemsObj == null)
+        if (itemsObj == null) {
             itemsObj = Json.parseList(items, Item.class, true);
+        }
         return itemsObj;
     }
 

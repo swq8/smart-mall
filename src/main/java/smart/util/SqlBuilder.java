@@ -42,7 +42,9 @@ public class SqlBuilder {
                 .append(" (");
         for (int i = 0; i < params.length; i++) {
             whereSql.append("?");
-            if (i + 1 < params.length) whereSql.append(",");
+            if (i + 1 < params.length) {
+                whereSql.append(",");
+            }
             this.sqlParams.add(params[i]);
         }
         whereSql.append(")");
@@ -56,12 +58,16 @@ public class SqlBuilder {
     }
 
     public SqlBuilder andTrimEqualsIfNotBlank(String name, String param) {
-        if (StringUtils.hasText(param)) andEquals(name, param.trim());
+        if (StringUtils.hasText(param)) {
+            andEquals(name, param.trim());
+        }
         return this;
     }
 
     public SqlBuilder andEqualsIfNotNull(String name, Object param) {
-        if (param != null) andEquals(name, param);
+        if (param != null) {
+            andEquals(name, param);
+        }
         return this;
     }
 
@@ -104,7 +110,9 @@ public class SqlBuilder {
                         .append("`")
                         .append(" ")
                         .append(arr[1]);
-                if (i + 1 < sortList.size()) result.append(",");
+                if (i + 1 < sortList.size()) {
+                    result.append(",");
+                }
             }
         }
         return result.toString();
@@ -116,14 +124,18 @@ public class SqlBuilder {
     }
 
     public SqlBuilder orderBy(String[] sortableColumns, String sortParam, String defaultSortParam) {
-        if (sortParam == null) sortParam = defaultSortParam;
+        if (sortParam == null) {
+            sortParam = defaultSortParam;
+        }
         var arr = sortParam.split(",");
         arr[0] = DbUtils.camelCaseToUnderscoresNaming(arr[0]);
         if (arr.length == 2
                 && ObjectUtils.containsElement(sortableColumns, arr[0])
-                && ObjectUtils.containsElement(AVAILABLE_SORTS, arr[1]))
+                && ObjectUtils.containsElement(AVAILABLE_SORTS, arr[1])) {
             sortList.add(sortParam);
-        else sortList.add(defaultSortParam);
+        } else {
+            sortList.add(defaultSortParam);
+        }
         return this;
     }
 }

@@ -19,13 +19,20 @@ public class General {
     };
 
     public static String checkFile(MultipartFile file, int sizeLimit, boolean imgOnly) {
-        if (file == null || file.isEmpty() || !StringUtils.hasText(file.getOriginalFilename())) return "未找到上传文件";
-        if (sizeLimit > 0 && file.getSize() > sizeLimit) return "文件体积太大";
+        if (file == null || file.isEmpty() || !StringUtils.hasText(file.getOriginalFilename())) {
+            return "未找到上传文件";
+        }
+        if (sizeLimit > 0 && file.getSize() > sizeLimit) {
+            return "文件体积太大";
+        }
         if (imgOnly) {
             String ext = StringUtils.getFilenameExtension(file.getOriginalFilename());
-            if (StringUtils.hasLength(ext)) ext = ext.toLowerCase();
-            if (!ObjectUtils.containsElement(IMAGES_EXT, ext))
+            if (StringUtils.hasLength(ext)) {
+                ext = ext.toLowerCase();
+            }
+            if (!ObjectUtils.containsElement(IMAGES_EXT, ext)) {
                 return file.getOriginalFilename() + " 不是图片文件";
+            }
         }
         return null;
     }
@@ -43,7 +50,7 @@ public class General {
         assert fileName != null;
         String ext = StringUtils.getFilenameExtension(file.getOriginalFilename());
         if (StringUtils.hasText(ext)) {
-            if (ext.equals("jpe") || ext.equals("jpeg")) {
+            if ("jpe".equals(ext) || "jpeg".equals(ext)) {
                 ext = "jpg";
             }
             ext = "." + ext;
@@ -54,8 +61,11 @@ public class General {
             uri = uri.substring(0, 2) + "/" + uri.substring(2, 4) + "/" + uri.substring(4);
 
             /* whether keep original filename */
-            if (request.getParameter("keep") == null) uri += ext;
-            else uri += "/" + file.getOriginalFilename();
+            if (request.getParameter("keep") == null) {
+                uri += ext;
+            } else {
+                uri += "/" + file.getOriginalFilename();
+            }
 
 
             ApiJsonResult result = new ApiJsonResult();

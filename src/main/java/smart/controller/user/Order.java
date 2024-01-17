@@ -64,8 +64,9 @@ public class Order {
         long no = Helper.parseNumber(request.getParameter("no"), Long.class);
         var userEntity = DbUtils.findByIdForWrite(userToken.getId(), UserEntity.class);
         var orderEntity = orderRepository.findByNoAndUserIdForWrite(no, userEntity.getId());
-        if (orderEntity == null)
+        if (orderEntity == null) {
             return Helper.msgPage(String.format("订单 %s 不存在", no), "/user/order", request);
+        }
         String err = orderService.cancelOrder(userEntity, orderEntity);
         if (err == null) {
             return Helper.msgPage(String.format("订单 %s 已取消", no), "/user/order", request);
@@ -163,7 +164,9 @@ public class Order {
                 .andEquals("user_id", userToken.getId())
                 .andEquals("deleted", deleted)
                 .orderBy(new String[]{"id"}, "id,desc", "id,desc");
-        if (!statusStr.isEmpty()) sqlBuilder.andEquals("status", status);
+        if (!statusStr.isEmpty()) {
+            sqlBuilder.andEquals("status", status);
+        }
 
         Pagination pagination = Pagination
                 .newBuilder(sqlBuilder.buildSql(), sqlParams.toArray())

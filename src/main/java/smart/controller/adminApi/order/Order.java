@@ -43,7 +43,9 @@ public class Order {
     public ApiJsonResult get(@RequestBody OrderQueryDto query) {
         long orderNo = Helper.parseNumber(query.getNo(), Long.class);
         var orderEntity = orderService.getOrder(orderNo);
-        if (orderEntity == null) return ApiJsonResult.error("订单不存在");
+        if (orderEntity == null) {
+            return ApiJsonResult.error("订单不存在");
+        }
         return ApiJsonResult.success().putDataItem("order", orderEntity);
     }
 
@@ -70,9 +72,13 @@ public class Order {
     public ApiJsonResult cancelOrder(HttpServletRequest request, @RequestBody OrderEntity orderEntity) {
         Long orderNo = orderEntity.getNo();
         orderEntity = orderRepository.findByNoForWrite(orderNo);
-        if (orderEntity == null) return ApiJsonResult.error("订单不存在,no:" + orderNo);
+        if (orderEntity == null) {
+            return ApiJsonResult.error("订单不存在,no:" + orderNo);
+        }
         var userEntity = DbUtils.findById(orderEntity.getUserId(), UserEntity.class);
-        if (userEntity == null) return ApiJsonResult.error("订单用户不存在,uid:" + orderEntity.getUserId());
+        if (userEntity == null) {
+            return ApiJsonResult.error("订单用户不存在,uid:" + orderEntity.getUserId());
+        }
         var result = ApiJsonResult.successOrError(orderService.cancelOrder(userEntity, orderEntity));
         adminLogService.addLogIfSuccess(result, request, "取消订单:" + orderEntity.getNo(), "");
         return result;
@@ -107,9 +113,10 @@ public class Order {
     @PostMapping("ship")
     public ApiJsonResult ship(HttpServletRequest request, @RequestBody OrderEntity orderEntity) {
         var result = ApiJsonResult.successOrError(orderService.ship(orderEntity.getNo(), orderEntity.getExpressId(), orderEntity.getExpressNo()));
-        if (result.isSuccess())
+        if (result.isSuccess()) {
             adminLogService.addLog(request, "订单发货:" + orderEntity.getNo(),
                     Map.of("expressId", orderEntity.getExpressId(), "expressNo", orderEntity.getExpressNo()));
+        }
         return result;
     }
 

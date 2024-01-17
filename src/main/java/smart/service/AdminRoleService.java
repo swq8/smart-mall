@@ -23,8 +23,12 @@ public class AdminRoleService {
 
     public String delete(Long id) {
         var entity = DbUtils.findByIdForWrite(id, AdminRoleEntity.class);
-        if (entity == null) return "角色不存在";
-        if (id == 1L) return "不能删除系统内置角色";
+        if (entity == null) {
+            return "角色不存在";
+        }
+        if (id == 1L) {
+            return "不能删除系统内置角色";
+        }
         DbUtils.delete(entity);
         adminUserRepository.updateRolesId(id);
         return null;
@@ -42,10 +46,15 @@ public class AdminRoleService {
         adminRoleEntity.setAuthorize(
                 adminMenuRepository.getAvailableAuthorize(adminRoleEntity.getAuthorize()));
         try {
-            if (adminRoleEntity.getId() == null) DbUtils.insert(adminRoleEntity);
-            else {
-                if (adminRoleEntity.getId() == 1L) return "不能修改系统内置角色";
-                if (DbUtils.update(adminRoleEntity) == 0) return "该角色不存在";
+            if (adminRoleEntity.getId() == null) {
+                DbUtils.insert(adminRoleEntity);
+            } else {
+                if (adminRoleEntity.getId() == 1L) {
+                    return "不能修改系统内置角色";
+                }
+                if (DbUtils.update(adminRoleEntity) == 0) {
+                    return "该角色不存在";
+                }
             }
         } catch (DuplicateKeyException ignored) {
             return "角色已存在";

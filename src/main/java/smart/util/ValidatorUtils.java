@@ -20,7 +20,9 @@ public class ValidatorUtils {
 
     public static String validate(Object obj, Class<?>... classes) {
         var violation = validator.validate(obj, classes);
-        if (violation.isEmpty()) return null;
+        if (violation.isEmpty()) {
+            return null;
+        }
         var hint = violation.iterator().next();
         return "%s %s".formatted(hint.getPropertyPath().toString(), hint.getMessage());
     }
@@ -111,12 +113,24 @@ public class ValidatorUtils {
      */
     public static String validateName(String data, String alias) {
         String msg = notEmpty(data, alias);
-        if (msg != null) return msg;
-        if (data.length() < 4) return alias + "不能小于4位";
-        if (data.length() > 12) return alias + "不能超过12位";
-        if (Pattern.matches("^\\d+$", data)) return alias + "不能是纯数字";
-        if (!Pattern.matches("^[a-z\\d]+$", data)) return alias + "只能由字母或数字组成";
-        if (data.toLowerCase().startsWith("admin")) return alias + "不能以 admin 开头";
+        if (msg != null) {
+            return msg;
+        }
+        if (data.length() < 4) {
+            return alias + "不能小于4位";
+        }
+        if (data.length() > 12) {
+            return alias + "不能超过12位";
+        }
+        if (Pattern.matches("^\\d+$", data)) {
+            return alias + "不能是纯数字";
+        }
+        if (!Pattern.matches("^[a-z\\d]+$", data)) {
+            return alias + "只能由字母或数字组成";
+        }
+        if (data.toLowerCase().startsWith("admin")) {
+            return alias + "不能以 admin 开头";
+        }
         return null;
     }
 
@@ -132,16 +146,22 @@ public class ValidatorUtils {
      * @return null 成功， or 错误信息
      */
     public static String notEmpty(String data, String alias) {
-        if (data == null || data.trim().isEmpty()) return alias + "不能为空";
+        if (data == null || data.trim().isEmpty()) {
+            return alias + "不能为空";
+        }
 
         return null;
     }
 
     public static String validatePassword(String data, String alias) {
         String msg = notEmpty(data, alias);
-        if (msg != null) return msg;
+        if (msg != null) {
+            return msg;
+        }
 
-        if (data.length() < 6) return alias + "过于简单";
+        if (data.length() < 6) {
+            return alias + "过于简单";
+        }
         return null;
     }
 
