@@ -12,6 +12,11 @@
             font-size: 1.1em;
             margin-top: 1.5em;
         }
+        .cate1-link {
+            color:#555;
+            font-size: 1.1em;
+            padding: 0.7em 1.5em 0.7em 0;
+        }
 
         .cate2 {
             display: flex;
@@ -35,11 +40,10 @@
 <body>
 <header th:replace="~{__${theme}__/components::header(title='分类浏览')}">
 </header>
-<div class="container">
-    <br>
+<div class="container" style="padding-top: 1em;">
     <th:block th:each="node : ${categoryNodes}">
         <div class="cate1 padding-l">
-            <a th:text="${node.name}" th:href="@{/list(cid=${node.id})}"></a>
+            <a class="cate1-link" th:text="${node.name}" th:href="@{/list(cid=${node.id})}"></a>
         </div>
         <div class="cate2">
             <a th:text="${node1.name}" th:href="@{/list(cid=${node1.id})}" th:each="node1 : ${node.childNodes}"></a>

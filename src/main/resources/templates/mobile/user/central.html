@@ -42,12 +42,13 @@
         }
 
         .menu {
+            display: flex;
+            flex-wrap: wrap;
             list-style: none;
             padding: 0;
         }
 
         .menu li {
-            float: left;
             outline: 1px solid #ededed;
             text-align: center;
         }
@@ -105,13 +106,11 @@
                 修改密码
             </a>
         </li>
-        <li>
-            <a href="/user/login?logout">
-                <i class="fa fa-sign-out" style="color: rgb(241, 64, 123);"></i><br>
-                退出登录
-            </a>
-        </li>
     </ul>
+</div>
+<br><br>
+<div style="padding: 1em 0.3em;">
+    <a class="submit" href="/user/login?logout" >退出登录</a>
 </div>
 
 <footer th:replace="~{__${theme}__/components::footer}"></footer>

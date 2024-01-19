@@ -8,7 +8,10 @@
             justify-content: center;
             margin-top: 2rem;
         }
-
+        .container1 .title {
+            font-size: 1.1em;
+            min-width: 90%;
+        }
         .container1 .form {
 
             min-width: 96%;
@@ -31,7 +34,7 @@
 </header>
 
 <div class="container1">
-    <div style="min-width: 90%">用户登录</div>
+    <div class="title">用户登录</div>
     <form class="form" autocomplete="off" id="form1" method="post" action="/user/login">
         <input class="text" type="text" name="name" placeholder="用户名" required>
         <input class="text" type="password" name="password" placeholder="密码" required>

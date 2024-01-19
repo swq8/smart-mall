@@ -1,0 +1,39 @@
+<!-- homepage header -->
+<header th:fragment="header">
+    <div id="openSearch">
+        <div class="search-bar" @click="show">
+            <i class="fa fa-search"></i>
+            <span>搜索</span>
+        </div>
+        <div :class="bgCls" style="display: none" ref="bgRef">
+            <div class="search-header">
+                <form action="/list">
+                <div class="search-close" @click="hidden"> 取消</div>
+                <input class="search-input" name="q" type="text" autocomplete="off" ref="inputRef">
+                <button type="submit" class="search-btn">搜索</button>
+                </form>
+            </div>
+            <div class="row search-hot">
+                <p>热门搜索</p>
+                <div class="row">
+                    <a th:each="keyword : ${keywords}" th:href="@{/list(q=${keyword})}" th:text="${keyword}"></a>
+                </div>
+            </div>
+            <div>
+
+            </div>
+        </div>
+    </div>
+    <div id="menu" style="padding: 0;right:0.7em">
+        <i class="fa fa-bars" @click="show"></i>
+        <div :class="bgCls" @click="hidden"></div>
+        <div class="menu-hidden" :class="menuCls">
+            <div class="item" v-for="item in items">
+                <a :href="item.href">
+                    <i :class="item.cls"></i>&ensp;
+                    <span v-text="item.name"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>

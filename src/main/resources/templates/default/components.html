@@ -47,7 +47,7 @@
         <div class="col-3"></div>
         <div class="col-6 d2">
             <form method="get" action="/list">
-                <input class="textSearch" type="text" name="q" th:value="${q}">
+                <input class="textSearch" type="text" name="q" th:value="${q}" autocomplete="off">
                 <button class="btnSearch" type="submit"><i class="fa fa-search"></i></button>
                 <p id="tagsList">
                     <a th:each="keyword : ${keywords}" th:href="@{/list(q=${keyword})}" th:text="${keyword}"></a>

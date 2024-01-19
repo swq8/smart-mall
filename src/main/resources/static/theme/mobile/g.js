@@ -2,8 +2,8 @@
 const Menu = {
     data() {
         return {
-            bgCls: '',
-            menuCls: 'menu-hidden',
+            bgCls: 'hidden',
+            menuCls: 'hidden',
             items: [
                 {cls: 'fa fa-home', name: '商城首页', href: '/'},
                 {cls: 'fa fa-bars', name: '商品分类', href: '/category'},
@@ -19,14 +19,10 @@ const Menu = {
             this.menuCls = 'menu-show'
         },
         hidden() {
-            this.bgCls = ''
-            this.menuCls = 'menu-hidden'
+            this.bgCls = 'hidden'
+            this.menuCls = 'hidden'
         },
     },
-
-    setup() {
-
-    }
 }
 Vue.createApp(Menu).mount('#menu')
 // 页脚渲染
@@ -60,7 +56,6 @@ const Footer = {
 }
 
 Vue.createApp(Footer).mount('#footer')
-
 
 var $ = function (selectors) {
     return document.querySelector(selectors);

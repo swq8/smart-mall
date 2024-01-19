@@ -138,6 +138,24 @@ public final class Pagination {
     }
 
     /**
+     * 生成移动端页脚分页
+     *
+     * @return html
+     */
+    public String generateMobilePagination() {
+        StringBuilder html = new StringBuilder("<div class=\"pagination\">\n");
+        if (currentPage > 1) {
+            html.append("<a href='%spage=%d'>上一页</a>\n".formatted(httpQuery, currentPage - 1));
+        }
+        html.append("<div class='summer'>页数:%d/%d</div>\n".formatted(currentPage, totalPages));
+        if (currentPage < totalPages) {
+            html.append("<a href='%spage=%d'>下一页</a>".formatted(httpQuery, currentPage + 1));
+        }
+        html.append("</div>\n");
+        return html.toString();
+    }
+
+    /**
      * 生成网页分页页脚
      *
      * @return html

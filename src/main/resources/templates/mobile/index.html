@@ -4,9 +4,8 @@
     <link rel="stylesheet" th:href="${#helpers.retouch('/splide/css/themes/splide-default.min.css')}">
     <style>
         #image-slider {
-            width: 10rem;
-            height: 5.56rem;
-            margin: 2px 0 18px 0;
+            width: 100vw;
+            height: 55.6vw;
         }
 
         #image-slider div {
@@ -20,37 +19,61 @@
 
         #image-slider img {
             object-fit: fill;
-            width: 10rem;
-            height: 5.56rem;
+            width: 100vw;
+            height: 55.6vw;
         }
+
+        header {
+            background-color: transparent;
+        }
+
+        #menu {
+            align-items: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 100%;
+            display: flex;
+            font-size: 1em;
+            justify-content: center;
+            height: 1.7em;
+            width: 1.7em;
+        }
+
+        #menu i {
+            color: #555;
+            font-size: 1em;
+        }
+
+
+
     </style>
     <script th:src="${#helpers.retouch('/splide/js/splide.min.js')}"></script>
 </head>
-<body>
-<header th:replace="~{__${theme}__/components::header(title=${siteName})}">
+<body style="margin-top:0">
+<header th:replace="~{__${theme}__/components1::header(title=${siteName})}">
 </header>
 <div class="container">
-<div id="image-slider" class="splide">
-    <div class="splide__track">
-        <ul class="splide__list">
-            <li class="splide__slide" th:each="item : ${carousel.items}">
-                <a th:href="${item.link}"><img th:src="${item.img}"></a>
-            </li>
-        </ul>
+    <div id="image-slider" class="splide">
+        <div class="splide__track">
+            <ul class="splide__list">
+                <li class="splide__slide" th:each="item : ${carousel.items}">
+                    <a th:href="${item.link}"><img th:src="${item.img}"></a>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
 
-<div class="row">
-    <!--/* 每个一级分类里显示两个推荐商品 */-->
-    <!--/*/ <th:block th:each="cat : ${recommend}"> /*/-->
-    <a th:href="@{/goods/{id}.html(id=${goods.id})}" class="goods-item" th:each="goods, itor : ${cat.goodsList}"
-       th:if="${itor.index < 2}">
-        <img class="img-45" th:src="${#helpers.imgZoom(goods.img, 360)}">
-        <div class="goods-name" th:text="${goods.name}"></div>
-        <div class="price goods-price" th:text="${#helpers.priceFormat(goods.price)}"></div>
-    </a>
-    <!--/*/ </th:block> /*/-->
-</div>
+    <div class="row">
+        <!--/* 每个一级分类里显示两个推荐商品 */-->
+        <!--/*/ <th:block th:each="cat : ${recommend}"> /*/-->
+        <a th:href="@{/goods/{id}.html(id=${goods.id})}" class="goods-item" th:each="goods, itor : ${cat.goodsList}"
+           th:if="${itor.index < 2}">
+            <img class="img-45" th:src="${#helpers.imgZoom(goods.img, 360)}">
+            <div class="goods-name" th:text="${goods.name}"></div>
+            <div class="price goods-price" th:text="${#helpers.priceFormat(goods.price)}"></div>
+        </a>
+        <!--/*/ </th:block> /*/-->
+    </div>
 </div>
 <div class="beian">
     <p> [[${'Copyright © 2021 - ' + #helpers.dateFormat(now, 'yyyy') + '&nbsp;'}]]
@@ -68,7 +91,7 @@
         interval: 4000
     }).mount();
 </script>
-
+<script th:src="${#helpers.retouch('/theme/' + theme + '/index.js')}"></script>
 <footer th:replace="~{__${theme}__/components::footer}"></footer>
 </body>
 </html>

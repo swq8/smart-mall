@@ -49,7 +49,7 @@ body {
 .container {
     box-sizing: border-box;
     margin: 0 auto;
-    width: 10rem;
+    width: 100vw;
 }
 
 footer {
@@ -96,19 +96,28 @@ header {
     box-sizing: border-box;
     color: #fefefe;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     font-size: 1.1em;
     height: 1rem;
-    padding: 0 0.6em;
     position: fixed;
     top: 0;
     width: 100vw;
     z-index: 10;
 }
 
+
+header #goBack, header #menu {
+    font-size: 1.3em;
+    padding: 0.3em 0.8em;
+    position: absolute;
+}
+
+header #goBack {
+    left: 0;
+}
+
 header #menu {
-    font-size: 1.5em;
-    padding: 0.3em 0 0.3em 1em;
+    right: 0;
 }
 
 header #menu .item {
@@ -116,7 +125,6 @@ header #menu .item {
 }
 
 header #menu .item a {
-
     border-bottom: 1px solid #111;
     display: block;
     color: #aaa;
@@ -130,14 +138,10 @@ header .menu-bg-show {
     height: 100vh;
     width: 100vw;
     opacity: 0.71;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 100;
-}
-
-header .menu-hidden {
-    display: none;
 }
 
 header .menu-show {
@@ -147,10 +151,13 @@ header .menu-show {
     max-width: 20em;
     height: 100vh;
     padding: 1.1rem 0 0 0;
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
     z-index: 101;
+}
+.hidden {
+    display: none;
 }
 
 img {
@@ -162,14 +169,16 @@ img {
     width: 4.5rem;
 }
 
-input.submit, button.submit {
+a.submit, input.submit, button.submit {
     background-color: #E64350;
     border: none;
     color: white;
+    display: inline-block;
     font-size: 0.33rem;
     letter-spacing: 0.1rem;
     line-height: 1.02rem;
     margin: 0.5rem 0;
+    padding-block: 1px;
     text-align: center;
     width: 100%;
 }
@@ -242,7 +251,7 @@ input.text {
     display: inline-flex;
     flex-direction: column;
     justify-content: space-around;
-    width: 5rem;
+    width: 50vw;
     outline: 1px solid #ededed;
     overflow: hidden;
     padding: .2rem 0 .5rem 0;
@@ -282,6 +291,36 @@ input.text {
     line-height: 2.3em;
 }
 
+.goods-sort {
+    display: flex;
+}
+.goods-sort a {
+    display: block;
+    font-weight: 510;
+    font-size: 1.2em;
+    flex-grow: 1;
+    padding: 1.2em 0;
+    text-align: center;
+}
+.goods-sort .active {
+    color: #ed3f14;
+}
+.pagination {
+    color: #555;
+    display: inline-block;
+    font-size: 1em;
+}
+.pagination div {
+   display: inline-block;
+    margin: 0 0.4em;
+}
+.pagination a{
+    background-color: #e64350;
+
+    border-radius: 1em;
+    color: white;
+    padding: 0.5em 1em;
+}
 .price::before {
     content: '￥';
     font-size: 0.9em;
@@ -289,6 +328,100 @@ input.text {
 
 .price {
     color: #d42525;
+}
+
+#openSearch {
+    position: relative;
+   left: -2%;
+    width: 70%;
+}
+#openSearch .search-bar {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 2em;
+    display: flex;
+    align-items: center;
+    height: 2.1em;
+    width: 100%;
+
+}
+
+#openSearch .search-bar i {
+    color: #999;
+    font-size: 1.3em;
+    text-indent: 0.5em;
+}
+
+#openSearch .search-bar span {
+    color: #999;
+    font-size: 1em;
+    position: absolute;
+    top: 0.58em;
+    left: 2.5em;
+}
+
+#openSearch .search-bg-show {
+    background-color: #f0f0f0;
+    color: #555;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+
+#openSearch .search-header {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+}
+
+#openSearch .search-close {
+    display: inline-block;
+    font-size: 1.1em;
+    padding: 1vw 3vw;
+}
+
+#openSearch .search-input {
+    background-color: #f3f3f3;
+    border: none;
+    border-radius: 1em;
+    box-sizing: border-box;
+    font-size: 1.1em;
+    letter-spacing: 0.05rem;
+    line-height: 2em;
+    outline: none;
+    padding: 0 1.1em;
+    margin: 0.3em auto;
+    width: 66vw;
+}
+#openSearch .search-btn {
+    line-height: normal;
+    width: auto;
+    margin: 0 2vw;
+    padding: 0.35em 1em;
+    background-color: #E64350;
+    border: none;
+    color: white;
+    display: inline-block;
+
+}
+#openSearch .search-hot {
+    background-color: white;
+    padding: 0.5em 1em 15vh 1em;
+}
+#openSearch .search-hot a {
+    display: block;
+    white-space: nowrap;
+    border-radius: 3px;
+    color: #686868;
+    background-color: #f0f2f5;
+    font-size: 0.9em;
+    margin-right: 1em;
+    padding: 0.4em 1em;
 }
 
 .red {

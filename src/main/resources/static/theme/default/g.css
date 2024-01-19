@@ -890,7 +890,7 @@ th {
 }
 
 /* list page */
-.sort {
+.goods-sort {
     background-color: #f1f1f1;
     border: 1px solid #e7e3e7;
     display: block;
@@ -898,7 +898,7 @@ th {
     margin-bottom: 1.5rem;
 }
 
-.sort a + a {
+.goods-sort a + a {
     margin-left: 0.8rem;
 }
 

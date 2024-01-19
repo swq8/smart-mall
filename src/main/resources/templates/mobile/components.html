@@ -28,6 +28,9 @@
 
 <!-- general header -->
 <header th:fragment="header">
+    <div id="goBack" onclick="history.back()">
+        <i class="fa fa-chevron-left"></i>
+    </div>
     <div th:text="${title}"></div>
     <div id="menu">
         <i class="fa fa-bars" @click="show"></i>
