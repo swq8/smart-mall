@@ -133,18 +133,17 @@ public class Site {
 
     @PostMapping(path = "password", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String postPassword(HttpServletRequest request, UserToken userToken, @RequestParam(required = false) String oldPassword, @RequestParam(required = false) String password, @RequestParam(required = false) String password1) {
-        var userEntity = DbUtils.findByIdForWrite(userToken.getId(), UserEntity.class);
+    public String postPassword(HttpServletRequest request, UserToken userToken,
+                               @RequestParam(defaultValue = "") String oldPassword,
+                               @RequestParam(defaultValue = "") String password,
+                               @RequestParam(defaultValue = "") String password1) {
+
         String msg;
         JsonResult jsonResult = new JsonResult();
-        msg = ValidatorUtils.validatePassword(oldPassword, "原密码");
-        if (msg != null) {
-            jsonResult.error.put("oldPassword", msg);
-        }
         msg = ValidatorUtils.validatePassword(password, "新密码");
         if (msg == null) {
             if (password.equals(oldPassword)) {
-                jsonResult.error.put("password", "新旧密码相同");
+                jsonResult.error.put("password", "新旧密码不得相同");
             }
         } else {
             jsonResult.error.put("password", msg);
@@ -153,8 +152,9 @@ public class Site {
         if (jsonResult.error.isEmpty() && !password.equals(password1)) {
             jsonResult.error.put("password1", "重复密码与新密码不一致");
         }
+        var userEntity = DbUtils.findByIdForWrite(userToken.getId(), UserEntity.class);
         if (jsonResult.error.isEmpty()) {
-            String hash = Security.sha3_256(oldPassword + userEntity.getSalt());
+            String hash = Security.sha3_256(Security.sha3_256(oldPassword) + Security.sha3_256(userEntity.getSalt()));
             if (!userEntity.getPassword().equals(hash)) {
                 jsonResult.error.put("oldPassword", "原密码错误");
             }
@@ -162,6 +162,7 @@ public class Site {
         if (jsonResult.error.isEmpty()) {
             UserService userService = AppConfig.getContext().getBean(UserService.class);
             String salt = userService.changePassword(userToken.getId(), password);
+            userService.deleteSessionsByUserId(userEntity.getId());
             if (salt == null) {
                 jsonResult.setMsg("密码修改成功").setUrl("/user/central");
             } else {

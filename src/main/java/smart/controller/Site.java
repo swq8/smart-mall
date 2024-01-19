@@ -35,12 +35,12 @@ public class Site {
      */
     @GetMapping(value = "/")
     public ModelAndView getIndex(HttpServletRequest request) {
-        ModelAndView modelAndView = Helper.newModelAndView("index", request);
-        modelAndView.addObject("carousel", SystemCache.getCarousel());
-        modelAndView.addObject("newsArticle", ArticleCache.getArticleCategoryById(1));
-        modelAndView.addObject("recommend", GoodsCache.getRecommend());
-        modelAndView.addObject("title", SystemCache.getSiteName());
-        return modelAndView;
+        ModelAndView view = Helper.newModelAndView("index", request);
+        view.addObject("carousel", SystemCache.getCarousel());
+        view.addObject("newsArticle", ArticleCache.getArticleCategoryById(1));
+        view.addObject("recommend", GoodsCache.getRecommend());
+        view.addObject("title", SystemCache.getSiteName());
+        return view;
     }
 
     /**

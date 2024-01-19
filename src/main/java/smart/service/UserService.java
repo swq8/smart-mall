@@ -6,6 +6,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import smart.auth.UserToken;
+import smart.config.RedisConfig;
 import smart.dto.GeneralQueryDto;
 import smart.entity.UserBalanceLogEntity;
 import smart.entity.UserEntity;
@@ -77,6 +78,17 @@ public class UserService {
         return null;
     }
 
+    /**
+     * delete all sessions by user id
+     *
+     * @param userId user id
+     */
+    public void deleteSessionsByUserId(long userId) {
+        var redis = RedisConfig.getStringRedisTemplate();
+        var items = redis.opsForSet().members(UserToken.REDIS_USER_PREFIX + userId);
+        assert items != null;
+        redis.delete(items);
+    }
 
     public Result getUserWithLogin(String name, String password, String ip) {
         Result result = new Result();

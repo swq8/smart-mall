@@ -399,15 +399,14 @@ input.text {
     width: 66vw;
 }
 #openSearch .search-btn {
-    line-height: normal;
-    width: auto;
+    display: inline-block;
+    font-size: 1em;
+    line-height: 2em;
     margin: 0 2vw;
-    padding: 0.35em 1em;
+    padding: 0.1em 1em;
     background-color: #E64350;
     border: none;
     color: white;
-    display: inline-block;
-
 }
 #openSearch .search-hot {
     background-color: white;

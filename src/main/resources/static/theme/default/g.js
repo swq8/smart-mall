@@ -246,8 +246,13 @@ document.querySelectorAll("form").forEach(form => {
             if (data === null) {
                 return;
             }
-            if (typeof data.msg === "string" && data.msg.length > 0) {
+            if (data.msg && data.msg.length > 0) {
                 showToast(data.msg);
+            } else {
+                for (let key in data.error) {
+                    showToast(data.error[key])
+                    break
+                }
             }
             if (typeof data.url === "string" && data.url.length > 0) {
                 document.location = data.url;

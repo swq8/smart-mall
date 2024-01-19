@@ -20,6 +20,12 @@ public class JsonResult {
     // 通知客户端跳转URL,如有msg先显示msg
     private String url;
 
+    public static JsonResult Error(String key, String error) {
+        var result = new JsonResult();
+        result.error.put(key, error);
+        return result;
+    }
+
     public Boolean getCaptcha() {
         return captcha;
     }

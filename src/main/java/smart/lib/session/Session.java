@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import smart.config.RedisConfig;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -140,7 +139,6 @@ public class Session implements BaseSession {
 
     @Override
     public void delete(String... keys) {
-
         if (id != null) {
             RedisConfig.getStringObjectRedisTemplate().opsForHash().delete(REDIS_PREFIX + id, (Object[]) keys);
         }

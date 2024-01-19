@@ -90,6 +90,7 @@ public class User {
         if (msg != null) {
             return new ApiJsonResult().setCode(ApiJsonResult.CODE_BAD_REQUEST).setMsg(msg);
         }
+        userService.deleteSessionsByUserId(userId);
         adminLogService.addLog(request, "更改用户密码", Map.of("userId", userId));
         return ApiJsonResult.success();
     }
