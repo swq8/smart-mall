@@ -13,7 +13,7 @@
     <a class="active" th:href="@{/list(cid=${cid},q=${q},sort=p2)}" th:if="${sort =='p1'}">价格&ensp;∧</a>
     <a class="active" th:href="@{/list(cid=${cid},q=${q},sort=p1)}" th:if="${sort =='p2'}">价格&ensp;∨</a>
 </div>
-<div class="row">
+<div class="row goods-list">
 
     <a th:href="@{/goods/{id}.html(id=${goods.id})}" class="goods-item" th:each="goods : ${pagination.rows}">
         <img class="img-45" th:src="${#helpers.imgZoom(goods.img, 200, 200)}">

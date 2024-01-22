@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,11 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 import smart.auth.UserToken;
 import smart.cache.PaymentCache;
 import smart.cache.SystemCache;
+import smart.dto.OrderQueryDto;
 import smart.entity.OrderEntity;
 import smart.entity.OrderGoodsEntity;
 import smart.entity.UserEntity;
 import smart.lib.JsonResult;
-import smart.lib.Pagination;
 import smart.lib.payment.Payment;
 import smart.repository.OrderGoodsRepository;
 import smart.repository.OrderRepository;
@@ -27,10 +28,8 @@ import smart.service.OrderService;
 import smart.util.DbUtils;
 import smart.util.Helper;
 import smart.util.LogUtils;
-import smart.util.SqlBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -134,7 +133,7 @@ public class Order {
         if (orderEntity == null || !Objects.equals(orderEntity.getUserId(), userToken.getId())) {
             return Helper.msgPage("订单不存在", null, request);
         }
-        List<OrderGoodsEntity> goodsList = orderGoodsService.getOrderGoods(orderEntity.getNo());
+        List<OrderGoodsEntity> goodsList = orderGoodsService.findByOrderNo(orderEntity.getNo());
 
         ModelAndView modelAndView = Helper.newModelAndView("user/order/detail", request);
         modelAndView.addObject("goodsList", goodsList);
@@ -150,35 +149,23 @@ public class Order {
             UserToken userToken,
             @RequestParam(name = "deleted", defaultValue = "0") String deletedStr,
             @RequestParam(name = "status", defaultValue = "") String statusStr) {
-        int deleted = Helper.parseNumber(deletedStr, Integer.class);
+        Long deleted = Helper.parseNumber(deletedStr, Long.class);
         if (deleted < 0 || deleted > 1) {
-            deleted = 0;
+            deleted = 0L;
         }
-        int status = Helper.parseNumber(statusStr, Integer.class);
-        ModelAndView modelAndView = Helper.newModelAndView("user/order/index", request);
-        List<Object> sqlParams = new ArrayList<>();
-        var sql = """
-                select * from t_order
-                """;
-        var sqlBuilder = new SqlBuilder(sql, sqlParams)
-                .andEquals("user_id", userToken.getId())
-                .andEquals("deleted", deleted)
-                .orderBy(new String[]{"id"}, "id,desc", "id,desc");
-        if (!statusStr.isEmpty()) {
-            sqlBuilder.andEquals("status", status);
+        var query = new OrderQueryDto();
+        query.setDeleted(deleted);
+        query.setUid(userToken.getId());
+        if (StringUtils.hasText(statusStr)) {
+            query.setStatus(Helper.parseNumber(statusStr, Long.class));
         }
+        query.setSort("id,desc");
 
-        Pagination pagination = Pagination
-                .newBuilder(sqlBuilder.buildSql(), sqlParams.toArray())
-                .page(request)
-                .pageSize(15L)
-                .build();
-        for (var row : pagination.getRows()) {
-            row.put("goodsList", orderGoodsService.getOrderGoods(Helper.parseNumber(row.get("no"), Long.class)));
-        }
-        modelAndView.addObject("pagination", pagination);
-        modelAndView.addObject("title", SystemCache.getSiteName() + " - 我的订单");
-        return modelAndView;
+        ModelAndView view = Helper.newModelAndView("user/order/index", request);
+        var pagination = orderService.query(query);
+        view.addObject("pagination", pagination);
+        view.addObject("title", SystemCache.getSiteName() + " - 我的订单");
+        return view;
     }
 
     /**

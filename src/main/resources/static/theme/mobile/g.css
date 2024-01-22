@@ -156,6 +156,7 @@ header .menu-show {
     top: 0;
     z-index: 101;
 }
+
 .hidden {
     display: none;
 }
@@ -246,7 +247,11 @@ input.text {
     padding-left: 1.2vw;
 }
 
-.goods-item {
+.goods-list {
+
+}
+
+.goods-list .goods-item {
     align-items: center;
     display: inline-flex;
     flex-direction: column;
@@ -257,7 +262,7 @@ input.text {
     padding: .2rem 0 .5rem 0;
 }
 
-.goods-item .goods-name {
+.goods-list .goods-item .goods-name {
     /* 限制两行 */
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -266,7 +271,7 @@ input.text {
     overflow: hidden;
 }
 
-.goods-item .goods-price {
+.goods-list .goods-item .goods-price {
     width: 4.5rem;
 }
 
@@ -294,6 +299,7 @@ input.text {
 .goods-sort {
     display: flex;
 }
+
 .goods-sort a {
     display: block;
     font-weight: 510;
@@ -302,25 +308,30 @@ input.text {
     padding: 1.2em 0;
     text-align: center;
 }
+
 .goods-sort .active {
     color: #ed3f14;
 }
+
 .pagination {
     color: #555;
     display: inline-block;
     font-size: 1em;
 }
+
 .pagination div {
-   display: inline-block;
+    display: inline-block;
     margin: 0 0.4em;
 }
-.pagination a{
+
+.pagination a {
     background-color: #e64350;
 
     border-radius: 1em;
     color: white;
     padding: 0.5em 1em;
 }
+
 .price::before {
     content: '￥';
     font-size: 0.9em;
@@ -331,33 +342,35 @@ input.text {
 }
 
 #openSearch {
-    position: relative;
-   left: -2%;
-    width: 70%;
+    width: 100%;
 }
-#openSearch .search-bar {
+
+
+#openSearch .search-bar input {
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 1px solid #eee;
     border-radius: 2em;
     display: flex;
-    align-items: center;
-    height: 2.1em;
-    width: 100%;
-
+    font-size: 1.1em;
+    height: 1.8em;
+    letter-spacing: 1px;
+    outline: none;
+    padding: 0 1em 0 2em;
+    position: absolute;
+    left: 13vw;
+    top: 0.3em;
+    width: 57vw;
+    z-index: 10;
 }
 
 #openSearch .search-bar i {
     color: #999;
-    font-size: 1.3em;
+    font-size: 1.2em;
     text-indent: 0.5em;
-}
-
-#openSearch .search-bar span {
-    color: #999;
-    font-size: 1em;
     position: absolute;
-    top: 0.58em;
-    left: 2.5em;
+    left: 13vw;
+    top: 0.63em;
+    z-index: 11;
 }
 
 #openSearch .search-bg-show {
@@ -365,7 +378,7 @@ input.text {
     color: #555;
     width: 100vw;
     height: 100vh;
-    z-index: 10;
+    z-index: 5;
     position: fixed;
     top: 0;
     left: 0;
@@ -377,6 +390,7 @@ input.text {
     border-bottom: 1px solid #ddd;
     display: flex;
     align-items: center;
+    height: 2.8em;
 }
 
 #openSearch .search-close {
@@ -385,33 +399,23 @@ input.text {
     padding: 1vw 3vw;
 }
 
-#openSearch .search-input {
-    background-color: #f3f3f3;
-    border: none;
-    border-radius: 1em;
-    box-sizing: border-box;
-    font-size: 1.1em;
-    letter-spacing: 0.05rem;
-    line-height: 2em;
-    outline: none;
-    padding: 0 1.1em;
-    margin: 0.3em auto;
-    width: 66vw;
-}
 #openSearch .search-btn {
     display: inline-block;
     font-size: 1em;
     line-height: 2em;
-    margin: 0 2vw;
     padding: 0.1em 1em;
     background-color: #E64350;
     border: none;
     color: white;
+    position: absolute;
+    right: 2vw;
 }
+
 #openSearch .search-hot {
     background-color: white;
     padding: 0.5em 1em 15vh 1em;
 }
+
 #openSearch .search-hot a {
     display: block;
     white-space: nowrap;
@@ -426,9 +430,30 @@ input.text {
 .red {
     color: #d62222;
 }
+.right {
+    float: right;
+}
 
 .row {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.table {
+    width: 100%;
+    margin: 1vw;
+}
+
+.table-bordered {
+    border: 1px solid #ddd;
+}
+
+.table-bordered th, .table-bordered td {
+    border: 1px solid #ddd;
 }

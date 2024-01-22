@@ -28,7 +28,7 @@
             <a class="button" href="register">注册新会员</a>
         </p>
     </div>
-    <form class="loginForm" autocomplete=off method="post">
+    <form action="/user/login" class="loginForm" autocomplete=off method="post">
         <input type="hidden" name="back" th:value="${back}"/>
         <ul>
             <li class="title">

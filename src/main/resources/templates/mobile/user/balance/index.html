@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{__${theme}__/components::head(style=~{::head/style})}">
+    <style>
+        .container1 {
+            display: flex;
+            flex-flow: wrap;
+            justify-content: center;
+            margin-top: 2rem;
+            min-height: 20vh;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{__${theme}__/components::header}">
+</header>
+
+<div class="container1">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>时间</th>
+            <th>变动</th>
+            <th class="text-center">备注</th>
+        </tr>
+        </thead>
+        <tr th:each="item,iter : ${pagination.rows}">
+            <td th:text="${#helpers.dateFormat(item.time)}"></td>
+            <td th:text="${item.amountStr}"></td>
+            <td th:text="${item.note}"></td>
+        </tr>
+    </table>
+
+
+</div>
+<br><br>
+<nav th:utext="${pagination.generateMobilePagination()}" style="text-align: center"></nav>
+<footer th:replace="~{__${theme}__/components::footer}"></footer>
+</body>
+</html>

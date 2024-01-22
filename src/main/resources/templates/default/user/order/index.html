@@ -49,7 +49,7 @@
             <table>
                 <tr>
                     <td colspan="2">
-                        &nbsp;&nbsp;&nbsp;<b>[[${#helpers.dateFormat(order.createTime, 'yyyy-MM-dd')}]]</b>
+                        &nbsp;&nbsp;&nbsp;<b>[[${order.createTime}]]</b>
                         &nbsp;&nbsp;订单号:&nbsp;<a th:href="@{/user/order/detail(no=${order.no})}"
                                                  th:text="${order.no}"></a>
                     </td>
@@ -61,7 +61,7 @@
                         &nbsp;&nbsp;&nbsp;
                     </td>
                 </tr>
-                <tr th:each="goods,itor : ${order.goodsList}">
+                <tr th:each="goods,itor : ${order.orderGoods}">
                     <td>
                         <a th:href="@{/goods/{id}.html(id=${goods.goodsId})}">
                             <img class="img-80" th:src="${#helpers.imgZoom(goods.img, 80, 80)}"></a></td>
@@ -70,10 +70,10 @@
                            th:text="${goods.goodsName}"></a>
                         <span class="spec" th:if="${goods.specId > 0}" th:text="${goods.specDes}"></span>
                     </td>
-                    <td th:text="${'￥' + #helpers.priceFormat(goods.price)}"></td>
+                    <td th:text="${'￥' + goods.priceStr}"></td>
                     <td th:text="${goods.num}"></td>
                     <td class="border2 text-center" th:if="${itor.index == 0}">
-                        <span class="price">[[${#helpers.priceFormat(order.amount)}]]</span>
+                        <span class="price">[[${order.amountStr}]]</span>
                     </td>
                     <td class="border2 border-top-none" th:if="${itor.index > 0}"></td>
                     <td class="text-center" th:if="${itor.index == 0}">

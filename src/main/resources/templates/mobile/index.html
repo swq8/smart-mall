@@ -25,6 +25,8 @@
 
         header {
             background-color: transparent;
+            display: block;
+            text-align: center;
         }
 
         #menu {
@@ -37,11 +39,13 @@
             justify-content: center;
             height: 1.7em;
             width: 1.7em;
+            top: 0.18em;
         }
 
         #menu i {
             color: #555;
             font-size: 1em;
+
         }
 
 
@@ -63,7 +67,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row goods-list">
         <!--/* 每个一级分类里显示两个推荐商品 */-->
         <!--/*/ <th:block th:each="cat : ${recommend}"> /*/-->
         <a th:href="@{/goods/{id}.html(id=${goods.id})}" class="goods-item" th:each="goods, itor : ${cat.goodsList}"

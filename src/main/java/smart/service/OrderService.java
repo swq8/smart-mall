@@ -12,6 +12,7 @@ import smart.cache.ExpressCache;
 import smart.cache.PaymentCache;
 import smart.cache.RegionCache;
 import smart.config.AppConfig;
+import smart.dto.OrderQueryDto;
 import smart.entity.*;
 import smart.lib.Cart;
 import smart.lib.Pagination;
@@ -25,7 +26,6 @@ import smart.repository.UserRepository;
 import smart.util.DbUtils;
 import smart.util.Helper;
 import smart.util.SqlBuilder;
-import smart.dto.OrderQueryDto;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -304,7 +304,7 @@ public class OrderService {
         var payment = PaymentCache.getPaymentByName(orderEntity.getPayName());
         orderEntity.setPayNameCn(payment == null ? orderEntity.getPayName() : payment.getNameCn());
         orderEntity.setStatusName(OrderStatus.getStatusName(orderEntity.getStatus()));
-        orderEntity.setOrderGoods(orderGoodsService.getOrderGoods(orderNo));
+        orderEntity.setOrderGoods(orderGoodsService.findByOrderNo(orderNo));
         orderEntity.setRegionStr(Objects.requireNonNull(RegionCache.getRegion(orderEntity.getRegion())).toString());
         return orderEntity;
     }
@@ -365,6 +365,7 @@ public class OrderService {
         var sql = """
                 SELECT a.consignee,
                        date_format(a.create_time, '%Y-%m-%d %T') as create_time,
+                       a.deleted,
                        a.id,
                        a.no,
                        date_format(a.pay_time, '%Y-%m-%d %T')    as pay_time,
@@ -379,9 +380,11 @@ public class OrderService {
                                 """;
         List<Object> sqlParams = new ArrayList<>();
         sql = new SqlBuilder(sql, sqlParams)
+                .andEqualsIfNotNull("deleted", query.getDeleted())
                 .andLikeIfNotBlank("no", query.getNo())
                 .andTrimEqualsIfNotBlank("b.name", query.getName())
                 .andEqualsIfNotNull("a.status", query.getStatus())
+                .andEqualsIfNotNull("a.user_id", query.getUid())
                 .orderBy(SORTABLE_COLUMNS, query.getSort(), "create_time,desc")
                 .buildSql();
 
@@ -390,8 +393,11 @@ public class OrderService {
                 .pageSize(query.getPageSize())
                 .build();
         pagination.getRows().forEach(row -> {
+            var orderNo = Helper.parseNumber(row.get("no"), Long.class);
             row.put("amountStr", Helper.priceFormat(Helper.parseNumber(row.get("amount"), Long.class)));
+            row.put("orderGoods", orderGoodsService.findByOrderNo(orderNo));
             row.put("statusName", OrderStatus.getStatusName((long) row.get("status")));
+
 
         });
         return pagination;
@@ -462,7 +468,7 @@ public class OrderService {
     /**
      * 订单退款
      *
-     * @param orderNo order no
+     * @param userEntity user entity
      * @return null(成功) or 错误信息
      */
     public String refundOrder(UserEntity userEntity, OrderEntity orderEntity, Boolean orderStatusOnly) {

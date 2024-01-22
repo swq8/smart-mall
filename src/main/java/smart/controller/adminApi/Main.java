@@ -83,10 +83,12 @@ public class Main {
     public ApiJsonResult login(@RequestBody GeneralQueryDto query,
                                HttpServletRequest request, Session session) {
         query.setPass(Security.rsaDecrypt(SystemCache.getRsaPrivateKey(), query.getPass()));
+        if (StringUtils.hasText(query.getName())) {
+            query.setName(query.getName().toLowerCase());
+        }
         if (ValidatorUtils.validateNotNameAndPassword(query.getName(), query.getPass())) {
             return ApiJsonResult.error(ValidatorUtils.ID_OR_PASS_ERROR);
         }
-        query.setName(query.getName().toLowerCase());
         var loginResult = adminUserService.login(query.getName(), query.getPass(), Helper.getClientIp(request));
         if (loginResult.getError() != null) {
             return ApiJsonResult.error(loginResult.getError());

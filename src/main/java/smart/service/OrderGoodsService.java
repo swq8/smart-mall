@@ -38,7 +38,7 @@ public class OrderGoodsService {
         }
     }
 
-    public List<OrderGoodsEntity> getOrderGoods(long orderNo){
+    public List<OrderGoodsEntity> findByOrderNo(long orderNo){
         var sql = """
                 select b.imgs ->> '$[0]' as img, a.*
                 from t_order_goods a

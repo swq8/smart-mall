@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-3" th:text="${'订单编号: ' + order.no}"></div>
             <div class="col-3" th:text="${'订单状态: ' + #helpers.getOrderStatusInfo(order.status)}"></div>
-            <div class="col-3" th:text="${'下单时间: ' + #helpers.dateFormat(order.createTime)}"></div>
+            <div class="col-3" th:text="${'下单时间: ' + order.createTime}"></div>
             <div class="col-3">
                 支付时间: [[${#helpers.dateFormat(order.payTime)}]]
             </div>
@@ -58,7 +58,7 @@
 
                     <td th:text="${#helpers.getOrderGoodsStatusInfo(goods.status)}">
                     </td>
-                    <td th:text="${'￥' + #helpers.priceFormat(goods.price)}"></td>
+                    <td th:text="${'￥' + goods.priceStr}"></td>
                     <td th:text="${goods.num}"></td>
                     <td class="border2 text-center" th:if="${itor.index == 0}">
                         <span class="price">[[${#helpers.priceFormat(order.amount)}]]</span>

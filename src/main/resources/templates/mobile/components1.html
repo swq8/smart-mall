@@ -3,15 +3,13 @@
     <div id="openSearch">
         <div class="search-bar" @click="show">
             <i class="fa fa-search"></i>
-            <span>搜索</span>
+            <input type="text" v-model="q" autocomplete="off" placeholder="搜索"
+            @keyup.enter="submit" ref="inputRef">
         </div>
         <div :class="bgCls" style="display: none" ref="bgRef">
             <div class="search-header">
-                <form action="/list">
                 <div class="search-close" @click="hidden"> 取消</div>
-                <input class="search-input" name="q" type="text" autocomplete="off" ref="inputRef">
-                <button type="submit" class="search-btn">搜索</button>
-                </form>
+                <button type="submit" class="search-btn" @click="submit">搜索</button>
             </div>
             <div class="row search-hot">
                 <p>热门搜索</p>

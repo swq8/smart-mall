@@ -92,12 +92,14 @@ public class Site {
     @PostMapping(path = "login", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String postLogin(HttpServletRequest request, Session session,
+                            @RequestParam(defaultValue = "") String back,
                             @RequestParam(defaultValue = "") String name,
-                            @RequestParam(defaultValue = "") String password,
-                            @RequestParam(defaultValue = "") String back) {
-        if (back.isEmpty()) {
+                            @RequestParam(defaultValue = "") String password
+    ) {
+        if (!StringUtils.hasText(back)) {
             back = "/";
         }
+        name = name.toLowerCase();
         Cart oldCart = null;
         if (UserToken.from(session) == null) {
             oldCart = new Cart(request);

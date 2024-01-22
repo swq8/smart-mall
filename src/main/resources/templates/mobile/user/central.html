@@ -2,14 +2,8 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{__${theme}__/components::head(style=~{::head/style})}">
     <style>
-        .row {
-            display: flex;
-        }
-
-        .row .item {
-            display: flex;
-            justify-content: center;
-            width: 33%;
+        .container {
+            min-height: 20vh;
         }
 
         .user-info {
@@ -76,26 +70,26 @@
         </div>
         <div class="item">
             账户余额<br>
-            <a href="" th:text="${#helpers.priceFormat(userEntity.balance)}"></a>
+            <a href="/user/balance" th:text="${#helpers.priceFormat(userEntity.balance)}"></a>
         </div>
     </div>
 </div>
 <div class="container">
     <ul class="menu">
         <li>
-            <a href="#">
+            <a href="/user/order">
                 <i class="fa fa-shopping-bag" style="color: rgb(31, 171, 235);"></i><br>
                 我的订单
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="/user/address">
                 <i class="fa fa-map-marker" style="color: rgb(248, 141, 145);"></i><br>
                 收货地址
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="/user/info">
                 <i class="fa fa-user-o" style="color: rgb(248, 141, 145);"></i><br>
                 个人信息
             </a>

@@ -2,30 +2,85 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{__${theme}__/components::head(style=~{::head/style})}">
     <style>
-        .row {
-            display: flex;
+
+
+        .order-list {
+            font-size: 1.1em;
         }
-        .row .item{
+        .item {
+            margin: 1em 0;
+        }
+        .order-footer, .order-header{
+            border-bottom: 1px solid #ededed;
+            border-top: 1px solid #ededed;
+            padding: 1em 1.2em;
+         }
+        .order-header {
+            background-color: #fafafa;
+        }
+        .goods-item {
+            border-bottom: 1px solid #ededed;
             display: flex;
-            justify-content: center;
-            width: 33%;
+            padding: 0.5em 0;
+            margin: 0 1em;
+        }
+
+        .goods-item img {
+            display: block;
+            border: 1px solid #ededed;
+            height: 7em;
+            width: 7em;
+
+        }
+        .goods-item .content {
+            padding-left: 1em;
+            width: 100%;
+
+        }
+        .goods-item .content .name {
+            display: block;
+            height: 4.8em;
+            margin: 0.4em 0;
+
+        }
+        .goods-item .content .footer{
+
+        }
+        .goods-item .content .footer .num{
+            float: right;
+            padding-right: 1em;
         }
     </style>
 </head>
 <body>
 <header th:replace="~{__${theme}__/components::header}">
 </header>
-<div class="container">
-    <div class="row">
-        <div class="item">
-            <i class="fa fa-bars"></i><br>
-            我的订单</div>
-        <div class="item">收货地址</div>
-        <div class="item">修改密码</div>
+<br>
+<div class="container order-list">
+    <div class="item" th:each="order,iter : ${pagination.rows}">
+        <div class="order-header">
+            <span th:text="'下单时间: '+${order.createTime}"></span>
+            <span class="red right" th:text="${order.statusName}"></span>
+        </div>
+        <div class="goods-item" th:each="goods,itor : ${order.orderGoods}"
+        th:styleappend="${itor.last} ? 'border:none' : ''">
+            <img th:src="${#helpers.imgZoom(goods.img, 180, 180)}">
+            <div class="content">
+                <p class="name" th:text="${goods.goodsName}"></p>
+                <div class="footer">
+                    <span class="price" th:text="${goods.priceStr}"></span>
+                    <span class="num" th:text="${'×'+goods.num}"></span>
+                </div>
+            </div>
+        </div>
+        <div class="order-footer">
+            <span th:text="'订单号: '+${order.no}"></span>
+            <span class="red right" th:text="'合计: '+${order.amountStr}"></span>
+        </div>
     </div>
-    <br>
-    <button class="submit" onclick="javascript:window.open('/user/login?logout', '_self')">退出登录</button>
 </div>
+<br><br>
+<nav th:utext="${pagination.generateMobilePagination()}" style="text-align: center"></nav>
 
 <footer th:replace="~{__${theme}__/components::footer}"></footer>
 </body>
