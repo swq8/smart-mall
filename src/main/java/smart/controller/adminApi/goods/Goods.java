@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import smart.auth.Authorize;
 import smart.controller.adminApi.General;
 import smart.dto.GeneralQueryDto;
+import smart.dto.GoodsQueryDto;
 import smart.dto.IdDto;
 import smart.entity.GoodsEntity;
 import smart.lib.ApiJsonResult;
@@ -85,7 +86,7 @@ public class Goods {
 
     @Authorize("/goods/goods/query")
     @PostMapping("list")
-    public ApiJsonResult list(@RequestBody GeneralQueryDto query) {
+    public ApiJsonResult list(@RequestBody GoodsQueryDto query) {
         return ApiJsonResult.success(goodsService.query(query))
                 .putDataItem("brandList", brandService.findAll())
                 .putDataItem("categoryList", categoryService.query())

@@ -21,7 +21,6 @@ import smart.entity.OrderGoodsEntity;
 import smart.entity.UserEntity;
 import smart.lib.JsonResult;
 import smart.lib.payment.Payment;
-import smart.repository.OrderGoodsRepository;
 import smart.repository.OrderRepository;
 import smart.service.OrderGoodsService;
 import smart.service.OrderService;
@@ -43,9 +42,6 @@ public class Order {
 
     @Resource
     OrderService orderService;
-
-    @Resource
-    OrderGoodsRepository orderGoodsRepository;
 
     @Resource
     OrderGoodsService orderGoodsService;

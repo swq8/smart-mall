@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import smart.cache.CategoryCache;
 import smart.cache.GoodsCache;
-import smart.dto.GeneralQueryDto;
+import smart.dto.GoodsQueryDto;
 import smart.dto.IdDto;
 import smart.entity.BrandEntity;
 import smart.entity.CategoryEntity;
@@ -92,11 +92,12 @@ public class GoodsService {
                 .build();
     }
 
-    public Pagination query(GeneralQueryDto query) {
+    public Pagination query(GoodsQueryDto query) {
         List<Object> sqlParams = new ArrayList<>();
         String sql = "select id,cate_id,imgs->>'$[0]' as img,name,price from t_goods";
         SqlBuilder sqlBuilder = new SqlBuilder(sql, sqlParams)
                 .andLikeIfNotBlank("name", query.getName())
+                .andEqualsIfNotNull("onSell", query.getOnSell())
                 .orderBy(SORTABLE_COLUMNS, query.getSort(), "id,desc");
         var pagination = Pagination.newBuilder(sqlBuilder.buildSql(), sqlParams.toArray())
                 .page(query.getPage())

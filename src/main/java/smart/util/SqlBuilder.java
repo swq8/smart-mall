@@ -83,6 +83,7 @@ public class SqlBuilder {
     }
 
     private String getSqlName(String name) {
+        name = DbUtils.camelCaseToUnderscoresNaming(name);
         return (name.contains(".")) ? name : "`" + name + "`";
 
     }
@@ -105,9 +106,7 @@ public class SqlBuilder {
             for (int i = 0; i < sortList.size(); i++) {
                 var sortParam = sortList.get(i);
                 var arr = sortParam.split(",");
-                result.append("`")
-                        .append(DbUtils.camelCaseToUnderscoresNaming(arr[0]))
-                        .append("`")
+                result.append(getSqlName(arr[0]))
                         .append(" ")
                         .append(arr[1]);
                 if (i + 1 < sortList.size()) {

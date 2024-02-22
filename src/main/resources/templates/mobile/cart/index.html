@@ -8,11 +8,25 @@
             position: relative;
             top: 1em;
         }
+        #cart .row {
+            padding: 0.4em 0;
+        }
+
+        #cart .del {
+            background-color: #eee;
+            border-radius: 0.05rem;
+            box-shadow: 0 0 0 1px #ddd;
+            border: none;
+            font-size: 1.1em;
+            padding: 0.3em 0.6em;
+            margin-right: 1em;
+        }
 
         #cart input[type=checkbox] {
             width: 1.5em;
             height: 1.5em;
         }
+
         #cart .empty {
             color: #888888;
             display: flex;
@@ -39,6 +53,7 @@
             flex: 1;
             justify-content: left;
         }
+
         #cart .footer .select-all {
             align-items: center;
             padding-left: 1em;
@@ -61,8 +76,61 @@
         }
 
         #cart .goods-name {
-            font-size: 1.1em;
+            display: block;
             margin-right: 0.2rem;
+            position: relative;
+        }
+
+        #cart .goods-name a {
+            display: block;
+            font-size: 1.1em;
+            max-height: 3.5em;
+        }
+
+        #cart .spec {
+            background-color: #999;
+            border-radius: 0.5em;
+            color: #eee;
+            display: table-cell;
+            padding: 0.1em 0.3em;
+        }
+
+        #cart .goods-price {
+            position: absolute;
+            bottom: 0.2em;
+        }
+
+        #cart .goods-num {
+            padding-left: 2.4em;
+        }
+
+        #cart .goods-num * {
+            border: none;
+            display: block;
+            font-size: 1.5em;
+            height: 1.5em;
+            width: 1.5em;
+            line-height: 1.5em;
+            outline: 1px solid #ededed;
+            text-align: center;
+        }
+
+        #cart .goods-num input {
+            font-size: 1.1em;
+            height: 1.9em;
+            width: 2.7em;
+        }
+
+        #cart .goods-num span {
+            background: #f0f0f0;
+
+
+        }
+        #cart .goods-sum-price {
+            font-size: 1.1em;
+            padding: 0.5em 2.3em;
+            border-bottom: 1px solid var(--grey);
+            margin-bottom: 1em;
         }
 
         #cart img {
@@ -72,11 +140,7 @@
             margin: 0 0.3em;
         }
 
-        #cart .row {
-            border-bottom: 1px solid var(--grey);
-            flex-wrap: nowrap;
-            padding: 0.3rem 0;
-        }
+
         .price {
             color: #fff;
             font-size: 1.1em;
@@ -89,13 +153,28 @@
 
 <div id="cart">
     <div class="empty" v-if="goods.length == 0">购物车中没有商品</div>
-    <div class="row" v-for="item in goods">
-        <input type="checkbox" v-model="item.selected">
-        <img :src="item.goodsImg">
-        <div class="goods-name">
-            <a :href="'/goods/'+item.goodsId+'.html'" v-text="item.goodsName"></a>
+    <template v-for="item in goods">
+        <div class="row">
+            <input type="checkbox" v-model="item.selected">
+            <img :src="item.goodsImg">
+            <div class="goods-name">
+                <a :href="'/goods/'+item.goodsId+'.html'" v-text="item.goodsName"></a>
+                <span class="spec" v-text="item.specDes" v-if="item.specDes"></span>
+                <span class="red goods-price" v-text="'单价: ￥' + item.goodsPriceStr"></span>
+            </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="goods-num">
+                <span @click="sub(item.goodsId, item.specId)">-</span>
+                <input type="number" v-model="item.num" min="1">
+                <span @click="add(item.goodsId, item.specId)">+</span>
+            </div>
+            <button class="del" @click="del(item.goodsId, item.specId)">删除</button>
+        </div>
+        <div class="row goods-sum-price red" v-text="'小结: ￥' + item.sumPriceStr">
+
+        </div>
+    </template>
     <div class="footer" v-if="goods.length > 0">
         <div class="select-all">
             全选
@@ -109,6 +188,7 @@
 <script th:src="${#helpers.retouch('/theme/' + theme + '/g.js')}"></script>
 <script type="module">
     import Cart from "[[${#helpers.retouch('/theme/' + theme + '/cart.js')}]]"
+
     const app = Vue.createApp(Cart,
         {}).mount("#cart")
 </script>

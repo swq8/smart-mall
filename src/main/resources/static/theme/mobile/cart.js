@@ -8,11 +8,22 @@ export default {
         }
     },
     methods: {
-        getCart() {
-            fetch('/cart/json?w=100').then(response => response.json())
+        add(goodsId, specId) {
+            this.getCart(`/cart/json?m=add&goodsId=${goodsId}&specId=${specId}&num=1`)
+        },
+        del(goodsId, specId) {
+            this.getCart(`/cart/json?m=del&goodsId=${goodsId}&specId=${specId}`)
+        },
+        sub(goodsId, specId) {
+            this.getCart(`/cart/json?m=sub&goodsId=${goodsId}&specId=${specId}&num=1`)
+        },
+        getCart(url) {
+            fetch(url).then(response => response.json())
                 .then(data => {
                     this.goods = data
                     this.goods.forEach(item => {
+                        item.goodsPriceStr = priceFormat(item.goodsPrice)
+                        item.sumPriceStr = priceFormat(item.goodsPrice * item.num)
                         this.sumPrice += item.goodsPrice * item.num
                     })
                     console.log(this.goods)
@@ -26,7 +37,7 @@ export default {
         }
     },
     mounted() {
-        this.getCart()
+        this.getCart('/cart/json?w=100')
     },
 
     setup(props) {
