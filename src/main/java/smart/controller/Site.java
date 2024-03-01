@@ -108,8 +108,9 @@ public class Site {
      * @return index
      */
     @GetMapping({"manage", "manage/"})
-    public String getManage() {
-        return "redirect:/manage/index.html";
+    public void getManage(HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+        response.setHeader("Location", "/manage/index.html");
     }
 
     @GetMapping(path = "region", produces = MediaType.APPLICATION_JSON_VALUE)
