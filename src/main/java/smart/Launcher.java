@@ -26,7 +26,7 @@ import java.util.*;
 public class Launcher {
     public static void main(String[] args) {
         Locale.setDefault(Locale.CHINA);
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
+        TimeZone.setDefault(TimeZone.getTimeZone(AppConfig.TIME_ZONE));
         SpringApplication.run(Launcher.class, args);
         try {
             hot();

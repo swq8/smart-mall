@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import smart.config.AppConfig;
 import smart.util.Json;
 import smart.util.validategroups.Add;
 import smart.util.validategroups.Edit;
@@ -30,10 +31,10 @@ public class GoodsEntity extends AbstractEntity {
     @Positive(groups = {Add.class, Edit.class})
     private Long cateId;
     @Null(groups = {Add.class, Edit.class})
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp createTime;
     @Null(groups = {Add.class, Edit.class})
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp updateTime;
     @NotBlank(groups = {Add.class, Edit.class}, message = "商品名称不能为空")
     private String name;

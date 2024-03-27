@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import smart.config.AppConfig;
 import smart.util.validategroups.Edit;
 
 import java.sql.Timestamp;
@@ -33,7 +34,7 @@ public class PaymentEntity extends AbstractEntity {
     private String nameCn;
     @NotNull(groups = {Edit.class})
     private Integer orderNum;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     @Null(groups = {Edit.class})
     private Timestamp updateTime;
 

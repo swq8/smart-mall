@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import smart.config.AppConfig;
 import smart.util.validategroups.Add;
 import smart.util.validategroups.Delete;
 import smart.util.validategroups.Edit;
@@ -27,7 +28,7 @@ public class AdminUserEntity extends AbstractEntity {
     private Long id;
 
     @Null(groups = {Add.class, Edit.class})
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp createTime;
     @NotNull(groups = Delete.class)
     private Long userId;

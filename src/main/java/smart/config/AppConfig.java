@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import smart.lib.ShutdownThread;
 
 import java.io.File;
+import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,6 +18,11 @@ import java.util.regex.Pattern;
 @Component
 @EnableConfigurationProperties(AppProperties.class)
 public class AppConfig {
+    public final static String DATE_FORMAT = "yyyy-MM-dd";
+    public final static String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public final static String TIME_FORMAT = "HH:mm:ss";
+    public final static String TIME_ZONE = "GMT+8";
+
     // application dir
     private static String appDir;
 

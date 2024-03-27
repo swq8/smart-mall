@@ -2,11 +2,16 @@ package smart.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import smart.entity.AdminLogEntity;
+import smart.util.DbUtils;
 import smart.util.Helper;
 import smart.util.Json;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -64,7 +69,16 @@ public class Api {
 
     @GetMapping("test")
     public String getTest(String idStr) {
-        return Json.stringify(idStr);
+        AdminLogEntity entity = new AdminLogEntity();
+        entity.setTitle("title");
+        entity.setTime( new Timestamp(System.currentTimeMillis()));
+        var json = Json.stringify(entity);
+        var obj = Json.parse(json, AdminLogEntity.class);
+
+
+
+        return Json.stringify(Map.of("json", json,
+                "obj", Json.stringify(obj)));
     }
 
     public static class Pojo {

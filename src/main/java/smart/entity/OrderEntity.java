@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import smart.config.AppConfig;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -20,10 +21,10 @@ public class OrderEntity extends AbstractEntity {
     private Long amount;
     @Transient
     private String amountStr;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp confirmTime;
     private String consignee;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp createTime;
     private Integer deleted;
     private Long expressId;
@@ -34,7 +35,7 @@ public class OrderEntity extends AbstractEntity {
     private Long payBalance;
     @Transient
     private String payBalanceStr;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp payTime;
     private String payName;
     @Transient
@@ -47,7 +48,7 @@ public class OrderEntity extends AbstractEntity {
     private String regionStr;
     private String remark;
     private Long shippingFee;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp shippingTime;
     private Long status;
     @Transient

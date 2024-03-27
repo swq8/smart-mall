@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import smart.config.AppConfig;
 import smart.util.validategroups.Add;
 import smart.util.validategroups.Edit;
 
@@ -23,7 +24,8 @@ public class UserBalanceLogEntity extends AbstractEntity {
     @Null(groups = Add.class)
     private Long id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
+
     private Timestamp time;
 
     @NotNull(groups = {Add.class, Edit.class})

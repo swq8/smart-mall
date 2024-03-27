@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import smart.config.AppConfig;
 import smart.lib.status.AccountStatus;
 import smart.lib.status.GenderInfo;
 import smart.util.Helper;
@@ -22,7 +23,7 @@ public class UserEntity extends AbstractEntity {
     @Id
     private Long id;
     private String lastLoginIp;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp lastLoginTime;
     private Integer level;
     private String phone;
@@ -33,7 +34,7 @@ public class UserEntity extends AbstractEntity {
     private Long status;
     private Long balance;
     private String registerIp;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp registerTime;
     @JsonIgnore
     private String salt;

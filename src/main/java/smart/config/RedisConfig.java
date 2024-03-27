@@ -7,7 +7,10 @@ import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.nio.charset.StandardCharsets;
 
 
 @Configuration
@@ -24,8 +27,7 @@ public class RedisConfig {
         return stringObjectRedisTemplate;
     }
 
-    @Autowired
-    private void stringRedisTemplate(StringRedisTemplate redisTemplate) {
+    public RedisConfig(StringRedisTemplate redisTemplate) {
         stringRedisTemplate = redisTemplate;
     }
 
@@ -39,8 +41,9 @@ public class RedisConfig {
     RedisTemplate<String, Object> getStringObjectRedisTemplate(@Autowired RedisConnectionFactory factory) {
         stringObjectRedisTemplate = new RedisTemplate<>();
         stringObjectRedisTemplate.setConnectionFactory(factory);
-        stringObjectRedisTemplate.setKeySerializer(new StringRedisSerializer());
-        stringObjectRedisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        stringObjectRedisTemplate.setDefaultSerializer(new StringRedisSerializer(StandardCharsets.UTF_8));
+        stringObjectRedisTemplate.setKeySerializer(RedisSerializer.string());
+        stringObjectRedisTemplate.setHashKeySerializer(RedisSerializer.json());
         return stringObjectRedisTemplate;
     }
 }

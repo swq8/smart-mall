@@ -28,6 +28,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,9 +39,13 @@ import java.util.regex.Pattern;
 public final class Helper {
 
     // default date formatter
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(AppConfig.DATE_TIME_FORMAT);
+    public static final DateTimeFormatter DATE_TIME_FORMATTER_DATE = DateTimeFormatter.ofPattern(AppConfig.DATE_FORMAT);
+    public static final DateTimeFormatter DATE_TIME_FORMATTER_TIME = DateTimeFormatter.ofPattern(AppConfig.TIME_FORMAT);
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(AppConfig.DATE_TIME_FORMAT);
 
-    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    // simpleDateFormat parse method not thread save, use lock
+    private static final Lock parseDateLock = new ReentrantLock();
 
     // 移动端判别条件
     private final static String[] MOBILE_USER_AGENT_KEY_WORDS = {" (iPhone; CPU ", " (iPad; CPU ", " Android "};
@@ -60,7 +66,7 @@ public final class Helper {
      */
     public static String dateFormat(LocalDateTime localDateTime) {
 
-        return localDateTime == null ? null : dateTimeFormatter.format(localDateTime);
+        return localDateTime == null ? null : DATE_TIME_FORMATTER.format(localDateTime);
     }
 
     public static String dateFormat(LocalDateTime localDateTime, String pattern) {
@@ -74,7 +80,6 @@ public final class Helper {
      * @return 格式化后的日期
      */
     public static String dateFormat(Date date) {
-
         return date == null ? null : simpleDateFormat.format(date);
     }
 
@@ -95,10 +100,6 @@ public final class Helper {
             return request.getRemoteAddr();
         }
         return xForwardedFor.split(",")[0].trim();
-    }
-
-    public static DateTimeFormatter getDateTimeFormatter() {
-        return dateTimeFormatter;
     }
 
     /**
@@ -289,7 +290,15 @@ public final class Helper {
      * @return 日期，失败返回null
      */
     public static Date parseDate(String str) {
-        return parseDate(str, "yyyy-MM-dd HH:mm:ss");
+        Date result = null;
+        try {
+            parseDateLock.lock();
+            result = simpleDateFormat.parse(str);
+        } catch (Exception ignored) {
+        } finally {
+            parseDateLock.unlock();
+        }
+        return result;
     }
 
     /**
@@ -303,6 +312,20 @@ public final class Helper {
         try {
             return new SimpleDateFormat(pattern).parse(str);
         } catch (ParseException ignored) {
+            return null;
+        }
+    }
+
+    /**
+     * 从字符串中解析日期，需要符合"yyyy-MM-dd HH:mm:ss"格式
+     *
+     * @param str 待解析的字符串
+     * @return 日期，失败返回null
+     */
+    public static LocalDateTime parseLocalDateTime(String str) {
+        try {
+            return LocalDateTime.parse(str, DATE_TIME_FORMATTER);
+        } catch (Exception ignored) {
             return null;
         }
     }
