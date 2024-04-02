@@ -43,7 +43,9 @@ public class RedisConfig {
         stringObjectRedisTemplate.setConnectionFactory(factory);
         stringObjectRedisTemplate.setDefaultSerializer(new StringRedisSerializer(StandardCharsets.UTF_8));
         stringObjectRedisTemplate.setKeySerializer(RedisSerializer.string());
-        stringObjectRedisTemplate.setHashKeySerializer(RedisSerializer.json());
+        stringObjectRedisTemplate.setValueSerializer(RedisSerializer.string());
+        stringObjectRedisTemplate.setHashKeySerializer(RedisSerializer.string());
+        stringObjectRedisTemplate.setHashValueSerializer(RedisSerializer.string());
         return stringObjectRedisTemplate;
     }
 }

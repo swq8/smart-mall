@@ -1,8 +1,8 @@
 package smart.storage;
 
 import smart.config.AppConfig;
+import smart.util.LogUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 
 public class LocalStorage implements Storage {
 
-    public final static String UPLOAD_DIR = AppConfig.getAppDir() + "img" + File.separator;
+    public final static String UPLOAD_DIR = Paths.get(AppConfig.getAppDir(), "img").toString();
 
 
     @Override
@@ -37,7 +37,7 @@ public class LocalStorage implements Storage {
                 Files.createDirectories(p.getParent());
                 Files.copy(inputStream, p);
             } catch (IOException e) {
-                e.printStackTrace();
+                LogUtils.error(this.getClass(), "", e);
                 return new UploadResult("服务器IO错误", null);
             }
         }
