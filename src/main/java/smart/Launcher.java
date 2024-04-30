@@ -73,11 +73,10 @@ public class Launcher {
                 .uri(URI.create(uri))
                 .GET()
                 .build();
-        try {
-            HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        try (var client = HttpClient.newHttpClient()) {
+            client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException ex) {
             LogUtils.warn(Launcher.class, ex);
         }
-
     }
 }
