@@ -3,6 +3,7 @@ package smart.service;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import smart.auth.UserToken;
@@ -27,8 +28,8 @@ import java.util.Map;
 @Service
 public class UserService {
 
-    // user salt length
-    public static final int SALT_LENGTH = 10;
+    @Resource
+    PasswordEncoder passwordEncoder;
 
     @Resource
     UserBalanceLogRepository userBalanceLogRepository;
@@ -67,12 +68,10 @@ public class UserService {
      * @return null: success, else error msg
      */
     public String changePassword(long uid, String password) {
-        String salt = Helper.randomString(SALT_LENGTH);
         UserEntity userEntity = new UserEntity();
         userEntity.setId(uid);
-        userEntity.setPassword(Security.sha3_256(Security.sha3_256(password) + Security.sha3_256(salt)));
-        userEntity.setSalt(salt);
-        if (DbUtils.update(userEntity, "password", "salt") == 0) {
+        userEntity.setPassword(passwordEncoder.encode(password));
+        if (DbUtils.update(userEntity, "password") == 0) {
             return "用户不存在";
         }
         return null;
@@ -93,15 +92,14 @@ public class UserService {
     public Result getUserWithLogin(String name, String password, String ip) {
         Result result = new Result();
         if (ValidatorUtils.validateNotNameAndPassword(name, password)) {
-            return result.setError(ValidatorUtils.ID_OR_PASS_ERROR);
+            return result.setError(ValidatorUtils.ID_OR_PWD_ERROR);
         }
         var userEntity = userRepository.findByNameForWrite(name);
         if (userEntity == null) {
-            return result.setError(ValidatorUtils.ID_OR_PASS_ERROR);
+            return result.setError(ValidatorUtils.ID_OR_PWD_ERROR);
         }
-        password = Security.sha3_256(Security.sha3_256(password) + Security.sha3_256(userEntity.getSalt()));
-        if (!password.equals(userEntity.getPassword())) {
-            return result.setError(ValidatorUtils.ID_OR_PASS_ERROR);
+        if (!passwordEncoder.matches(password, userEntity.getPassword())) {
+            return result.setError(ValidatorUtils.ID_OR_PWD_ERROR);
         }
         long status = userEntity.getStatus();
         if (status > 0) {
@@ -155,11 +153,9 @@ public class UserService {
         if (userRepository.findByName(name) != null) {
             return "用户名已被注册";
         }
-        String salt = Helper.randomString(SALT_LENGTH);
         UserEntity userEntity = new UserEntity();
         userEntity.setName(name);
-        userEntity.setPassword(Security.sha3_256(Security.sha3_256(password) + Security.sha3_256(salt)));
-        userEntity.setSalt(salt);
+        userEntity.setPassword(passwordEncoder.encode(password));
         userEntity.setRegisterTime(new Timestamp(System.currentTimeMillis()));
         userEntity.setRegisterIp(registerIp);
         try {

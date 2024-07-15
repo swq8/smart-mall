@@ -80,13 +80,13 @@ public class User {
     @PostMapping("changePassword")
     public ApiJsonResult changePassword(HttpServletRequest request, @RequestBody GeneralQueryDto query) {
         long userId = query.getId();
-        String pass = query.getPass();
-        pass = Security.rsaDecrypt(SystemCache.getRsaPrivateKey(), pass);
-        String msg = ValidatorUtils.validatePassword(pass, "密码");
+        String pwd = query.getPwd();
+        pwd = Security.rsaDecrypt(SystemCache.getRsaPrivateKey(), pwd);
+        String msg = ValidatorUtils.validatePassword(pwd, "密码");
         if (msg != null) {
             return new ApiJsonResult().setCode(ApiJsonResult.CODE_BAD_REQUEST).setMsg(msg);
         }
-        msg = userService.changePassword(userId, pass);
+        msg = userService.changePassword(userId, pwd);
         if (msg != null) {
             return new ApiJsonResult().setCode(ApiJsonResult.CODE_BAD_REQUEST).setMsg(msg);
         }

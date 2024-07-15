@@ -85,8 +85,8 @@ public class SystemService {
         systemRepository.updateValueByEa(config.beian, "sys", "beian");
         systemRepository.updateValueByEa(config.keywords, "sys", "keywords");
         systemRepository.updateValueByEa(config.maxBuyNum, "sys", "maxBuyNum");
-        systemRepository.updateValueByEa(config.ossAk, "storage", Security.aesEncrypt("ossAk"));
-        systemRepository.updateValueByEa(config.ossAks, "storage", Security.aesEncrypt("ossAks"));
+        systemRepository.updateValueByEa(Security.aesEncrypt(config.ossAk), "storage", "ossAk");
+        systemRepository.updateValueByEa(Security.aesEncrypt(config.ossAks), "storage", "ossAks");
         systemRepository.updateValueByEa(config.ossBucket, "storage", "ossBucket");
         systemRepository.updateValueByEa(config.ossBucketUrl, "storage", "ossBucketUrl");
         systemRepository.updateValueByEa(config.ossEndpoint, "storage", "ossEndpoint");
@@ -127,6 +127,7 @@ public class SystemService {
         ExpressCache.update();
         return null;
     }
+
     public String saveGoodsTemplate(GoodsTemplateDto goodsTemplate) {
         var entity = systemRepository.findByEaForWrite("sys", "goodsTemplate");
         if (entity == null) {

@@ -82,14 +82,14 @@ public class Main {
     @PostMapping("login")
     public ApiJsonResult login(@RequestBody GeneralQueryDto query,
                                HttpServletRequest request, Session session) {
-        query.setPass(Security.rsaDecrypt(SystemCache.getRsaPrivateKey(), query.getPass()));
+        query.setPwd(Security.rsaDecrypt(SystemCache.getRsaPrivateKey(), query.getPwd()));
         if (StringUtils.hasText(query.getName())) {
             query.setName(query.getName().toLowerCase());
         }
-        if (ValidatorUtils.validateNotNameAndPassword(query.getName(), query.getPass())) {
-            return ApiJsonResult.error(ValidatorUtils.ID_OR_PASS_ERROR);
+        if (ValidatorUtils.validateNotNameAndPassword(query.getName(), query.getPwd())) {
+            return ApiJsonResult.error(ValidatorUtils.ID_OR_PWD_ERROR);
         }
-        var loginResult = adminUserService.login(query.getName(), query.getPass(), Helper.getClientIp(request));
+        var loginResult = adminUserService.login(query.getName(), query.getPwd(), Helper.getClientIp(request));
         if (loginResult.getError() != null) {
             return ApiJsonResult.error(loginResult.getError());
         }

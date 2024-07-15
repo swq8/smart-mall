@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 @Component
 public class ValidatorUtils {
 
-    public final static String ID_OR_PASS_ERROR = "账号或密码错误";
+    public final static String ID_OR_PWD_ERROR = "账号或密码错误";
     private static Validator validator;
 
     public ValidatorUtils(Validator validator) {

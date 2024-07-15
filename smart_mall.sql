@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.32, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Linux (x86_64)
 --
 -- Host: localhost    Database: smart_mall
 -- ------------------------------------------------------
--- Server version	8.0.32
+-- Server version	8.0.36
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -32,7 +32,7 @@ CREATE TABLE `t_admin_log` (
   `runtime` int NOT NULL COMMENT 'runtime(ms)',
   PRIMARY KEY (`id`),
   KEY `t_admin_log_runtime_index` (`runtime` DESC)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,6 @@ CREATE TABLE `t_admin_log` (
 
 LOCK TABLES `t_admin_log` WRITE;
 /*!40000 ALTER TABLE `t_admin_log` DISABLE KEYS */;
-INSERT INTO `t_admin_log` VALUES (1,'2024-01-15 10:45:03',2,'127.0.0.1','登录成功','{\"avatar\":\"\",\"id\":2,\"level\":0,\"phone\":\"\",\"name\":\"demo\"}',68),(2,'2024-01-15 10:45:40',2,'127.0.0.1','编辑管理账号','{\"id\":2,\"createTime\":null,\"userId\":2,\"enable\":true,\"name\":\"demo\",\"rolesId\":\"2\",\"trueName\":\"演示账号\"}',16),(3,'2024-01-15 10:46:09',2,'127.0.0.1','退出登录','{\"avatar\":\"\",\"id\":2,\"level\":0,\"phone\":\"\",\"name\":\"demo\"}',1);
 /*!40000 ALTER TABLE `t_admin_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -455,7 +454,7 @@ CREATE TABLE `t_payment` (
   `enable` bit(1) NOT NULL DEFAULT b'0',
   `order_num` int unsigned NOT NULL,
   `update_time` datetime NOT NULL,
-  `config` text NOT NULL COMMENT '配置信息，加密后内容',
+  `config` text NOT NULL COMMENT '配置信息，加密数据',
   PRIMARY KEY (`id`),
   UNIQUE KEY `payment_name_uindex` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -467,7 +466,7 @@ CREATE TABLE `t_payment` (
 
 LOCK TABLES `t_payment` WRITE;
 /*!40000 ALTER TABLE `t_payment` DISABLE KEYS */;
-INSERT INTO `t_payment` VALUES (1,'balance','余额支付',_binary '',1,'2023-12-21 10:27:15','mn2jlTtoqslam7S8p4544716RcUj861qczndKP8c'),(2,'alipay','支付宝',_binary '',10,'2023-12-19 11:20:36','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'),(3,'wechat','微信',_binary '',20,'2024-01-07 22:13:36','j2tP/JWVJ/BFkDu/NgDXyFzi8ZqsyQjvhu83bzpDaJ+UlXy432CT0AZc1aSjlODA2OGCNCwW9UGZ5C6pXQl3joo=');
+INSERT INTO `t_payment` VALUES (1,'balance','余额支付',_binary '',1,'2023-12-21 10:27:15','mn2jlTtoqslam7S8p4544716RcUj861qczndKP8c'),(2,'alipay','支付宝',_binary '',10,'2024-07-16 01:35:08','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'),(3,'wechat','微信',_binary '',20,'2024-01-07 22:13:36','j2tP/JWVJ/BFkDu/NgDXyFzi8ZqsyQjvhu83bzpDaJ+UlXy432CT0AZc1aSjlODA2OGCNCwW9UGZ5C6pXQl3joo=');
 /*!40000 ALTER TABLE `t_payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -545,7 +544,7 @@ CREATE TABLE `t_system` (
 
 LOCK TABLES `t_system` WRITE;
 /*!40000 ALTER TABLE `t_system` DISABLE KEYS */;
-INSERT INTO `t_system` VALUES (1,'other','carousel','{\"items\":[{\"img\":\"https://0-00.oss-cn-beijing.aliyuncs.com/28/o0/zr37lick2a1qp8cmci3ouhby1wjn4lp4wk6pfd66hjtpxau6mo.webp\",\"link\":\"#\",\"note\":\" \"},{\"img\":\"https://0-00.oss-cn-beijing.aliyuncs.com/11/5p/0zlzhsebqsnhia6gr6kej5gchwv3btw7909xjen3c8da75l5a8.webp\",\"link\":\"#\",\"note\":\" \"},{\"img\":\"https://0-00.oss-cn-beijing.aliyuncs.com/3n/w1/qev50s2z51csxt0hctb8jul6qn84bo90ju6bubf735wr140u7e.webp\",\"link\":\"#\",\"note\":\" \"},{\"img\":\"https://0-00.oss-cn-beijing.aliyuncs.com/4z/nb/ax5rbrj01o47prgg2hjdtap1f6zlixpo1zweqi2ieqqwcgkmc.webp\",\"link\":\"#\",\"note\":\" \"}]}','首页轮播'),(2,'other','staticRes','{\"path\":\"\",\"version\":\"1\"}','静态文件'),(3,'shipping','feeRule','{\"provinceFees\":[{\"provinces\":[110000,120000,130000],\"firstFee\":500,\"additionalFee\":300}],\"firstFee\":800,\"firstWeight\":1000,\"additionalFee\":400,\"additionalWeight\":1000,\"otherDefault\":true}','邮费规则'),(4,'shipping','freeRule','{\"exclude\":[],\"enable\":true,\"amount\":1900}','包邮规则'),(5,'storage','ossAk','6MXrMpyj+yGZUmuqYtZ6so8hWBY3TDf/VYJ+v0m537uaGfT8Mw/7eYVQf/QTETgbttgdXQ==','Access Key ID,加密数据'),(6,'storage','ossAks','q+h4ymNBNnVl8RvoQBPoBTSglsQ154Gdz/P6E4TMJtsuhgIHni9wzWsSUvUwJWxfqXDqfHyQPq1TGg==','Access Key Secret,加密数据'),(7,'storage','ossBucket','0-00',''),(8,'storage','ossBucketUrl','https://0-00.oss-cn-beijing.aliyuncs.com',''),(9,'storage','ossEndpoint','https://oss-cn-beijing.aliyuncs.com',''),(10,'storage','type','oss','存储类型,oss or local'),(11,'sys','beian','鲁ICP备20028340号-1','备案号'),(12,'sys','keywords','apple,李宁,海尔','搜索关键字'),(13,'sys','maxBuyNum','999','商品限购'),(14,'sys','rsaPrivateKey','MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDIaHcUogv8goKndUOtT++w0z87f9b6GlWX1cgFrTXFIi/cn8Dfcz0YwyMLlSkPcg52TZJ7YcLpRi6mLFdtOSvzspgU44IYSWP96eN0DEJtU8HHggyxh2YpNw6UWRbP2P687wlITOQiEbKmVNtYbEhO8ESK7oo+h6hKBuuLX+11rOPtoubdAXaszsb7ehGBRNjpezE+FOQ+czUsZ1jtpjuk4LCVZPkW9y6RUCP27T/XeyyvAm6nz8UcfVv4OT7UNVpxCLR0EJrxoCNr5w8TY9GwJOGrpe3eQ+9PI3Tm4SgsRCnv2oCv2ihtnG/GIdlhgCut3BcPANzWbp3/IutFh0WDAgMBAAECggEAB2O2tFePSpXDXIpZ3vuaEnKPm9GIaztqWYlj8TWkTGsIycFIOtUEdTPIyIYM+AlUGC+fDZaaucBBOxZaeOgJQ1ib+/UxmFSob7XekapcDqzucb1NW4RrE2z4yCaKzUoqhmvn8zcGmGz/odtyJQ4FEogQdvD5vvmAjo43xDFaz6JqESHTgcOyNAqEXkuc98k4cXRpV2QWJli43lxRxXDR3d8nQCepDE5sllz7BwBxDjYvwe9bXno6rxjhoT4HoNyi1tH8umjjLIgb5+HCegTcpv/SxSLmp4TkDTCj5uQ6oxJ4QrN2x2cL1yPUjegf8YAtDmsVRC/HMIjS6O28R8f6wQKBgQD6kHiQKZLgO57lLL7zy0IVq/3Kt33jYNsvg/Q5aPTXu/YzKuEoZ21WgiF3/hvl8BAG+LaxG12D9vVmxL03/S9kt9CS03dKBE90dy0/0RlAKJuy5Uu3PdKarCwwo2Lh2p/0bcdWR/z7ePmrpAKeqBEYKMvUnVWl30fJRLeJDnDawQKBgQDMwXKFW22+WxNXXbJZJy+ab3SF9RdX5qpGD0vAyCp/ihlay2eqw2ejHNdWUpqTM0w3caK8j0vVsMe1acLOpq/4N7pgnlyoVa/7SRaS2DYNHwfAIGHB1pKI6JmbgCELwY3SHq5QgTOmBf3aP9GXrAUhwizX5PpdH4NEoBQRfQhFQwKBgQDZkddOfvsNgFfB8i/BK+6vONBAVUKXzQOmZ7MKostwBMOMvKAUYHK9mnOLaPg6mlCgbRjeAsAaFbgTS6RuWIftsfsHc13yxHllzRJahquhXWGNXrN3YtRcAELC3SzApwEb0rMzhYDzr6FEXD72G0P0sYAEl7XGOXJxHx0rgoGWQQKBgFyps0Us4laCaxdfvOXh+QYgKJCzIXRTXH3GUFcXfzwm6GCRqwG52v4TgFR9n5y8W2LAF5DUHNLBZS/xhAr3nq1rsvok0PQRi0nigsfD93oqr9xAC12o2LoC4flgnBPw7VjJL8QZJKGfFood1aGZZN0pPhgadT+Nkl+NPmfHuOV3AoGAcH0UCYtsjS7q54ag5mmgVYf9k3QYP6f5su/YTbGW/kq47926WOFwBjQBlMrCxZKTnz6qOGld0WxplYT2ahj6lgRY81tQ8pSp1i+SO6o+FwfCcZnX4wWSoN0XYsJsVe3AgmcoczSRUNxEGh9qxRfLXh3uB2TRMWEGQNWB5ACDwBk=','rsa private key'),(15,'sys','rsaPublicKey','MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyGh3FKIL/IKCp3VDrU/vsNM/O3/W+hpVl9XIBa01xSIv3J/A33M9GMMjC5UpD3IOdk2Se2HC6UYupixXbTkr87KYFOOCGElj/enjdAxCbVPBx4IMsYdmKTcOlFkWz9j+vO8JSEzkIhGyplTbWGxITvBEiu6KPoeoSgbri1/tdazj7aLm3QF2rM7G+3oRgUTY6XsxPhTkPnM1LGdY7aY7pOCwlWT5FvcukVAj9u0/13ssrwJup8/FHH1b+Dk+1DVacQi0dBCa8aAja+cPE2PRsCThq6Xt3kPvTyN05uEoLEQp79qAr9oobZxvxiHZYYArrdwXDwDc1m6d/yLrRYdFgwIDAQAB','rsa public key'),(16,'sys','siteName','SmartMall','网站名称'),(17,'sys','url','https://smart-mall.g686.net','网址'),(18,'theme','mobile','mobile','移动端模板'),(19,'theme','pc','default','电脑端模板'),(20,'sys','goodsTemplate','{\"footer\":\"<p>footer</p>\\n<p>&nbsp;</p>\",\"footerEnable\":false,\"header\":\"<p>header</p>\",\"headerEnable\":false}','商品模板');
+INSERT INTO `t_system` VALUES (1,'other','carousel','{\"items\":[{\"img\":\"https://0-00.oss-cn-beijing.aliyuncs.com/28/o0/zr37lick2a1qp8cmci3ouhby1wjn4lp4wk6pfd66hjtpxau6mo.webp\",\"link\":\"#\",\"note\":\" \"},{\"img\":\"https://0-00.oss-cn-beijing.aliyuncs.com/11/5p/0zlzhsebqsnhia6gr6kej5gchwv3btw7909xjen3c8da75l5a8.webp\",\"link\":\"#\",\"note\":\" \"},{\"img\":\"https://0-00.oss-cn-beijing.aliyuncs.com/3n/w1/qev50s2z51csxt0hctb8jul6qn84bo90ju6bubf735wr140u7e.webp\",\"link\":\"#\",\"note\":\" \"},{\"img\":\"https://0-00.oss-cn-beijing.aliyuncs.com/4z/nb/ax5rbrj01o47prgg2hjdtap1f6zlixpo1zweqi2ieqqwcgkmc.webp\",\"link\":\"#\",\"note\":\" \"}]}','首页轮播'),(2,'other','staticRes','{\"path\":\"\",\"version\":\"1\"}','静态文件'),(3,'shipping','feeRule','{\"provinceFees\":[{\"provinces\":[110000,120000,130000],\"firstFee\":500,\"additionalFee\":300}],\"firstFee\":800,\"firstWeight\":1000,\"additionalFee\":400,\"additionalWeight\":1000,\"otherDefault\":true}','邮费规则'),(4,'shipping','freeRule','{\"exclude\":[],\"enable\":true,\"amount\":1900}','包邮规则'),(5,'storage','ossAk','KIbsc5mwADB/pRq15mpDPpXQjlwH/HBnkFV82IKbW5o=','Access Key ID,加密数据'),(6,'storage','ossAks','ZUsX2NjzLbUbKGki0llhgi33tmuaDjgVCa2NoP6IeX8=','Access Key Secret,加密数据'),(7,'storage','ossBucket','0-00',''),(8,'storage','ossBucketUrl','https://0-00.oss-cn-beijing.aliyuncs.com',''),(9,'storage','ossEndpoint','https://oss-cn-beijing.aliyuncs.com',''),(10,'storage','type','oss','存储类型,oss or local'),(11,'sys','beian','鲁ICP备20028340号-1','备案号'),(12,'sys','keywords','apple,李宁,海尔','搜索关键字'),(13,'sys','maxBuyNum','999','商品限购'),(14,'sys','rsaPrivateKey','MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDIaHcUogv8goKndUOtT++w0z87f9b6GlWX1cgFrTXFIi/cn8Dfcz0YwyMLlSkPcg52TZJ7YcLpRi6mLFdtOSvzspgU44IYSWP96eN0DEJtU8HHggyxh2YpNw6UWRbP2P687wlITOQiEbKmVNtYbEhO8ESK7oo+h6hKBuuLX+11rOPtoubdAXaszsb7ehGBRNjpezE+FOQ+czUsZ1jtpjuk4LCVZPkW9y6RUCP27T/XeyyvAm6nz8UcfVv4OT7UNVpxCLR0EJrxoCNr5w8TY9GwJOGrpe3eQ+9PI3Tm4SgsRCnv2oCv2ihtnG/GIdlhgCut3BcPANzWbp3/IutFh0WDAgMBAAECggEAB2O2tFePSpXDXIpZ3vuaEnKPm9GIaztqWYlj8TWkTGsIycFIOtUEdTPIyIYM+AlUGC+fDZaaucBBOxZaeOgJQ1ib+/UxmFSob7XekapcDqzucb1NW4RrE2z4yCaKzUoqhmvn8zcGmGz/odtyJQ4FEogQdvD5vvmAjo43xDFaz6JqESHTgcOyNAqEXkuc98k4cXRpV2QWJli43lxRxXDR3d8nQCepDE5sllz7BwBxDjYvwe9bXno6rxjhoT4HoNyi1tH8umjjLIgb5+HCegTcpv/SxSLmp4TkDTCj5uQ6oxJ4QrN2x2cL1yPUjegf8YAtDmsVRC/HMIjS6O28R8f6wQKBgQD6kHiQKZLgO57lLL7zy0IVq/3Kt33jYNsvg/Q5aPTXu/YzKuEoZ21WgiF3/hvl8BAG+LaxG12D9vVmxL03/S9kt9CS03dKBE90dy0/0RlAKJuy5Uu3PdKarCwwo2Lh2p/0bcdWR/z7ePmrpAKeqBEYKMvUnVWl30fJRLeJDnDawQKBgQDMwXKFW22+WxNXXbJZJy+ab3SF9RdX5qpGD0vAyCp/ihlay2eqw2ejHNdWUpqTM0w3caK8j0vVsMe1acLOpq/4N7pgnlyoVa/7SRaS2DYNHwfAIGHB1pKI6JmbgCELwY3SHq5QgTOmBf3aP9GXrAUhwizX5PpdH4NEoBQRfQhFQwKBgQDZkddOfvsNgFfB8i/BK+6vONBAVUKXzQOmZ7MKostwBMOMvKAUYHK9mnOLaPg6mlCgbRjeAsAaFbgTS6RuWIftsfsHc13yxHllzRJahquhXWGNXrN3YtRcAELC3SzApwEb0rMzhYDzr6FEXD72G0P0sYAEl7XGOXJxHx0rgoGWQQKBgFyps0Us4laCaxdfvOXh+QYgKJCzIXRTXH3GUFcXfzwm6GCRqwG52v4TgFR9n5y8W2LAF5DUHNLBZS/xhAr3nq1rsvok0PQRi0nigsfD93oqr9xAC12o2LoC4flgnBPw7VjJL8QZJKGfFood1aGZZN0pPhgadT+Nkl+NPmfHuOV3AoGAcH0UCYtsjS7q54ag5mmgVYf9k3QYP6f5su/YTbGW/kq47926WOFwBjQBlMrCxZKTnz6qOGld0WxplYT2ahj6lgRY81tQ8pSp1i+SO6o+FwfCcZnX4wWSoN0XYsJsVe3AgmcoczSRUNxEGh9qxRfLXh3uB2TRMWEGQNWB5ACDwBk=','rsa private key'),(15,'sys','rsaPublicKey','MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyGh3FKIL/IKCp3VDrU/vsNM/O3/W+hpVl9XIBa01xSIv3J/A33M9GMMjC5UpD3IOdk2Se2HC6UYupixXbTkr87KYFOOCGElj/enjdAxCbVPBx4IMsYdmKTcOlFkWz9j+vO8JSEzkIhGyplTbWGxITvBEiu6KPoeoSgbri1/tdazj7aLm3QF2rM7G+3oRgUTY6XsxPhTkPnM1LGdY7aY7pOCwlWT5FvcukVAj9u0/13ssrwJup8/FHH1b+Dk+1DVacQi0dBCa8aAja+cPE2PRsCThq6Xt3kPvTyN05uEoLEQp79qAr9oobZxvxiHZYYArrdwXDwDc1m6d/yLrRYdFgwIDAQAB','rsa public key'),(16,'sys','siteName','SmartMall','网站名称'),(17,'sys','url','https://smart-mall.g686.net','网址'),(18,'theme','mobile','mobile','移动端模板'),(19,'theme','pc','default','电脑端模板'),(20,'sys','goodsTemplate','{\"footer\":\"<p>footer</p>\\n<p>&nbsp;</p>\",\"footerEnable\":false,\"header\":\"<p>header</p>\",\"headerEnable\":false}','商品模板');
 /*!40000 ALTER TABLE `t_system` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -569,13 +568,12 @@ CREATE TABLE `t_user` (
   `last_login_ip` varchar(32) DEFAULT NULL COMMENT '最近登陆IP',
   `status` bigint unsigned NOT NULL DEFAULT '0' COMMENT '状态:0:正常 1:暂时关闭 2:永久关闭',
   `password` varchar(255) NOT NULL COMMENT '密码',
-  `salt` varchar(255) NOT NULL COMMENT '盐值',
   `register_time` datetime NOT NULL COMMENT '注册时间',
   `register_ip` varchar(255) NOT NULL COMMENT '注册所用IP',
   PRIMARY KEY (`id`),
   UNIQUE KEY `iName` (`name`),
   KEY `t_user_last_login_time_index` (`last_login_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -584,7 +582,7 @@ CREATE TABLE `t_user` (
 
 LOCK TABLES `t_user` WRITE;
 /*!40000 ALTER TABLE `t_user` DISABLE KEYS */;
-INSERT INTO `t_user` VALUES (1,'manage',0,'','',0,'',897400,'2024-01-15 07:56:21','127.0.0.1',0,'ea29f10ffa7f841840e578a3cd4a98b213a0255930eb67e37bb88cc21337dc30','yqztdiqoyv','2024-01-12 14:57:26','0:0:0:0:0:0:0:1'),(2,'demo',0,'','',0,'',0,'2024-01-15 10:45:04','127.0.0.1',0,'bce761f1533a4f046d0959d4fc5797334b23db3f03b9b2bb646462bd5b61acee','yfghyylyok','2024-01-12 16:14:16','0:0:0:0:0:0:0:1');
+INSERT INTO `t_user` VALUES (1,'manage',0,'','',0,'',897400,'2024-07-16 01:34:04','127.0.0.1',0,'$argon2id$v=19$m=16384,t=2,p=1$bqgKi/mev05+jbfhRQIijw$odIG2fEN/95ayJMpnmqpyfYKPTHyH5UQpNUARv9kNcE','2024-01-12 14:57:26','0:0:0:0:0:0:0:1'),(2,'demo',0,'','',0,'',0,'2024-07-15 17:57:58','127.0.0.1',0,'$argon2id$v=19$m=16384,t=2,p=1$SKI+aW7UT7Ok2/EmppKJRw$Wktk/0PH1gZcdD9CfEvpg1apU+o6zFF8KmAUHJVqP/Y','2024-01-12 16:14:16','0:0:0:0:0:0:0:1');
 /*!40000 ALTER TABLE `t_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -675,14 +673,6 @@ LOCK TABLES `t_user_log` WRITE;
 /*!40000 ALTER TABLE `t_user_log` DISABLE KEYS */;
 /*!40000 ALTER TABLE `t_user_log` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'smart_mall'
---
-
---
--- Dumping routines for database 'smart_mall'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -693,4 +683,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-15 10:46:45
+-- Dump completed on 2024-07-16  2:04:13

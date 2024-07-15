@@ -36,8 +36,6 @@ public class UserEntity extends AbstractEntity {
     private String registerIp;
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp registerTime;
-    @JsonIgnore
-    private String salt;
 
     public String getAvatar() {
         return avatar;
@@ -164,13 +162,5 @@ public class UserEntity extends AbstractEntity {
 
     public void setRegisterTime(Timestamp registerTime) {
         this.registerTime = registerTime;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
     }
 }

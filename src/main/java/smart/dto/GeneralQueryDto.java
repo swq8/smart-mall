@@ -12,7 +12,7 @@ public class GeneralQueryDto extends PaginationDto {
 
     String no;
 
-    String pass;
+    String pwd;
 
     // query, like keyword
     String q;
@@ -70,12 +70,12 @@ public class GeneralQueryDto extends PaginationDto {
         this.no = no;
     }
 
-    public String getPass() {
-        return pass;
+    public String getPwd() {
+        return pwd;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 
     public String getQ() {

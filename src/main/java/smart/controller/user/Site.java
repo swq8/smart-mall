@@ -4,6 +4,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,9 @@ import smart.util.*;
 @RequestMapping(path = "user")
 @Transactional
 public class Site {
+
+    @Resource
+    PasswordEncoder passwordEncoder;
 
     @Resource
     UserRepository userRepository;
@@ -156,8 +160,7 @@ public class Site {
         }
         var userEntity = DbUtils.findByIdForWrite(userToken.getId(), UserEntity.class);
         if (jsonResult.error.isEmpty()) {
-            String hash = Security.sha3_256(Security.sha3_256(oldPassword) + Security.sha3_256(userEntity.getSalt()));
-            if (!userEntity.getPassword().equals(hash)) {
+            if (!passwordEncoder.matches(oldPassword, userEntity.getPassword())) {
                 jsonResult.error.put("oldPassword", "原密码错误");
             }
         }
