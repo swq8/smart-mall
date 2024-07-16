@@ -26,28 +26,28 @@ public class Security {
         AES_BYTES_ENCRYPTOR = aesBytesEncryptor;
     }
 
-    public static String aesDecrypt(String encryptorBase64) {
+    public static String aesDecrypt(String encryptedText) {
         try {
-            return new String(AES_BYTES_ENCRYPTOR.decrypt(Base64.getDecoder().decode(encryptorBase64)));
+            return new String(AES_BYTES_ENCRYPTOR.decrypt(Base64.getDecoder().decode(encryptedText)));
         } catch (Exception e) {
             return null;
         }
     }
 
-    public static String aesEncrypt(String str) {
-        return Base64.getEncoder().encodeToString(AES_BYTES_ENCRYPTOR.encrypt(str.getBytes()));
+    public static String aesEncrypt(String text) {
+        return Base64.getEncoder().encodeToString(AES_BYTES_ENCRYPTOR.encrypt(text.getBytes()));
     }
 
     /**
      * 计算字符串的hash
      *
      * @param algorithm hash算法,如：MD5 SHA-256
-     * @param data      待计算hash值的数据
+     * @param text      待计算hash值的字符串
      * @return hash值
      */
-    public static String hash(String algorithm, String data) {
+    public static String hash(String algorithm, String text) {
         try {
-            byte[] bytes = MessageDigest.getInstance(algorithm).digest(data.getBytes());
+            byte[] bytes = MessageDigest.getInstance(algorithm).digest(text.getBytes());
             return bytesToHex(bytes);
         } catch (NoSuchAlgorithmException ex) {
             LogUtils.error(Security.class, "", ex);
@@ -79,13 +79,14 @@ public class Security {
         }
     }
 
-    public static String rsaDecrypt(String base64Key, String base64Content) {
+    public static String rsaDecrypt(String pemData, String encryptedText) {
+        pemData = pemData.replaceAll("\\s", "").replaceAll("-+\\w+-+", "");
         try {
             var base64Decoder = Base64.getDecoder();
-            var rsaPrivateKey = KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(base64Decoder.decode(base64Key)));
+            var rsaPrivateKey = KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(base64Decoder.decode(pemData)));
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, rsaPrivateKey);
-            var decryptBuffer = cipher.doFinal(base64Decoder.decode(base64Content));
+            var decryptBuffer = cipher.doFinal(base64Decoder.decode(encryptedText));
             return new String(decryptBuffer);
         } catch (Exception ignored) {
         }
@@ -95,11 +96,11 @@ public class Security {
     /**
      * 字符串的sha256哈希
      *
-     * @param data 待计算hash值的字符串
+     * @param text 待计算hash值的字符串
      * @return hash
      */
-    public static String sha256(String data) {
-        return hash("SHA-256", data);
+    public static String sha256(String text) {
+        return hash("SHA-256", text);
     }
 
     /**
@@ -115,11 +116,11 @@ public class Security {
     /**
      * 字符串的sha3-256哈希
      *
-     * @param data 待计算hash值的字符串
+     * @param text 待计算hash值的字符串
      * @return hash
      */
-    public static String sha3_256(String data) {
-        return hash("SHA3-256", data);
+    public static String sha3_256(String text) {
+        return hash("SHA3-256", text);
     }
 
     /**
