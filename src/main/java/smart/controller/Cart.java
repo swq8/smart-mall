@@ -22,6 +22,7 @@ import smart.util.Helper;
 import smart.util.Json;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Controller
 @RequestMapping(path = "cart")
@@ -97,7 +98,7 @@ public class Cart {
         view.addObject("addrId", addrId);
         view.addObject("cart", cart);
         //运费
-        long shippingFee = 0;
+        BigDecimal shippingFee = BigDecimal.ZERO;
         if (address != null) {
             shippingFee = cart.getShippingFee(address.getRegion());
         }
@@ -128,9 +129,9 @@ public class Cart {
         }
         String payName = request.getParameter("payName");
         // 验证提交时的运费和商品价格
-        long payBalance = Helper.parseNumber(payBalanceStr, BigDecimal.class).multiply(new BigDecimal(100)).longValue();
-        long shippingFee = Helper.parseNumber(shippingFeeStr, BigDecimal.class).multiply(new BigDecimal(100)).longValue();
-        long sumPrice = Helper.parseNumber(sumPriceStr, BigDecimal.class).multiply(new BigDecimal(100)).longValue();
+        BigDecimal payBalance = Helper.parseNumber(payBalanceStr, BigDecimal.class).setScale(2, RoundingMode.DOWN);
+        BigDecimal shippingFee = Helper.parseNumber(shippingFeeStr, BigDecimal.class).setScale(2, RoundingMode.DOWN);
+        BigDecimal sumPrice = Helper.parseNumber(sumPriceStr, BigDecimal.class).setScale(2, RoundingMode.DOWN);
         smart.lib.Cart cart = new smart.lib.Cart(request);
         var orderInfo = orderService.addOrder(
                 addrId, payBalance, payName, cart, sumPrice, shippingFee, Helper.isMobileRequest(request) ? 2 : 1

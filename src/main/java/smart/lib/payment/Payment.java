@@ -1,5 +1,6 @@
 package smart.lib.payment;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 public interface Payment extends Cloneable {
@@ -37,7 +38,7 @@ public interface Payment extends Cloneable {
      * @return 收款码
      * @throws Exception error
      */
-    String getQrCode(String title, String orderNo, long amount) throws Exception;
+    String getQrCode(String title, String orderNo, BigDecimal amount) throws Exception;
 
     /**
      * 成功信息短语
@@ -61,5 +62,5 @@ public interface Payment extends Cloneable {
      * @param amount  退款金额
      * @return null成功, 或失败信息
      */
-    String refund(long orderNo, long amount);
+    String refund(long orderNo, BigDecimal amount);
 }

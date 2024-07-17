@@ -2,6 +2,7 @@ package smart.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
@@ -11,6 +12,7 @@ import smart.config.AppConfig;
 import smart.util.validategroups.Add;
 import smart.util.validategroups.Edit;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @DynamicInsert
@@ -31,9 +33,10 @@ public class UserBalanceLogEntity extends AbstractEntity {
     @NotNull(groups = {Add.class, Edit.class})
     private Long uid;
 
+    @Digits(integer = 12, fraction = 2)
     @NotNull(groups = {Add.class, Edit.class})
-    private Long amount;
-    private Long balance;
+    private BigDecimal amount;
+    private BigDecimal balance;
     @NotBlank(groups = {Add.class, Edit.class})
     private String note;
 
@@ -53,12 +56,19 @@ public class UserBalanceLogEntity extends AbstractEntity {
         this.time = time;
     }
 
-    public Long getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
-
-    public void setAmount(Long amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
     public Long getUid() {
@@ -69,15 +79,6 @@ public class UserBalanceLogEntity extends AbstractEntity {
         this.uid = uid;
     }
 
-
-
-    public Long getBalance() {
-        return balance;
-    }
-
-    public void setBalance(Long balance) {
-        this.balance = balance;
-    }
 
     public String getNote() {
         return note;

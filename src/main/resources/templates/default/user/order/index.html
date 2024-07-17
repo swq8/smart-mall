@@ -70,10 +70,10 @@
                            th:text="${goods.goodsName}"></a>
                         <span class="spec" th:if="${goods.specId > 0}" th:text="${goods.specDes}"></span>
                     </td>
-                    <td th:text="${'￥' + goods.priceStr}"></td>
+                    <td th:text="${'￥' + goods.price}"></td>
                     <td th:text="${goods.num}"></td>
                     <td class="border2 text-center" th:if="${itor.index == 0}">
-                        <span class="price">[[${order.amountStr}]]</span>
+                        <span class="price">[[${order.amount}]]</span>
                     </td>
                     <td class="border2 border-top-none" th:if="${itor.index > 0}"></td>
                     <td class="text-center" th:if="${itor.index == 0}">

@@ -1,8 +1,10 @@
 package smart.dto.express;
 
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +19,10 @@ public class FreeRuleDto {
     @NotNull
     private Boolean enable = false;
 
+    @Digits(integer = 12, fraction = 2)
     @NotNull
     @PositiveOrZero
-    private Long amount = 0L;
+    private BigDecimal amount = BigDecimal.ZERO;
 
     public boolean isEnable() {
         return enable;
@@ -33,11 +36,11 @@ public class FreeRuleDto {
         return exclude;
     }
 
-    public long getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

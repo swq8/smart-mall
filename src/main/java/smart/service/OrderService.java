@@ -27,6 +27,7 @@ import smart.util.DbUtils;
 import smart.util.Helper;
 import smart.util.SqlBuilder;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -95,9 +96,9 @@ public class OrderService {
      * @param source      订单来源 1电脑网页,2移动端网页,3微信公众号,4微信小程序
      * @return 订单信息
      */
-    public OrderInfo addOrder(long addressId, long payBalance, String payName, Cart cart, long sumPrice, long shippingFee, long source) {
+    public OrderInfo addOrder(long addressId, BigDecimal payBalance, String payName, Cart cart, BigDecimal sumPrice, BigDecimal shippingFee, long source) {
         OrderInfo orderInfo = new OrderInfo();
-        long orderAmount = sumPrice + shippingFee;
+        BigDecimal orderAmount = sumPrice.add(shippingFee);
         long userId = cart.getUserToken().getId();
         UserEntity userEntity = DbUtils.findByIdForWrite(userId, UserEntity.class);
         if (userEntity == null || userEntity.getStatus() != 0) {
@@ -107,19 +108,19 @@ public class OrderService {
         if (addressEntity == null) {
             return orderInfo.setErr("收货地址不存在");
         }
-        if (cart.sumPrice() != sumPrice || cart.getShippingFee(addressEntity.getRegion()) != shippingFee || cart.sumNum() == 0) {
+        if (cart.sumPrice().compareTo(sumPrice) != 0 || cart.getShippingFee(addressEntity.getRegion()).compareTo(shippingFee) != 0 || cart.sumNum() == 0) {
             return orderInfo.setErr("购物车被修改，请重新提交");
         }
-        if (payBalance < 0) {
+        if (payBalance.compareTo(BigDecimal.ZERO) < 0) {
             return orderInfo.setErr("余额支付数值错误");
         }
-        if (orderAmount < payBalance) {
+        if (orderAmount.compareTo(payBalance) < 0) {
             payBalance = orderAmount;
         }
-        if (payBalance > userEntity.getBalance()) {
+        if (payBalance.compareTo(userEntity.getBalance()) > 0) {
             return orderInfo.setErr("可用余额不足");
         }
-        if (payBalance < sumPrice) {
+        if (payBalance.compareTo(sumPrice) < 0) {
             if (payName == null) {
                 return orderInfo.setErr("请选择支付方式");
             }
@@ -199,7 +200,7 @@ public class OrderService {
         orderEntity.setUserId(userId);
 
         // 0额订单或余额支付订单无需在线支付
-        if (payBalance == orderAmount) {
+        if (payBalance.compareTo(orderAmount) == 0) {
             orderEntity.setStatus(OrderStatus.WAIT_FOR_SHIPPING.getCode());
             orderEntity.setPayTime(orderEntity.getCreateTime());
         }
@@ -221,8 +222,8 @@ public class OrderService {
             OrderGoodsEntity orderGoodsEntity = getOrderGoodsEntity(item, orderEntity);
             orderGoodsEntities.add(orderGoodsEntity);
         });
-        if (payBalance > 0) {
-            var msg = userService.changeBalance(userEntity, -payBalance, "支付订单:" + orderEntity.getNo());
+        if (payBalance.compareTo(BigDecimal.ZERO) > 0) {
+            var msg = userService.changeBalance(userEntity, payBalance.negate(), "支付订单:" + orderEntity.getNo());
             if (msg != null) {
                 DbUtils.rollback();
                 return orderInfo.setErr(msg);
@@ -241,7 +242,6 @@ public class OrderService {
     /**
      * 取消订单
      *
-     * @param orderNo order no
      * @return null(成功) or 错误信息
      */
     public String cancelOrder(UserEntity userEntity, OrderEntity orderEntity) {
@@ -298,8 +298,6 @@ public class OrderService {
         if (orderEntity == null) {
             return null;
         }
-        orderEntity.setPayBalanceStr(Helper.priceFormat(orderEntity.getPayBalance()));
-        orderEntity.setAmountStr(Helper.priceFormat(orderEntity.getAmount()));
         orderEntity.setExpressName(ExpressCache.getNameById(orderEntity.getExpressId()));
         var payment = PaymentCache.getPaymentByName(orderEntity.getPayName());
         orderEntity.setPayNameCn(payment == null ? orderEntity.getPayName() : payment.getNameCn());
@@ -394,7 +392,6 @@ public class OrderService {
                 .build();
         pagination.getRows().forEach(row -> {
             var orderNo = Helper.parseNumber(row.get("no"), Long.class);
-            row.put("amountStr", Helper.priceFormat(Helper.parseNumber(row.get("amount"), Long.class)));
             row.put("orderGoods", orderGoodsService.findByOrderNo(orderNo));
             row.put("statusName", OrderStatus.getStatusName((long) row.get("status")));
 
@@ -479,12 +476,12 @@ public class OrderService {
             return "订单状态错误";
         }
         if (!orderStatusOnly) {
-            if (orderEntity.getPayBalance() > 0) {
+            if (orderEntity.getPayBalance().compareTo(BigDecimal.ZERO) > 0) {
                 userService.changeBalance(userEntity, orderEntity.getPayBalance(),
                         "订单退款:" + orderEntity.getNo());
             }
             // 订单金额大于0的原路退回
-            if (orderEntity.getPayAmount() > 0) {
+            if (orderEntity.getPayAmount().compareTo(BigDecimal.ZERO) > 0) {
                 Payment payment = PaymentCache.getPaymentByName(orderEntity.getPayName());
                 if (payment != null) {
                     var msg = payment.refund(orderEntity.getNo(), orderEntity.getPayAmount());
@@ -494,8 +491,8 @@ public class OrderService {
                 }
             }
         }
-        orderEntity.setPayAmount(0L);
-        orderEntity.setPayBalance(0L);
+        orderEntity.setPayAmount(BigDecimal.ZERO);
+        orderEntity.setPayBalance(BigDecimal.ZERO);
         orderEntity.setStatus(OrderStatus.REFUND.getCode());
         DbUtils.update(orderEntity, "status");
         jdbcClient.sql("update t_order_goods set status = ? where order_no = ?")
@@ -510,7 +507,7 @@ public class OrderService {
         private long orderNo;
         private long orderStatus;
         // 订单金额
-        private long amount;
+        private BigDecimal amount;
 
         public String getErr() {
             return err;
@@ -539,11 +536,11 @@ public class OrderService {
             return this;
         }
 
-        public long getAmount() {
+        public BigDecimal getAmount() {
             return amount;
         }
 
-        public OrderInfo setAmount(long amount) {
+        public OrderInfo setAmount(BigDecimal amount) {
             this.amount = amount;
             return this;
         }

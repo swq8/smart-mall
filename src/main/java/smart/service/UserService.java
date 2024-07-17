@@ -16,8 +16,12 @@ import smart.lib.session.Session;
 import smart.lib.status.AccountStatus;
 import smart.repository.UserBalanceLogRepository;
 import smart.repository.UserRepository;
-import smart.util.*;
+import smart.util.DbUtils;
+import smart.util.LogUtils;
+import smart.util.SqlBuilder;
+import smart.util.ValidatorUtils;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -36,15 +40,15 @@ public class UserService {
     @Resource
     private UserRepository userRepository;
 
-    public String changeBalance(UserEntity userEntity, Long amount, String note) {
-        if (amount == 0L) {
+    public String changeBalance(UserEntity userEntity, BigDecimal amount, String note) {
+        if (amount.compareTo(BigDecimal.ZERO) == 0) {
             return null;
         }
         if (!StringUtils.hasText(note)) {
             return "备注不得为空";
         }
-        long newBalance = userEntity.getBalance() + amount;
-        if (newBalance < 0) {
+        BigDecimal newBalance = userEntity.getBalance().add(amount);
+        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
             return "余额不足";
         }
         userEntity.setBalance(newBalance);

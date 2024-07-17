@@ -9,6 +9,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import smart.util.validategroups.Add;
 import smart.util.validategroups.Edit;
 
+import java.math.BigDecimal;
+
 @DynamicInsert
 @DynamicUpdate
 @Entity
@@ -21,7 +23,7 @@ public class GoodsSpecEntity extends AbstractEntity {
     private Long goodsId;
     @NotNull(groups = {Add.class, Edit.class})
     @PositiveOrZero(groups = {Add.class, Edit.class})
-    private Long price;
+    private BigDecimal price;
     @NotNull(groups = {Add.class, Edit.class})
     @PositiveOrZero(groups = {Add.class, Edit.class})
     private Long stock;
@@ -50,11 +52,11 @@ public class GoodsSpecEntity extends AbstractEntity {
         this.goodsId = goodsId;
     }
 
-    public Long getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

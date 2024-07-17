@@ -8,6 +8,7 @@ import smart.lib.status.OrderGoodsStatus;
 import smart.repository.OrderGoodsRepository;
 import smart.util.Helper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -51,8 +52,7 @@ public class OrderGoodsService {
                 .query(OrderGoodsEntity.class).
                 list();
         list.forEach(row->{
-            row.setPriceStr(Helper.priceFormat(row.getPrice()));
-            row.setSumPriceStr(Helper.priceFormat(row.getPrice() * row.getNum()));
+            row.setSumPrice(row.getPrice().multiply(new BigDecimal(row.getNum())));
             row.setStatusStr(OrderGoodsStatus.getStatusName(row.getStatus()));
         });
         return list;

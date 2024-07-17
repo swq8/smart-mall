@@ -11,6 +11,7 @@ import smart.lib.status.OrderGoodsStatus;
 import smart.lib.status.OrderStatus;
 import smart.util.Helper;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -151,7 +152,7 @@ public class HelperUtils {
      * @param price 价格(分)
      * @return 价格(元, 保留两位小数)
      */
-    public static String priceFormat(Long price) {
+    public static String priceFormat(BigDecimal price) {
         return price == null ? null : Helper.priceFormat(price);
     }
 

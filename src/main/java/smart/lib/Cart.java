@@ -13,6 +13,7 @@ import smart.repository.GoodsSpecRepository;
 import smart.util.Helper;
 import smart.util.Json;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -228,18 +229,18 @@ public class Cart {
      * @param code 收货地代码
      * @return 物流费用, 负数不支持该地区派送
      */
-    public long getShippingFee(long code) {
+    public BigDecimal getShippingFee(long code) {
         var feeRule = ExpressCache.getFeeRule();
         // 常规运费
-        long shippingFee = feeRule.getShippingFee(code, sumWeight());
+        BigDecimal shippingFee = feeRule.getShippingFee(code, sumWeight());
         // 不能送达返回-1
-        if (shippingFee < 0) {
-            return -1;
+        if (shippingFee.doubleValue() < 0) {
+            return BigDecimal.valueOf(-1);
         }
 
         // iss there a free shipping item
         if (hasFreeShippingGoods()) {
-            return 0;
+            return BigDecimal.ZERO;
         }
 
         // 是否符合免邮费规则
@@ -248,8 +249,8 @@ public class Cart {
                 // 地址未被包邮规则排除
                 && !freeRule.getExclude().contains(code)
                 // 金额达到包邮金额
-                && sumPrice() >= freeRule.getAmount()) {
-            return 0;
+                && sumPrice().compareTo(freeRule.getAmount()) >=0) {
+            return BigDecimal.ZERO;
         }
         // 以上规则都不符合，返回常规运费
         return shippingFee;
@@ -309,14 +310,14 @@ public class Cart {
      *
      * @return 选中商品价格合计
      */
-    public long sumPrice() {
-        long l = 0;
+    public BigDecimal sumPrice() {
+        BigDecimal sum = BigDecimal.ZERO;
         for (var item : items) {
             if (item.isSelected()) {
-                l += item.goodsPrice * item.num;
+                sum = sum.add(item.goodsPrice.multiply(BigDecimal.valueOf(item.num)));
             }
         }
-        return l;
+        return sum;
     }
 
     /**
@@ -342,7 +343,7 @@ public class Cart {
 
         private String goodsName;
 
-        private long goodsPrice;
+        private BigDecimal goodsPrice;
 
         private long goodsWeight;
 
@@ -395,11 +396,11 @@ public class Cart {
             this.goodsName = goodsName;
         }
 
-        public long getGoodsPrice() {
+        public BigDecimal getGoodsPrice() {
             return goodsPrice;
         }
 
-        public void setGoodsPrice(long goodsPrice) {
+        public void setGoodsPrice(BigDecimal goodsPrice) {
             this.goodsPrice = goodsPrice;
         }
 

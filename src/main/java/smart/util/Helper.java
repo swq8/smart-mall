@@ -22,6 +22,7 @@ import java.math.RoundingMode;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -43,6 +44,8 @@ public final class Helper {
     public static final DateTimeFormatter DATE_TIME_FORMATTER_DATE = DateTimeFormatter.ofPattern(AppConfig.DATE_FORMAT);
     public static final DateTimeFormatter DATE_TIME_FORMATTER_TIME = DateTimeFormatter.ofPattern(AppConfig.TIME_FORMAT);
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(AppConfig.DATE_TIME_FORMAT);
+
+    private static final DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     // simpleDateFormat parse method not thread save, use lock
     private static final Lock parseDateLock = new ReentrantLock();
@@ -350,23 +353,11 @@ public final class Helper {
     /**
      * 格式化价格
      *
-     * @param bigDecimal 价格(元)
+     * @param bigDecimal 价格
      * @return 价格(元, 保留两位小数)
      */
     public static String priceFormat(BigDecimal bigDecimal) {
-        return priceFormat(bigDecimal.multiply(new BigDecimal(100)).longValue());
-    }
-
-    /**
-     * 格式化价格
-     *
-     * @param price 价格(分)
-     * @return 价格(元, 保留两位小数)
-     */
-    public static String priceFormat(long price) {
-        String prefix = price < 0 ? "-" : "";
-        price = Math.abs(price);
-        return String.format("%s%d.%02d", prefix, price / 100, price % 100);
+        return decimalFormat.format(bigDecimal);
     }
 
     /**

@@ -2,6 +2,7 @@ package smart.lib.payment;
 
 import smart.util.Json;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 public class Balance implements Payment {
@@ -50,7 +51,7 @@ public class Balance implements Payment {
     }
 
     @Override
-    public String getQrCode(String title, String orderNo, long amount) throws Exception {
+    public String getQrCode(String title, String orderNo, BigDecimal amount) throws Exception {
         return null;
     }
 
@@ -65,7 +66,7 @@ public class Balance implements Payment {
     }
 
     @Override
-    public String refund(long orderNo, long amount) {
+    public String refund(long orderNo, BigDecimal amount) {
         return null;
     }
 

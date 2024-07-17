@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class FeeRuleDto {
     // 首重价格
     @NotNull
     @Positive
-    private Long firstFee;
+    private BigDecimal firstFee;
     // 首重重量g
     @NotNull
     @Positive
@@ -25,7 +26,7 @@ public class FeeRuleDto {
     // 续重价格
     @NotNull
     @Positive
-    private Long additionalFee;
+    private BigDecimal additionalFee;
     // 续重重量
     @NotNull
     @Positive
@@ -34,11 +35,11 @@ public class FeeRuleDto {
     @NotNull
     private Boolean otherDefault;
 
-    public Long getFirstFee() {
+    public BigDecimal getFirstFee() {
         return firstFee;
     }
 
-    public void setFirstFee(Long firstFee) {
+    public void setFirstFee(BigDecimal firstFee) {
         this.firstFee = firstFee;
     }
 
@@ -50,11 +51,11 @@ public class FeeRuleDto {
         this.firstWeight = firstWeight;
     }
 
-    public Long getAdditionalFee() {
+    public BigDecimal getAdditionalFee() {
         return additionalFee;
     }
 
-    public void setAdditionalFee(Long additionalFee) {
+    public void setAdditionalFee(BigDecimal additionalFee) {
         this.additionalFee = additionalFee;
     }
 
@@ -86,8 +87,8 @@ public class FeeRuleDto {
      * @param weight 重量g
      * @return 所需费用, 负数不支持该地区派送
      */
-    public long getShippingFee(long code, long weight) {
-        Long fee1 = null, fee2 = null;
+    public BigDecimal getShippingFee(long code, long weight) {
+        BigDecimal fee1 = null, fee2 = null;
         // 查找目标区域首重、续重价格
         for (var rule : provinceFees) {
             if (rule.getProvinces().contains(code)) {
@@ -101,7 +102,7 @@ public class FeeRuleDto {
                 fee1 = firstFee;
                 fee2 = additionalFee;
             } else {
-                return -1;
+                return BigDecimal.valueOf(-1);
             }
         }
 
@@ -114,6 +115,6 @@ public class FeeRuleDto {
         if (weight % additionalWeight > 0) {
             num++;
         }
-        return fee1 + fee2 * num;
+        return fee2.subtract(new BigDecimal(num)).add(fee1);
     }
 }

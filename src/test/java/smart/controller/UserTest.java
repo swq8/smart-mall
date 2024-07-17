@@ -22,6 +22,7 @@ import smart.util.DbUtils;
 import smart.util.Helper;
 import smart.util.UserAgent;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @AutoConfigureMockMvc
@@ -64,7 +65,7 @@ public class UserTest {
         UserEntity userEntity = userRepository.findByNameForWrite(name);
         Assertions.assertNotNull(userEntity);
         userEntity.setEmail("test@test.test");
-        userEntity.setBalance(999999999L);
+        userEntity.setBalance(BigDecimal.valueOf(99999999.99));
         userRepository.saveAndFlush(userEntity);
 
         String[] urls = {"/user/address", "/user/central", "/user/info", "/user/order", "/user/password"};

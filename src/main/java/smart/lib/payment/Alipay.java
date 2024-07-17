@@ -56,7 +56,7 @@ public class Alipay implements Payment {
      * @throws Exception error
      */
     @Override
-    public String getQrCode(String title, String orderNo, long amount) throws Exception {
+    public String getQrCode(String title, String orderNo, BigDecimal amount) throws Exception {
 
         AlipayTradePrecreateResponse alipayResponse = Factory.Payment.FaceToFace()
                 .preCreate(title, orderNo, Helper.priceFormat(amount));
@@ -95,7 +95,7 @@ public class Alipay implements Payment {
 
 
     @Override
-    public String refund(long orderNo, long amount) {
+    public String refund(long orderNo, BigDecimal amount) {
         try {
             AlipayTradeRefundResponse response = Factory.Payment.Common().refund(Long.toString(orderNo), Helper.priceFormat(amount));
             if (!"Success".equals(response.msg)) {

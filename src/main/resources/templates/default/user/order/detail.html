@@ -58,7 +58,7 @@
 
                     <td th:text="${#helpers.getOrderGoodsStatusInfo(goods.status)}">
                     </td>
-                    <td th:text="${'￥' + goods.priceStr}"></td>
+                    <td th:text="${'￥' + goods.price}"></td>
                     <td th:text="${goods.num}"></td>
                     <td class="border2 text-center" th:if="${itor.index == 0}">
                         <span class="price">[[${#helpers.priceFormat(order.amount)}]]</span>

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.math.BigDecimal;
+
 @DynamicInsert
 @DynamicUpdate
 @Entity
@@ -18,11 +20,9 @@ public class OrderGoodsEntity extends AbstractEntity {
     private Long specId;
     private String specDes;
     private String goodsName;
-    private Long price;
+    private BigDecimal price;
     @Transient
-    private String priceStr;
-    @Transient
-    private String sumPriceStr;
+    private BigDecimal sumPrice;
     private Long weight;
     private Long num;
     private Long status;
@@ -83,28 +83,21 @@ public class OrderGoodsEntity extends AbstractEntity {
     }
 
 
-    public Long getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public String getPriceStr() {
-        return priceStr;
+
+    public BigDecimal getSumPrice() {
+        return sumPrice;
     }
 
-    public void setPriceStr(String priceStr) {
-        this.priceStr = priceStr;
-    }
-
-    public String getSumPriceStr() {
-        return sumPriceStr;
-    }
-
-    public void setSumPriceStr(String sumPriceStr) {
-        this.sumPriceStr = sumPriceStr;
+    public void setSumPrice(BigDecimal sumPrice) {
+        this.sumPrice = sumPrice;
     }
 
     public Long getWeight() {

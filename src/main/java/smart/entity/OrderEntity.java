@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import smart.config.AppConfig;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -18,9 +19,7 @@ public class OrderEntity extends AbstractEntity {
     @Id
     private Long id;
     private String address;
-    private Long amount;
-    @Transient
-    private String amountStr;
+    private BigDecimal amount;
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp confirmTime;
     private String consignee;
@@ -32,22 +31,20 @@ public class OrderEntity extends AbstractEntity {
     private String expressName;
     private String expressNo;
     private Long no;
-    private Long payBalance;
-    @Transient
-    private String payBalanceStr;
+    private BigDecimal payBalance;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp payTime;
     private String payName;
     @Transient
     private String payNameCn;
-    private Long payAmount;
+    private BigDecimal payAmount;
     private String payNo;
     private String phone;
     private Long region;
     @Transient
     private String regionStr;
     private String remark;
-    private Long shippingFee;
+    private BigDecimal shippingFee;
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp shippingTime;
     private Long status;
@@ -66,11 +63,11 @@ public class OrderEntity extends AbstractEntity {
         this.address = address;
     }
 
-    public Long getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -147,20 +144,12 @@ public class OrderEntity extends AbstractEntity {
         this.no = no;
     }
 
-    public Long getPayBalance() {
+    public BigDecimal getPayBalance() {
         return payBalance;
     }
 
-    public void setPayBalance(Long payBalance) {
+    public void setPayBalance(BigDecimal payBalance) {
         this.payBalance = payBalance;
-    }
-
-    public String getPayBalanceStr() {
-        return payBalanceStr;
-    }
-
-    public void setPayBalanceStr(String payBalanceStr) {
-        this.payBalanceStr = payBalanceStr;
     }
 
     public Timestamp getPayTime() {
@@ -188,20 +177,12 @@ public class OrderEntity extends AbstractEntity {
         this.payNameCn = payNameCn;
     }
 
-    public Long getPayAmount() {
+    public BigDecimal getPayAmount() {
         return payAmount;
     }
 
-    public void setPayAmount(Long payAmount) {
+    public void setPayAmount(BigDecimal payAmount) {
         this.payAmount = payAmount;
-    }
-
-    public String getAmountStr() {
-        return amountStr;
-    }
-
-    public void setAmountStr(String amountStr) {
-        this.amountStr = amountStr;
     }
 
     public String getPayNo() {
@@ -244,11 +225,11 @@ public class OrderEntity extends AbstractEntity {
         this.remark = remark;
     }
 
-    public Long getShippingFee() {
+    public BigDecimal getShippingFee() {
         return shippingFee;
     }
 
-    public void setShippingFee(Long shippingFee) {
+    public void setShippingFee(BigDecimal shippingFee) {
         this.shippingFee = shippingFee;
     }
 

@@ -10,6 +10,7 @@ import smart.lib.status.AccountStatus;
 import smart.lib.status.GenderInfo;
 import smart.util.Helper;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @DynamicInsert
@@ -18,6 +19,7 @@ import java.sql.Timestamp;
 @Table(name = "t_user")
 public class UserEntity extends AbstractEntity {
     private String avatar;
+    private BigDecimal balance;
     private String email;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -32,7 +34,6 @@ public class UserEntity extends AbstractEntity {
     private String password;
     private Long gender;
     private Long status;
-    private Long balance;
     private String registerIp;
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = AppConfig.DATE_TIME_FORMAT, timezone = AppConfig.TIME_ZONE)
     private Timestamp registerTime;
@@ -43,6 +44,14 @@ public class UserEntity extends AbstractEntity {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
     public String getEmail() {
@@ -144,13 +153,6 @@ public class UserEntity extends AbstractEntity {
         return AccountStatus.getStatusName(status);
     }
 
-    public Long getBalance() {
-        return balance;
-    }
-
-    public void setBalance(Long balance) {
-        this.balance = balance;
-    }
 
     public String getBalanceStr() {
         return Helper.priceFormat(balance);

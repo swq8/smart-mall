@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import smart.util.Helper;
 import smart.util.Json;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 public class WeChat implements Payment {
@@ -52,7 +53,7 @@ public class WeChat implements Payment {
     }
 
     @Override
-    public String getQrCode(String title, String orderNo, long amount) throws Exception {
+    public String getQrCode(String title, String orderNo, BigDecimal amount) throws Exception {
         return Helper.randomString(100);
     }
 
@@ -67,7 +68,7 @@ public class WeChat implements Payment {
     }
 
     @Override
-    public String refund(long orderNo, long amount) {
+    public String refund(long orderNo, BigDecimal amount) {
         return null;
     }
     public static class ConfigDto {

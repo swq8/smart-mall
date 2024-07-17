@@ -12,18 +12,7 @@ function htmlDecode(value) {
 }
 
 function priceFormat(num) {
-    if (num < 10) {
-        return "0.0" + num;
-    } else if (num < 100) {
-        return "0." + num;
-    }
-    let rem = num % 100;
-    let i = Math.floor(num / 100);
-    if (rem < 10) {
-        return i + ".0" + rem;
-    } else {
-        return i + "." + rem;
-    }
+    return num.toFixed(2);
 }
 
 function subString(s, n) {

@@ -29,6 +29,7 @@ import smart.util.Helper;
 import smart.util.LogUtils;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -238,7 +239,7 @@ public class Order {
         if (orderEntity == null || !Objects.equals(orderEntity.getUserId(), userToken.getId())) {
             return "订单不存在 " + orderNo;
         }
-        if (orderEntity.getAmount() <= 0) {
+        if (orderEntity.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             return "订单金额错误 " + orderNo;
         }
         Payment payment = PaymentCache.getPaymentByName(orderEntity.getPayName());

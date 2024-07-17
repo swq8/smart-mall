@@ -12,6 +12,7 @@ import smart.util.Json;
 import smart.util.validategroups.Add;
 import smart.util.validategroups.Edit;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class GoodsEntity extends AbstractEntity {
     private Boolean onSell;
     @NotNull(groups = {Add.class, Edit.class})
     @PositiveOrZero(groups = {Add.class, Edit.class})
-    private Long price;
+    private BigDecimal price;
     @NotNull(groups = {Add.class, Edit.class})
     private Boolean shippingFee;
     @NotNull(groups = {Add.class, Edit.class})
@@ -161,11 +162,11 @@ public class GoodsEntity extends AbstractEntity {
         this.onSell = onSell;
     }
 
-    public Long getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

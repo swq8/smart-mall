@@ -3,6 +3,7 @@ package smart.controller.adminApi.user;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import smart.auth.Authorize;
 import smart.cache.SystemCache;
+import smart.controller.adminApi.system.Log;
 import smart.dto.GeneralQueryDto;
 import smart.dto.IdDto;
 import smart.entity.UserBalanceLogEntity;
@@ -25,6 +27,7 @@ import smart.util.Security;
 import smart.util.ValidatorUtils;
 import smart.util.validategroups.Add;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 @RestController(value = "adminApi/user/user")
@@ -41,12 +44,14 @@ public class User {
 
     @Resource
     UserService userService;
+    @Autowired
+    private Log log;
 
     @Authorize("/user/user/changeBalance")
     @PostMapping("changeBalance")
     public ApiJsonResult changeBalance(HttpServletRequest request,
                                        @RequestBody @Validated(Add.class) UserBalanceLogEntity logEntity) {
-        if (logEntity.getAmount() == 0) {
+        if (logEntity.getAmount().compareTo(BigDecimal.ZERO) == 0) {
             return ApiJsonResult.error("无需调整");
         }
         var userEntity = userRepository.findByIdForWrite(logEntity.getUid());
@@ -54,6 +59,7 @@ public class User {
             return ApiJsonResult.error("用户不存在");
         }
         var result = ApiJsonResult.successOrError(userService.changeBalance(userEntity, logEntity.getAmount(), logEntity.getNote()));
+        logEntity.setBalance(userEntity.getBalance());
         adminLogService.addLogIfSuccess(result, request, "调整用户余额", logEntity);
         return result;
     }

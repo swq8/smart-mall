@@ -233,7 +233,7 @@ public class GoodsService {
             for (int i = 0; i < specNames.size(); i++) {
                 var item = goodsEntity.getSpecProps().get(i);
                 item.setGoodsId(goodsEntity.getId());
-                if (goodsEntity.getPrice() > item.getPrice()) {
+                if (goodsEntity.getPrice().compareTo(item.getPrice()) > 0) {
                     goodsEntity.setPrice(item.getPrice());
                 }
                 item.setDes(specNames.get(i));

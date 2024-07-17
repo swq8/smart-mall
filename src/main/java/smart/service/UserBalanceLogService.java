@@ -1,12 +1,10 @@
 package smart.service;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
-import smart.lib.Pagination;
-import smart.util.Helper;
-import smart.util.SqlBuilder;
 import smart.dto.GeneralQueryDto;
+import smart.lib.Pagination;
+import smart.util.SqlBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,24 +18,9 @@ public class UserBalanceLogService {
 
     public Pagination getListByUid(long uid, HttpServletRequest request) {
         String sql = "select * from t_user_balance_log where uid = ? order by time desc";
-        var pagination = Pagination.newBuilder(sql, new Object[]{uid})
+        return Pagination.newBuilder(sql, new Object[]{uid})
                 .page(request)
                 .build();
-        return formatPagination(pagination);
-    }
-
-    @NotNull
-    private Pagination formatPagination(Pagination pagination) {
-        pagination.getRows().forEach(row -> {
-            var change = Helper.parseNumber(row.get("amount"), Long.class);
-            String changeStr = Helper.priceFormat(change);
-            if (change > 0) {
-                changeStr = "+" + changeStr;
-            }
-            row.put("amountStr", changeStr);
-            row.put("balanceStr", Helper.priceFormat(Helper.parseNumber(row.get("balance"), Long.class)));
-        });
-        return pagination;
     }
 
     public Pagination query(GeneralQueryDto query) {
@@ -57,10 +40,9 @@ public class UserBalanceLogService {
                 .andTrimEqualsIfNotBlank("name", query.getName())
                 .orderBy(SORTABLE_COLUMNS, query.getSort(), "time,desc")
                 .buildSql();
-        var pagination = Pagination.newBuilder(sql, sqlParams.toArray())
+        return Pagination.newBuilder(sql, sqlParams.toArray())
                 .page(query.getPage())
                 .pageSize(query.getPageSize())
                 .build();
-        return formatPagination(pagination);
     }
 }
