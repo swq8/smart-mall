@@ -53,6 +53,10 @@ public class Cart {
         goodsSpecRepository = AppConfig.getContext().getBean(GoodsSpecRepository.class);
     }
 
+    public void add(Item item) {
+        add(item.goodsId, item.specId, item.num);
+    }
+
     public void add(long goodsId, long specId, long num) {
         if (goodsId <= 0 || specId < 0 || num <= 0) {
             return;

@@ -52,9 +52,12 @@ public class GoodsEntity extends AbstractEntity {
     private List<String> imgsObj;
     @NotNull(groups = {Add.class, Edit.class})
     private Boolean onSell;
+
+    @Digits(integer = 8, fraction = 2, groups = {Add.class, Edit.class})
     @NotNull(groups = {Add.class, Edit.class})
     @PositiveOrZero(groups = {Add.class, Edit.class})
     private BigDecimal price;
+
     @NotNull(groups = {Add.class, Edit.class})
     private Boolean shippingFee;
     @NotNull(groups = {Add.class, Edit.class})

@@ -1,9 +1,13 @@
 package smart.controller;
 
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import smart.config.AppProperties;
 import smart.util.Helper;
 import smart.util.Json;
 
@@ -16,6 +20,10 @@ import java.util.Map;
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @Transactional
 public class Api {
+
+    @Resource
+    AppProperties appProperties;
+
     /**
      * get client ip, port and request header
      *
@@ -57,33 +65,13 @@ public class Api {
 
     @GetMapping("sleep")
     public String getSleep(@RequestParam(defaultValue = "1") int t) throws InterruptedException {
+        if (!appProperties.isDevMode()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         Thread.sleep(t);
         return Integer.toString(t);
     }
 
     @GetMapping("test")
-    public String getTest(@RequestParam String pwd) {
+    public String getTest() {
         return Json.stringify(new Object());
-    }
-
-    public static class Pojo {
-        private Long id;
-        private String name;
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
     }
 }

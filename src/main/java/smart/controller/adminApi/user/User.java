@@ -3,7 +3,6 @@ package smart.controller.adminApi.user;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import smart.auth.Authorize;
 import smart.cache.SystemCache;
-import smart.controller.adminApi.system.Log;
 import smart.dto.GeneralQueryDto;
 import smart.dto.IdDto;
 import smart.entity.UserBalanceLogEntity;
@@ -44,8 +42,6 @@ public class User {
 
     @Resource
     UserService userService;
-    @Autowired
-    private Log log;
 
     @Authorize("/user/user/changeBalance")
     @PostMapping("changeBalance")

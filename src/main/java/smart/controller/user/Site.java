@@ -19,7 +19,10 @@ import smart.lib.JsonResult;
 import smart.lib.session.Session;
 import smart.repository.UserRepository;
 import smart.service.UserService;
-import smart.util.*;
+import smart.util.DbUtils;
+import smart.util.Helper;
+import smart.util.Json;
+import smart.util.ValidatorUtils;
 
 @Controller(value = "user/site")
 @RequestMapping(path = "user")
@@ -104,22 +107,12 @@ public class Site {
             back = "/";
         }
         name = name.toLowerCase();
-        Cart oldCart = null;
-        if (UserToken.from(session) == null) {
-            oldCart = new Cart(request);
-        }
+        var oldCart = new Cart(request);
         JsonResult jsonResult = new JsonResult();
         UserService.Result result = userService.login(name, password, Helper.getClientIp(request));
         if (result.userEntity != null) {
             //login success
-            UserToken userToken = new UserToken(result.userEntity);
-            userToken.save(session);
-            request.setAttribute(StringUtils.uncapitalize(UserToken.class.getSimpleName()), userToken);
-            Cart cart = new Cart(request);
-            if (oldCart != null) {
-                oldCart.getItems().forEach(item -> cart.add(item.getGoodsId(), item.getSpecId(), item.getNum()));
-                session.delete(Cart.NAME);
-            }
+            loginInit(request, result.getUserEntity(), session);
             jsonResult.setUrl(back);
 
         } else {
@@ -220,13 +213,9 @@ public class Site {
         }
 
         msg = userService.register(name, password, Helper.getClientIp(request));
-
         if (msg == null) {
-            Captcha.clear(session);
             UserEntity userEntity = userRepository.findByName(name);
-            UserToken userToken = new UserToken(userEntity);
-            userToken.save(session);
-            request.setAttribute(StringUtils.uncapitalize(UserToken.class.getSimpleName()), userToken);
+            loginInit(request, userEntity, session);
             result.setUrl("/user/central").setMsg("注册会员成功");
             return Helper.msgPage(result, request);
         } else {
@@ -240,6 +229,26 @@ public class Site {
     public String getTest(HttpServletRequest request) {
 
         return Json.stringify(request.getTrailerFields());
+    }
+
+    /**
+     * login init, temporary cart goods  transferred to the user's  cart
+     *
+     * @param request    http request
+     * @param userEntity user entity
+     * @param session    session
+     */
+    private void loginInit(HttpServletRequest request, UserEntity userEntity, Session session) {
+        var oldCart = new Cart(request);
+        UserToken userToken = new UserToken(userEntity);
+        userToken.save(session);
+        request.setAttribute(StringUtils.uncapitalize(UserToken.class.getSimpleName()), userToken);
+        var cart = new Cart(request);
+        if (oldCart.getUserToken() == null) {
+            oldCart.getItems().forEach(cart::add);
+            session.delete(Cart.NAME);
+        }
+        Captcha.clear(session);
     }
 
 }

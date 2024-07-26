@@ -1,6 +1,7 @@
 package smart.dto.express;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -16,6 +17,7 @@ public class FeeRuleDto {
     @Valid
     private final List<ProvinceFee> provinceFees = new ArrayList<>();
     // 首重价格
+    @Digits(integer = 8, fraction = 2)
     @NotNull
     @Positive
     private BigDecimal firstFee;
@@ -24,6 +26,7 @@ public class FeeRuleDto {
     @Positive
     private Long firstWeight;
     // 续重价格
+    @Digits(integer = 8, fraction = 2)
     @NotNull
     @Positive
     private BigDecimal additionalFee;

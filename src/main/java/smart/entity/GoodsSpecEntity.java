@@ -1,6 +1,7 @@
 package smart.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -21,9 +22,12 @@ public class GoodsSpecEntity extends AbstractEntity {
     @Id
     private Long id;
     private Long goodsId;
+
+    @Digits(integer = 6, fraction = 2, groups = {Add.class, Edit.class})
     @NotNull(groups = {Add.class, Edit.class})
     @PositiveOrZero(groups = {Add.class, Edit.class})
     private BigDecimal price;
+
     @NotNull(groups = {Add.class, Edit.class})
     @PositiveOrZero(groups = {Add.class, Edit.class})
     private Long stock;

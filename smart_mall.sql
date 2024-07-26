@@ -32,7 +32,7 @@ CREATE TABLE `t_admin_log` (
   `runtime` int NOT NULL COMMENT 'runtime(ms)',
   PRIMARY KEY (`id`),
   KEY `t_admin_log_runtime_index` (`runtime` DESC)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,6 +41,7 @@ CREATE TABLE `t_admin_log` (
 
 LOCK TABLES `t_admin_log` WRITE;
 /*!40000 ALTER TABLE `t_admin_log` DISABLE KEYS */;
+INSERT INTO `t_admin_log` VALUES (1,'2024-07-26 17:54:05',1,'127.0.0.1','登录成功','{\"avatar\":\"\",\"id\":1,\"level\":0,\"phone\":\"\",\"name\":\"manage\"}',64),(2,'2024-07-26 17:54:19',1,'127.0.0.1','更改用户密码','{\"userId\":2}',19),(3,'2024-07-26 17:55:13',1,'127.0.0.1','退出登录','{\"avatar\":\"\",\"id\":1,\"level\":0,\"phone\":\"\",\"name\":\"manage\"}',0),(4,'2024-07-26 17:55:15',2,'127.0.0.1','登录成功','{\"avatar\":\"\",\"id\":2,\"level\":0,\"phone\":\"\",\"name\":\"demo\"}',17),(5,'2024-07-26 17:55:37',2,'127.0.0.1','退出登录','{\"avatar\":\"\",\"id\":2,\"level\":0,\"phone\":\"\",\"name\":\"demo\"}',0);
 /*!40000 ALTER TABLE `t_admin_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -378,7 +379,6 @@ CREATE TABLE `t_order` (
 
 LOCK TABLES `t_order` WRITE;
 /*!40000 ALTER TABLE `t_order` DISABLE KEYS */;
-INSERT INTO `t_order` VALUES (1,240112000997,1,320102,'红星小区快递柜','张三','18799999999',2600.00,800.00,1,'','2024-01-12 16:09:17',2600.00,'2024-01-12 16:09:17',NULL,NULL,'',0.00,'',1,0,'',0),(2,240718001994,3,120102,'dfdfdf','abc','18888888888',99.00,0.00,3,'','2024-07-18 01:27:55',0.00,'2024-07-18 02:36:26','2024-07-18 02:53:42','2024-07-18 02:54:10','alipay',0.00,'',1,3,'1222',0);
 /*!40000 ALTER TABLE `t_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -402,7 +402,7 @@ CREATE TABLE `t_order_goods` (
   `status` bigint unsigned NOT NULL DEFAULT '0' COMMENT '状态\n0 未发货\n1 已发货\n2 已收货\n3 已退货',
   PRIMARY KEY (`id`),
   KEY `orderGoods_orderNo_index` (`order_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -411,7 +411,6 @@ CREATE TABLE `t_order_goods` (
 
 LOCK TABLES `t_order_goods` WRITE;
 /*!40000 ALTER TABLE `t_order_goods` DISABLE KEYS */;
-INSERT INTO `t_order_goods` VALUES (1,240112000997,74,0,'','测试商品[不包邮]',900.00,3,2,0),(2,240718001994,83,90,'白色 M','李宁短袖男士训练系列速干上衣凉爽圆领夏季休闲针织T恤',99.00,50,1,2);
 /*!40000 ALTER TABLE `t_order_goods` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -573,7 +572,7 @@ CREATE TABLE `t_user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `iName` (`name`),
   KEY `t_user_last_login_time_index` (`last_login_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -582,7 +581,7 @@ CREATE TABLE `t_user` (
 
 LOCK TABLES `t_user` WRITE;
 /*!40000 ALTER TABLE `t_user` DISABLE KEYS */;
-INSERT INTO `t_user` VALUES (1,'manage',0,'','',0,'',5201.96,'2024-07-18 01:38:31','127.0.0.1',0,'$2a$06$Op5.iPU.aQwmv.HpX98W9uB0ncjhqLFsHnms/dfPY0nyScM13b/Rq','2024-01-12 14:57:26','0:0:0:0:0:0:0:1'),(2,'demo',0,'','',0,'',24.46,'2024-07-16 04:11:22','127.0.0.1',0,'$2a$06$mjJnHwlnpGJU7ekiZqhWTuH8.dynSKTKlfg4GNq8QCO1DY/r8g4Na','2024-01-12 16:14:16','0:0:0:0:0:0:0:1'),(3,'abc001',0,'','',0,'',0.00,'2024-07-18 01:23:17','0:0:0:0:0:0:0:1',0,'$2a$06$CTPCfCpPyFk/dWZU0BhSq.6o5CGXVw.YorVkNlWudoG.86XE9c5.a','2024-07-18 01:23:00','0:0:0:0:0:0:0:1');
+INSERT INTO `t_user` VALUES (1,'manage',0,'','',0,'',5201.96,'2024-07-26 17:54:05','127.0.0.1',0,'$2a$06$Op5.iPU.aQwmv.HpX98W9uB0ncjhqLFsHnms/dfPY0nyScM13b/Rq','2024-01-12 14:57:26','0:0:0:0:0:0:0:1'),(2,'demo',0,'','',0,'',24.46,'2024-07-26 17:55:15','127.0.0.1',0,'$2a$06$uxPXtUNhiSpwVyTzxnw3D.nSt4sSH2nmOk4pttG2BUB6fjZBi7WsO','2024-01-12 16:14:16','0:0:0:0:0:0:0:1');
 /*!40000 ALTER TABLE `t_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -603,7 +602,7 @@ CREATE TABLE `t_user_address` (
   `dft` bigint unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `userAddress_userId_index` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -612,7 +611,6 @@ CREATE TABLE `t_user_address` (
 
 LOCK TABLES `t_user_address` WRITE;
 /*!40000 ALTER TABLE `t_user_address` DISABLE KEYS */;
-INSERT INTO `t_user_address` VALUES (1,1,'张三','18799999999',320102,'红星小区快递柜',1),(2,3,'abc','18888888888',120102,'dfdfdf',1);
 /*!40000 ALTER TABLE `t_user_address` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -682,4 +680,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-18  3:14:07
+-- Dump completed on 2024-07-26 17:56:19

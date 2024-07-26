@@ -19,7 +19,7 @@ public class FreeRuleDto {
     @NotNull
     private Boolean enable = false;
 
-    @Digits(integer = 12, fraction = 2)
+    @Digits(integer = 8, fraction = 2)
     @NotNull
     @PositiveOrZero
     private BigDecimal amount = BigDecimal.ZERO;
