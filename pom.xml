@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version>
+        <version>3.3.3</version>
         <relativePath/>
     </parent>
     <groupId>smart-mall</groupId>
@@ -16,7 +16,7 @@
     <properties>
         <java.version>21</java.version>
         <alipay.sdk.version>2.2.3</alipay.sdk.version>
-        <aliyun.oss.version>3.17.4</aliyun.oss.version>
+        <aliyun.oss.version>3.18.1</aliyun.oss.version>
         <google.zxing.version>3.5.3</google.zxing.version>
     </properties>
     <dependencies>
