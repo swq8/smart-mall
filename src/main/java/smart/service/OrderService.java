@@ -2,7 +2,7 @@ package smart.service;
 
 import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
-import org.jetbrains.annotations.NotNull;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.dao.CannotAcquireLockException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;

@@ -25,20 +25,31 @@ import java.util.*;
 @SpringBootApplication
 public class Launcher {
     public static void main(String[] args) {
+        // 设置应用程序的基础配置
+        configureApplicationDefaults();
+        
+        // 启动 Spring 应用
+        SpringApplication application = new SpringApplication(Launcher.class);
+        application.run(args);
+        
+        // 执行预热
+        try {
+            warmUpApplication();
+        } catch (Exception e) {
+            LogUtils.warn(Launcher.class, "Application warm-up failed", e);
+        }
+    }
+
+    private static void configureApplicationDefaults() {
         Locale.setDefault(Locale.CHINA);
         TimeZone.setDefault(TimeZone.getTimeZone(AppConfig.TIME_ZONE));
-        SpringApplication.run(Launcher.class, args);
-        try {
-            hot();
-        } catch (Exception ignore) {
-        }
     }
 
     /**
      * 启动后，通过调用 自我访问等方式热机
      */
     @SuppressWarnings("unchecked")
-    private static void hot() {
+    private static void warmUpApplication() {
         Helper.getQRCodePng("https://hot.test", 100);
         ConfigurableEnvironment environment = AppConfig.getContext().getEnvironment();
         String addr = environment.getProperty("server.address");
